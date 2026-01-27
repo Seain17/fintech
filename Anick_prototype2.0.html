@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>에이닉 - 통합 포인트 핀테크</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--primary:#3182F6;--primary-light:#5BA0FF;--primary-dark:#1B64DA;--primary-50:rgba(49,130,246,0.08);--accent:#FF6B35;--success:#20C997;--warning:#FFC107;--error:#FF5252;--bg-main:#F7F8FA;--bg-card:#FFF;--bg-dark:#191F28;--bg-gradient:linear-gradient(135deg,#3182F6 0%,#1B64DA 100%);--text-primary:#191F28;--text-secondary:#4E5968;--text-tertiary:#8B95A1;--border:#E5E8EB;--border-light:#F2F4F6;--shadow-sm:0 1px 3px rgba(0,0,0,0.04);--shadow-md:0 4px 12px rgba(0,0,0,0.08);--shadow-lg:0 8px 24px rgba(0,0,0,0.12);--shadow-primary:0 4px 16px rgba(49,130,246,0.25);--radius-xs:8px;--radius-sm:12px;--radius-md:16px;--radius-lg:20px;--radius-full:9999px}
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    body{font-family:'Noto Sans KR',-apple-system,sans-serif;background:#0D1117;min-height:100vh;display:flex;justify-content:center;padding:20px}
+    .phone-frame{width:100%;max-width:390px;height:844px;background:var(--bg-main);border-radius:44px;position:relative;overflow:hidden;box-shadow:0 50px 100px rgba(0,0,0,0.5),0 0 0 11px #1a1a1a,0 0 0 13px #333}
+    .screen{position:absolute;inset:0;opacity:0;visibility:hidden;transition:all .35s;overflow-y:auto}
+    .screen.active{opacity:1;visibility:visible}
+    .screen::-webkit-scrollbar{display:none}
+    .splash-screen{background:var(--bg-gradient);display:flex;flex-direction:column;align-items:center;justify-content:center}
+    .splash-logo-wrap{width:100px;height:100px;background:rgba(255,255,255,0.15);border-radius:28px;display:flex;align-items:center;justify-content:center;margin-bottom:24px;animation:pulse 2s infinite;backdrop-filter:blur(20px)}
+    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+    .splash-logo{font-family:'Outfit';font-size:36px;font-weight:800;color:#fff}
+    .splash-title{font-family:'Outfit';font-size:32px;font-weight:800;color:#fff;margin-bottom:8px}
+    .splash-subtitle{font-size:15px;color:rgba(255,255,255,0.8);margin-bottom:80px}
+    .splash-loading{width:160px;height:3px;background:rgba(255,255,255,0.2);border-radius:2px;overflow:hidden}
+    .splash-loading-bar{width:0;height:100%;background:#fff;animation:loading 2.2s ease-out forwards}
+    @keyframes loading{to{width:100%}}
+    .onboarding-screen{background:var(--bg-main)}
+    .onboarding-content{height:100%;display:flex;flex-direction:column;padding:60px 24px 40px}
+    .onboarding-visual{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center}
+    .onboarding-icon-wrap{width:140px;height:140px;background:var(--bg-gradient);border-radius:40px;display:flex;align-items:center;justify-content:center;margin-bottom:32px;box-shadow:var(--shadow-primary);animation:float 3s infinite}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+    .onboarding-icon-wrap svg{width:64px;height:64px;color:#fff}
+    .onboarding-points{display:inline-flex;align-items:center;gap:8px;background:var(--bg-card);padding:12px 20px;border-radius:var(--radius-full);box-shadow:var(--shadow-md);margin-bottom:32px}
+    .onboarding-points-icon{width:24px;height:24px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Outfit';font-size:12px;font-weight:700;color:#fff}
+    .onboarding-points-text{font-size:16px;font-weight:700;color:var(--primary)}
+    .onboarding-title{font-size:26px;font-weight:800;color:var(--text-primary);text-align:center;line-height:1.4;margin-bottom:12px}
+    .onboarding-title span{color:var(--primary)}
+    .onboarding-desc{font-size:15px;color:var(--text-secondary);text-align:center;line-height:1.6}
+    .onboarding-actions{padding-top:24px}
+    .btn-primary{width:100%;padding:18px;border:none;border-radius:var(--radius-md);background:var(--bg-gradient);color:#fff;font-size:17px;font-weight:700;font-family:inherit;cursor:pointer;box-shadow:var(--shadow-primary);transition:all .2s;margin-bottom:12px}
+    .btn-primary:active{transform:scale(0.98)}
+    .btn-secondary{width:100%;padding:16px;border:2px solid var(--border);border-radius:var(--radius-md);background:var(--bg-card);color:var(--text-secondary);font-size:16px;font-weight:600;font-family:inherit;cursor:pointer}
+    .login-screen{background:var(--bg-main)}
+    .login-content{padding:80px 24px 40px;display:flex;flex-direction:column;min-height:100%}
+    .login-header{text-align:center;margin-bottom:48px}
+    .login-logo-wrap{width:72px;height:72px;background:var(--bg-gradient);border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:var(--shadow-primary)}
+    .login-logo{font-family:'Outfit';font-size:28px;font-weight:800;color:#fff}
+    .login-title{font-size:22px;font-weight:700;color:var(--text-primary);margin-bottom:8px}
+    .login-subtitle{font-size:14px;color:var(--text-tertiary)}
+    .social-btn{width:100%;padding:16px 20px;border:none;border-radius:var(--radius-md);font-size:16px;font-weight:600;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:12px;transition:all .2s}
+    .social-btn:active{transform:scale(0.98)}
+    .social-btn.kakao{background:#FEE500;color:#191919}
+    .social-btn.naver{background:#03C75A;color:#fff}
+    .social-btn.google{background:#fff;color:#333;border:1px solid var(--border)}
+    .social-btn.apple{background:#000;color:#fff}
+    .social-btn svg{width:20px;height:20px}
+    .login-divider{display:flex;align-items:center;gap:16px;margin:24px 0;color:var(--text-tertiary);font-size:13px}
+    .login-divider::before,.login-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+    .login-terms{font-size:12px;color:var(--text-tertiary);text-align:center;line-height:1.6;margin-top:auto}
+    .login-terms a{color:var(--primary);text-decoration:none}
+    .home-screen{background:var(--bg-main);padding-bottom:100px}
+    .home-header{background:var(--bg-gradient);padding:60px 20px 24px;position:relative;overflow:hidden}
+    .home-header::before{content:'';position:absolute;top:-50%;right:-30%;width:300px;height:300px;background:rgba(255,255,255,0.1);border-radius:50%}
+    .home-header-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;position:relative}
+    .home-logo{font-family:'Outfit';font-size:24px;font-weight:800;color:#fff}
+    .home-header-icons{display:flex;gap:12px}
+    .home-icon-btn{width:40px;height:40px;background:rgba(255,255,255,0.15);border:none;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;cursor:pointer}
+    .home-icon-btn svg{width:22px;height:22px;color:#fff}
+    .point-card{background:rgba(255,255,255,0.95);border-radius:var(--radius-lg);padding:24px;box-shadow:var(--shadow-lg)}
+    .point-card-label{font-size:13px;color:var(--text-tertiary);margin-bottom:8px}
+    .point-card-value{font-family:'Outfit';font-size:36px;font-weight:800;color:var(--text-primary);margin-bottom:4px}
+    .point-card-value span{font-size:18px;font-weight:600;color:var(--text-secondary)}
+    .point-card-sub{font-size:14px;color:var(--text-secondary);margin-bottom:20px}
+    .point-card-sub .cash{font-family:'Outfit';font-weight:700;color:var(--primary)}
+    .point-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .point-action-btn{padding:14px;border:none;border-radius:var(--radius-sm);font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+    .point-action-btn.withdraw{background:var(--primary);color:#fff}
+    .point-action-btn.exchange{background:var(--primary-50);color:var(--primary)}
+    .point-action-btn svg{width:18px;height:18px}
+    .quick-menu{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:20px;background:var(--bg-card);margin:-20px 16px 16px;border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);position:relative}
+    .quick-item{display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 8px;border:none;background:transparent;cursor:pointer;border-radius:var(--radius-sm)}
+    .quick-item:active{background:var(--bg-main)}
+    .quick-icon{width:48px;height:48px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;background:var(--primary-50)}
+    .quick-icon svg{width:24px;height:24px;color:var(--primary)}
+    .quick-icon.orange{background:rgba(255,107,53,0.1)}
+    .quick-icon.orange svg{color:var(--accent)}
+    .quick-icon.green{background:rgba(32,201,151,0.1)}
+    .quick-icon.green svg{color:var(--success)}
+    .quick-icon.purple{background:rgba(139,92,246,0.1)}
+    .quick-icon.purple svg{color:#8B5CF6}
+    .quick-label{font-size:12px;font-weight:600;color:var(--text-secondary)}
+    .section{padding:0 16px;margin-bottom:20px}
+    .section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+    .section-title{font-size:18px;font-weight:700;color:var(--text-primary)}
+    .section-more{font-size:13px;color:var(--text-tertiary);background:none;border:none;cursor:pointer}
+    .attendance-banner{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);border-radius:var(--radius-lg);padding:20px;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+    .attendance-banner:active{transform:scale(0.98)}
+    .attendance-badge{display:inline-flex;background:rgba(255,255,255,0.2);padding:4px 10px;border-radius:var(--radius-full);font-size:11px;font-weight:600;color:#fff;margin-bottom:8px}
+    .attendance-title{font-size:17px;font-weight:700;color:#fff;margin-bottom:4px}
+    .attendance-desc{font-size:13px;color:rgba(255,255,255,0.8)}
+    .attendance-days{display:flex;gap:4px}
+    .attendance-day{width:32px;height:32px;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:#fff}
+    .attendance-day.checked{background:#fff;color:#667eea}
+    .attendance-day.today{background:#FFD700;color:#333;animation:bounce 1s infinite}
+    @keyframes bounce{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+    .daily-mission-card{background:var(--bg-card);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow-sm)}
+    .mission-progress-header{display:flex;justify-content:space-between;margin-bottom:16px}
+    .mission-progress-label{font-size:14px;color:var(--text-secondary)}
+    .mission-progress-count{font-family:'Outfit';font-size:14px;font-weight:700;color:var(--primary)}
+    .mission-progress-bar{height:8px;background:var(--bg-main);border-radius:var(--radius-full);overflow:hidden;margin-bottom:20px}
+    .mission-progress-fill{height:100%;background:var(--bg-gradient);border-radius:var(--radius-full)}
+    .mission-list{display:flex;flex-direction:column;gap:12px}
+    .mission-item{display:flex;align-items:center;gap:12px;padding:14px;background:var(--bg-main);border-radius:var(--radius-sm);cursor:pointer;border:none;width:100%;text-align:left}
+    .mission-item:active{transform:scale(0.98)}
+    .mission-item.completed{background:var(--primary-50)}
+    .mission-icon{width:40px;height:40px;background:var(--bg-card);border-radius:var(--radius-xs);display:flex;align-items:center;justify-content:center}
+    .mission-icon svg{width:20px;height:20px;color:var(--primary)}
+    .mission-info{flex:1}
+    .mission-name{font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:2px}
+    .mission-reward{font-size:12px;color:var(--text-tertiary)}
+    .mission-status{padding:6px 12px;border-radius:var(--radius-full);font-size:12px;font-weight:600}
+    .mission-status.todo{background:var(--primary);color:#fff}
+    .mission-status.done{background:var(--success);color:#fff}
+    .raffle-banner{background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);border-radius:var(--radius-lg);padding:20px;display:flex;align-items:center;gap:16px;cursor:pointer;position:relative;overflow:hidden}
+    .raffle-banner::after{content:'🎁';position:absolute;right:-10px;bottom:-10px;font-size:80px;opacity:0.2}
+    .raffle-icon-wrap{width:56px;height:56px;background:rgba(255,255,255,0.2);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:28px}
+    .raffle-info{flex:1;position:relative;z-index:1}
+    .raffle-badge{display:inline-flex;background:rgba(255,255,255,0.25);padding:4px 8px;border-radius:var(--radius-full);font-size:11px;font-weight:600;color:#fff;margin-bottom:6px}
+    .raffle-title{font-size:16px;font-weight:700;color:#fff;margin-bottom:2px}
+    .raffle-desc{font-size:13px;color:rgba(255,255,255,0.85)}
+    .offerwall-scroll{display:flex;gap:12px;overflow-x:auto;padding:4px 16px 8px;margin:0 -16px}
+    .offerwall-scroll::-webkit-scrollbar{display:none}
+    .offerwall-card{min-width:160px;background:var(--bg-card);border-radius:var(--radius-md);padding:16px;box-shadow:var(--shadow-sm);cursor:pointer;border:none;text-align:left}
+    .offerwall-card:active{transform:scale(0.97)}
+    .offerwall-icon{width:48px;height:48px;border-radius:var(--radius-sm);margin-bottom:12px;display:flex;align-items:center;justify-content:center;font-size:24px}
+    .offerwall-name{font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:4px}
+    .offerwall-reward{font-size:15px;font-weight:700;color:var(--primary)}
+    .offerwall-type{font-size:11px;color:var(--text-tertiary);margin-top:4px}
+    .mission-screen,.shopping-screen,.benefits-screen,.mypage-screen{background:var(--bg-main);padding-bottom:100px}
+    .page-header{background:var(--bg-card);padding:60px 20px 20px;border-bottom:1px solid var(--border-light)}
+    .page-title{font-size:22px;font-weight:700;color:var(--text-primary)}
+    .mission-tabs{display:flex;gap:8px;padding:16px;background:var(--bg-card)}
+    .mission-tab{flex:1;padding:12px;border:none;border-radius:var(--radius-sm);background:var(--bg-main);font-size:14px;font-weight:600;color:var(--text-tertiary);cursor:pointer}
+    .mission-tab.active{background:var(--primary);color:#fff}
+    .mission-section{padding:16px}
+    .mission-section-title{font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+    .mission-section-title .badge{background:var(--primary);color:#fff;font-size:11px;padding:2px 8px;border-radius:var(--radius-full)}
+    .game-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .game-card{background:var(--bg-card);border-radius:var(--radius-md);padding:16px;text-align:center;cursor:pointer;border:none}
+    .game-card:active{transform:scale(0.97)}
+    .game-icon{font-size:40px;margin-bottom:12px}
+    .game-name{font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:4px}
+    .game-reward{font-size:13px;color:var(--primary);font-weight:600}
+    .quiz-card{background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%);border-radius:var(--radius-lg);padding:24px;color:#fff;cursor:pointer;margin-bottom:16px}
+    .quiz-card:active{transform:scale(0.98)}
+    .quiz-label{font-size:12px;font-weight:600;opacity:0.9;margin-bottom:8px}
+    .quiz-question{font-size:18px;font-weight:700;line-height:1.4;margin-bottom:16px}
+    .quiz-meta{font-size:13px;opacity:0.9}
+    .pedometer-card{background:var(--bg-card);border-radius:var(--radius-lg);padding:24px}
+    .pedometer-header{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+    .pedometer-icon{width:48px;height:48px;background:var(--success);border-radius:50%;display:flex;align-items:center;justify-content:center}
+    .pedometer-icon svg{width:24px;height:24px;color:#fff}
+    .pedometer-title{font-size:16px;font-weight:700;color:var(--text-primary)}
+    .pedometer-subtitle{font-size:13px;color:var(--text-tertiary)}
+    .pedometer-stats{text-align:center;margin-bottom:20px}
+    .pedometer-count{font-family:'Outfit';font-size:48px;font-weight:800;color:var(--text-primary)}
+    .pedometer-goal{font-size:14px;color:var(--text-tertiary)}
+    .pedometer-progress{height:12px;background:var(--bg-main);border-radius:var(--radius-full);overflow:hidden;margin-bottom:16px}
+    .pedometer-progress-fill{height:100%;background:linear-gradient(90deg,var(--success) 0%,#6EE7B7 100%);border-radius:var(--radius-full)}
+    .pedometer-rewards{display:flex;justify-content:space-between}
+    .pedometer-reward{text-align:center;flex:1}
+    .pedometer-reward-step{font-size:12px;color:var(--text-tertiary);margin-bottom:4px}
+    .pedometer-reward-point{font-size:14px;font-weight:700;color:var(--primary)}
+    .pedometer-reward.achieved .pedometer-reward-point{color:var(--success)}
+    .shopping-banner{background:linear-gradient(135deg,#ff9a56 0%,#ff6b35 100%);margin:16px;border-radius:var(--radius-lg);padding:20px;color:#fff}
+    .shopping-banner-title{font-size:18px;font-weight:700;margin-bottom:4px}
+    .shopping-banner-desc{font-size:13px;opacity:0.9}
+    .category-scroll{display:flex;gap:8px;padding:0 16px;overflow-x:auto;margin-bottom:16px}
+    .category-scroll::-webkit-scrollbar{display:none}
+    .category-chip{padding:10px 16px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-full);font-size:13px;font-weight:600;color:var(--text-secondary);white-space:nowrap;cursor:pointer}
+    .category-chip.active{background:var(--primary);border-color:var(--primary);color:#fff}
+    .shop-list{padding:0 16px;display:flex;flex-direction:column;gap:12px}
+    .shop-card{background:var(--bg-card);border-radius:var(--radius-md);padding:16px;display:flex;gap:12px;cursor:pointer}
+    .shop-card:active{background:var(--bg-main)}
+    .shop-logo{width:56px;height:56px;border-radius:var(--radius-sm);background:var(--bg-main);display:flex;align-items:center;justify-content:center;font-size:24px}
+    .shop-info{flex:1}
+    .shop-name{font-size:15px;font-weight:600;color:var(--text-primary);margin-bottom:4px}
+    .shop-desc{font-size:13px;color:var(--text-tertiary);margin-bottom:8px}
+    .shop-reward{display:inline-flex;background:var(--primary-50);padding:4px 10px;border-radius:var(--radius-full);font-size:12px;font-weight:600;color:var(--primary)}
+    .benefits-tabs{display:flex;background:var(--bg-card);border-bottom:1px solid var(--border-light)}
+    .benefit-tab{flex:1;padding:16px;border:none;background:none;font-size:15px;font-weight:600;color:var(--text-tertiary);cursor:pointer;position:relative}
+    .benefit-tab.active{color:var(--primary)}
+    .benefit-tab.active::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--primary)}
+    .raffle-section{padding:16px}
+    .raffle-card{background:var(--bg-card);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:16px;cursor:pointer}
+    .raffle-card:active{transform:scale(0.98)}
+    .raffle-image{width:100%;height:160px;display:flex;align-items:center;justify-content:center}
+    .raffle-image-icon{font-size:64px}
+    .raffle-content{padding:16px}
+    .raffle-tag{display:inline-flex;background:var(--error);color:#fff;font-size:11px;font-weight:600;padding:4px 8px;border-radius:var(--radius-xs);margin-bottom:8px}
+    .raffle-product{font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:8px}
+    .raffle-card-info{display:flex;justify-content:space-between;align-items:center}
+    .raffle-entries{font-size:13px;color:var(--text-tertiary)}
+    .raffle-cost{font-size:15px;font-weight:700;color:var(--primary)}
+    .mypage-header{background:var(--bg-card);padding:60px 20px 24px}
+    .profile-section{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+    .profile-avatar{width:64px;height:64px;background:var(--bg-gradient);border-radius:50%;display:flex;align-items:center;justify-content:center}
+    .profile-avatar svg{width:32px;height:32px;color:#fff}
+    .profile-name{font-size:20px;font-weight:700;color:var(--text-primary);margin-bottom:4px}
+    .profile-email{font-size:14px;color:var(--text-tertiary)}
+    .profile-level{display:inline-flex;background:var(--primary-50);padding:6px 12px;border-radius:var(--radius-full);font-size:13px;font-weight:600;color:var(--primary)}
+    .mypage-points{background:var(--bg-main);border-radius:var(--radius-md);padding:20px}
+    .mypage-point-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+    .mypage-point-label{font-size:14px;color:var(--text-secondary)}
+    .mypage-point-value{font-family:'Outfit';font-size:24px;font-weight:800;color:var(--text-primary)}
+    .mypage-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .mypage-action-btn{padding:14px;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+    .mypage-action-btn.withdraw{background:var(--primary);color:#fff}
+    .mypage-action-btn.exchange{background:var(--primary-50);color:var(--primary)}
+    .mypage-action-btn svg{width:18px;height:18px}
+    .mypage-menu{padding:16px}
+    .mypage-menu-group{background:var(--bg-card);border-radius:var(--radius-md);margin-bottom:12px;overflow:hidden}
+    .mypage-menu-item{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border:none;background:none;width:100%;cursor:pointer;border-bottom:1px solid var(--border-light)}
+    .mypage-menu-item:last-child{border-bottom:none}
+    .mypage-menu-left{display:flex;align-items:center;gap:12px}
+    .mypage-menu-icon{width:32px;height:32px;background:var(--bg-main);border-radius:var(--radius-xs);display:flex;align-items:center;justify-content:center}
+    .mypage-menu-icon svg{width:18px;height:18px;color:var(--text-secondary)}
+    .mypage-menu-label{font-size:15px;font-weight:500;color:var(--text-primary)}
+    .mypage-menu-arrow{font-size:18px;color:var(--text-tertiary)}
+    .connected-services{padding:0 16px;margin-bottom:16px}
+    .connected-title{font-size:14px;font-weight:600;color:var(--text-secondary);margin-bottom:12px}
+    .connected-list{display:flex;gap:12px;flex-wrap:wrap}
+    .connected-item{background:var(--bg-card);border-radius:var(--radius-sm);padding:12px 16px;display:flex;align-items:center;gap:8px}
+    .connected-icon{width:24px;height:24px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:12px}
+    .connected-name{font-size:13px;font-weight:500;color:var(--text-primary)}
+    .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:390px;background:var(--bg-card);display:flex;justify-content:space-around;padding:8px 0 28px;border-top:1px solid var(--border-light);z-index:1000}
+    .nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 12px;background:none;border:none;cursor:pointer}
+    .nav-icon{width:28px;height:28px;display:flex;align-items:center;justify-content:center}
+    .nav-icon svg{width:24px;height:24px;color:var(--text-tertiary)}
+    .nav-item.active .nav-icon svg{color:var(--primary)}
+    .nav-label{font-size:11px;font-weight:600;color:var(--text-tertiary)}
+    .nav-item.active .nav-label{color:var(--primary)}
+    .toast{position:fixed;bottom:120px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--bg-dark);color:#fff;padding:14px 24px;border-radius:var(--radius-full);font-size:14px;font-weight:500;opacity:0;visibility:hidden;transition:all .3s;z-index:2000}
+    .toast.show{transform:translateX(-50%) translateY(0);opacity:1;visibility:visible}
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:3000;opacity:0;visibility:hidden;transition:all .3s}
+    .modal.active{opacity:1;visibility:visible}
+    .modal-content{background:var(--bg-card);border-radius:var(--radius-lg);padding:32px 24px;width:90%;max-width:340px;text-align:center;transform:scale(0.9);transition:transform .3s}
+    .modal.active .modal-content{transform:scale(1)}
+    .modal-icon{font-size:64px;margin-bottom:16px}
+    .modal-title{font-size:20px;font-weight:700;color:var(--text-primary);margin-bottom:8px}
+    .modal-desc{font-size:14px;color:var(--text-secondary);margin-bottom:24px;line-height:1.5}
+    .modal-btn{width:100%;padding:16px;border:none;border-radius:var(--radius-md);background:var(--bg-gradient);color:#fff;font-size:16px;font-weight:700;font-family:inherit;cursor:pointer}
+  </style>
+</head>
+<body>
+<div class="phone-frame">
+<!-- SPLASH -->
+<div class="screen splash-screen active" id="splashScreen">
+  <div class="splash-logo-wrap"><span class="splash-logo">A</span></div>
+  <div class="splash-title">에이닉</div>
+  <div class="splash-subtitle">통합 포인트의 새로운 시작</div>
+  <div class="splash-loading"><div class="splash-loading-bar"></div></div>
+</div>
+
+<!-- ONBOARDING -->
+<div class="screen onboarding-screen" id="onboardingScreen">
+  <div class="onboarding-content">
+    <div class="onboarding-visual">
+      <div class="onboarding-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+      <div class="onboarding-points"><div class="onboarding-points-icon">P</div><span class="onboarding-points-text">12,500 P 적립 가능</span></div>
+      <h1 class="onboarding-title">흩어진 포인트를<br><span>에이닉</span>으로 모으세요</h1>
+      <p class="onboarding-desc">하나페이, 신한카드, 페이북 등<br>매체사 포인트를 한 곳에서 관리하고<br>현금으로 교환하세요</p>
+    </div>
+    <div class="onboarding-actions">
+      <button class="btn-primary" onclick="showScreen('loginScreen')">시작하기</button>
+      <button class="btn-secondary" onclick="showScreen('loginScreen')">이미 계정이 있어요</button>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div class="screen login-screen" id="loginScreen">
+  <div class="login-content">
+    <div class="login-header">
+      <div class="login-logo-wrap"><span class="login-logo">A</span></div>
+      <h1 class="login-title">에이닉에 오신 것을 환영해요</h1>
+      <p class="login-subtitle">간편하게 로그인하고 포인트를 모아보세요</p>
+    </div>
+    <div class="social-login-section">
+      <button class="social-btn kakao" onclick="handleLogin()"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C6.477 3 2 6.463 2 10.731c0 2.727 1.818 5.127 4.548 6.5-.148.548-.95 3.534-.982 3.761 0 0-.02.166.088.229.108.063.235.015.235.015.31-.044 3.592-2.34 4.158-2.737.636.092 1.296.14 1.953.14 5.523 0 10-3.463 10-7.731S17.523 3 12 3z"/></svg>카카오로 시작하기</button>
+      <button class="social-btn naver" onclick="handleLogin()"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.273 12.845L7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727z"/></svg>네이버로 시작하기</button>
+      <button class="social-btn google" onclick="handleLogin()"><svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>Google로 시작하기</button>
+      <button class="social-btn apple" onclick="handleLogin()"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>Apple로 시작하기</button>
+    </div>
+    <div class="login-divider">또는</div>
+    <div class="login-terms">계속 진행하시면 에이닉의 <a href="#">서비스 이용약관</a> 및<br><a href="#">개인정보 처리방침</a>에 동의하는 것으로 간주됩니다.</div>
+  </div>
+</div>
+<!-- HOME -->
+<div class="screen home-screen" id="homeScreen">
+  <div class="home-header">
+    <div class="home-header-top">
+      <div class="home-logo">에이닉</div>
+      <div class="home-header-icons">
+        <button class="home-icon-btn" onclick="showToast('알림')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg></button>
+        <button class="home-icon-btn" onclick="showToast('설정')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+      </div>
+    </div>
+    <div class="point-card">
+      <div class="point-card-label">내 에이닉 포인트</div>
+      <div class="point-card-value">24,850 <span>P</span></div>
+      <div class="point-card-sub">출금 가능 금액 <span class="cash">₩2,485</span></div>
+      <div class="point-actions">
+        <button class="point-action-btn withdraw" onclick="showModal('withdraw')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>출금하기</button>
+        <button class="point-action-btn exchange" onclick="showModal('exchange')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V8H6M4 12v4h14M4 8l3-3 3 3M20 16l-3 3-3-3"/></svg>교환하기</button>
+      </div>
+    </div>
+  </div>
+  <div class="quick-menu">
+    <button class="quick-item" onclick="showModal('attendance')"><div class="quick-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><span class="quick-label">출석체크</span></button>
+    <button class="quick-item" onclick="showScreen('missionScreen')"><div class="quick-icon orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div><span class="quick-label">데일리미션</span></button>
+    <button class="quick-item" onclick="showScreen('benefitsScreen')"><div class="quick-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg></div><span class="quick-label">래플</span></button>
+    <button class="quick-item" onclick="showScreen('missionScreen')"><div class="quick-icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div><span class="quick-label">오퍼월</span></button>
+  </div>
+  <div class="section">
+    <div class="section-header"><h2 class="section-title">📅 출석체크</h2><button class="section-more" onclick="showModal('attendance')">체크하기 ›</button></div>
+    <div class="attendance-banner" onclick="showModal('attendance')">
+      <div class="attendance-left">
+        <div class="attendance-badge">🔥 3일 연속 출석중!</div>
+        <div class="attendance-title">오늘 출석하고 +50P 받기</div>
+        <div class="attendance-desc">7일 연속 출석 시 보너스 500P!</div>
+      </div>
+      <div class="attendance-days">
+        <div class="attendance-day checked">월</div>
+        <div class="attendance-day checked">화</div>
+        <div class="attendance-day checked">수</div>
+        <div class="attendance-day today">목</div>
+        <div class="attendance-day">금</div>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-header"><h2 class="section-title">🎯 데일리 미션</h2><button class="section-more" onclick="showScreen('missionScreen')">더보기 ›</button></div>
+    <div class="daily-mission-card">
+      <div class="mission-progress-header"><span class="mission-progress-label">오늘의 미션 진행률</span><span class="mission-progress-count">2/5 완료</span></div>
+      <div class="mission-progress-bar"><div class="mission-progress-fill" style="width:40%"></div></div>
+      <div class="mission-list">
+        <button class="mission-item completed"><div class="mission-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="mission-info"><div class="mission-name">앱 출석하기</div><div class="mission-reward">+50P 획득</div></div><span class="mission-status done">완료</span></button>
+        <button class="mission-item completed"><div class="mission-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="mission-info"><div class="mission-name">광고 1회 시청</div><div class="mission-reward">+30P 획득</div></div><span class="mission-status done">완료</span></button>
+        <button class="mission-item" onclick="showModal('ad')"><div class="mission-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div><div class="mission-info"><div class="mission-name">광고 2회 시청</div><div class="mission-reward">+30P 획득</div></div><span class="mission-status todo">참여</span></button>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-header"><h2 class="section-title">🎁 래플 이벤트</h2><button class="section-more" onclick="showScreen('benefitsScreen')">전체보기 ›</button></div>
+    <div class="raffle-banner" onclick="showScreen('benefitsScreen')">
+      <div class="raffle-icon-wrap">🎰</div>
+      <div class="raffle-info">
+        <div class="raffle-badge">🔥 마감임박</div>
+        <div class="raffle-title">애플 에어팟 프로 2</div>
+        <div class="raffle-desc">100P로 응모 · 234명 참여중</div>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-header"><h2 class="section-title">💰 오퍼월</h2><button class="section-more" onclick="showScreen('missionScreen')">전체보기 ›</button></div>
+    <div class="offerwall-scroll">
+      <button class="offerwall-card" onclick="showToast('토스 설치하기')"><div class="offerwall-icon" style="background:#3182F6">💙</div><div class="offerwall-name">토스 가입하기</div><div class="offerwall-reward">+3,000P</div><div class="offerwall-type">앱 설치</div></button>
+      <button class="offerwall-card" onclick="showToast('설문 참여하기')"><div class="offerwall-icon" style="background:#FF6B35">📋</div><div class="offerwall-name">설문조사 참여</div><div class="offerwall-reward">+500P</div><div class="offerwall-type">설문</div></button>
+      <button class="offerwall-card" onclick="showToast('게임 미션')"><div class="offerwall-icon" style="background:#8B5CF6">🎮</div><div class="offerwall-name">쿠키런 Lv.30</div><div class="offerwall-reward">+2,000P</div><div class="offerwall-type">게임</div></button>
+      <button class="offerwall-card" onclick="showToast('카드 발급')"><div class="offerwall-icon" style="background:#20C997">💳</div><div class="offerwall-name">신한카드 발급</div><div class="offerwall-reward">+10,000P</div><div class="offerwall-type">카드</div></button>
+    </div>
+  </div>
+  <nav class="bottom-nav">
+    <button class="nav-item active" onclick="showScreen('homeScreen')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></span><span class="nav-label">홈</span></button>
+    <button class="nav-item" onclick="showScreen('missionScreen')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></span><span class="nav-label">미션</span></button>
+    <button class="nav-item" onclick="showScreen('shoppingScreen')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg></span><span class="nav-label">경유쇼핑</span></button>
+    <button class="nav-item" onclick="showScreen('benefitsScreen')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg></span><span class="nav-label">혜택</span></button>
+    <button class="nav-item" onclick="showScreen('mypageScreen')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></span><span class="nav-label">마이</span></button>
+  </nav>
+</div>
+
+<!-- MISSION -->
+<div class="screen mission-screen" id="missionScreen">
+  <div class="page-header"><h1 class="page-title">미션</h1></div>
+  <div class="mission-tabs">
+    <button class="mission-tab active">데일리</button>
+    <button class="mission-tab">게임</button>
+    <button class="mission-tab">퀴즈</button>
+    <button class="mission-tab">오퍼월</button>
+  </div>
+  <div class="mission-section">
+    <div class="quiz-card" onclick="showToast('퀴즈 시작!')">
+      <div class="quiz-label">💡 오늘의 퀴즈</div>
+      <div class="quiz-question">대한민국의 수도는 어디일까요?</div>
+      <div class="quiz-meta">정답 시 +100P · 오늘 남은 기회 2회</div>
+    </div>
+    <div class="mission-section-title">🚶 만보기 <span class="badge">매일</span></div>
+    <div class="pedometer-card">
+      <div class="pedometer-header">
+        <div class="pedometer-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+        <div><div class="pedometer-title">오늘의 걸음</div><div class="pedometer-subtitle">목표까지 1,234걸음 남음</div></div>
+      </div>
+      <div class="pedometer-stats"><div class="pedometer-count">3,766</div><div class="pedometer-goal">/ 5,000 걸음</div></div>
+      <div class="pedometer-progress"><div class="pedometer-progress-fill" style="width:75%"></div></div>
+      <div class="pedometer-rewards">
+        <div class="pedometer-reward achieved"><div class="pedometer-reward-step">1,000보</div><div class="pedometer-reward-point">✓ 완료</div></div>
+        <div class="pedometer-reward achieved"><div class="pedometer-reward-step">3,000보</div><div class="pedometer-reward-point">✓ 완료</div></div>
+        <div class="pedometer-reward"><div class="pedometer-reward-step">5,000보</div><div class="pedometer-reward-point">+100P</div></div>
+        <div class="pedometer-reward"><div class="pedometer-reward-step">10,000보</div><div class="pedometer-reward-point">+200P</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="mission-section">
+    <div class="mission-section-title">🎮 게임 미션</div>
+    <div class="game-grid">
+      <button class="game-card" onclick="showToast('룰렛 게임')"><div class="game-icon">🎰</div><div class="game-name">행운 룰렛</div><div class="game-reward">최대 1,000P</div></button>
+      <button class="game-card" onclick="showToast('카드 뒤집기')"><div class="game-icon">🃏</div><div class="game-name">카드 뒤집기</div><div class="game-reward">최대 500P</div></button>
+      <button class="game-card" onclick="showToast('숫자 맞추기')"><div class="game-icon">🔢</div><div class="game-name">숫자 맞추기</div><div class="game-reward">최대 300P</div></button>
+      <button class="game-card" onclick="showToast('키우기 게임')"><div class="game-icon">🌱</div><div class="game-name">포인트 키우기</div><div class="game-reward">매일 +50P</div></button>
+    </div>
+  </div>
+  <nav class="bottom-nav">
+    <button class="nav-item" onclick="showScreen('homeScreen')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></span><span class="nav-label">홈</span></button>
+    <button class="nav-item active" onclick="showScreen('missionScreen')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></span><span class="nav-label">미션</span></button>
+    <button class="nav-item" onclick="showScreen('shoppingScreen')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg></span><span class="nav-label">경유쇼핑</span></button>
+    <button class="nav-item" onclick="showScreen('benefitsScreen')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg></span><span class="nav-label">혜택</span></button>
+    <button class="nav-item" onclick="showScreen('mypageScreen')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></span><span class="nav-label">마이</span></button>
+  </nav>
+</div>
+
+<!-- SHOPPING -->
+<div class="screen shopping-screen" id="shoppingScreen">
+  <div class="page-header"><h1 class="page-title">경유쇼핑</h1></div>
+  <div class="shopping-banner">
+    <div class="shopping-banner-title">🛒 쇼핑하고 포인트 적립!</div>
+    <div class="shopping-banner-desc">에이닉을 경유해서 쇼핑하면 추가 적립</div>
+  </div>
+  <div class="category-scroll">
+    <button class="category-chip active">전체</button>
+    <button class="category-chip">종합몰</button>
+    <button class="category-chip">패션</button>
+    <button class="category-chip">뷰티</button>
+    <button class="category-chip">식품</button>
+    <button class="category-chip">여행</button>
+  </div>
+  <div class="shop-list">
+    <div class="shop-card" onclick="showToast('쿠팡으로 이동')"><div class="shop-logo">🚀</div><div class="shop-info"><div class="shop-name">쿠팡</div><div class="shop-desc">로켓배송, 로켓프레시</div><div class="shop-reward">최대 3% 적립</div></div></div>
+    <div class="shop-card" onclick="showToast('네이버쇼핑으로 이동')"><div class="shop-logo">🟢</div><div class="shop-info"><div class="shop-name">네이버 쇼핑</div><div class="shop-desc">스마트스토어, 브랜드스토어</div><div class="shop-reward">최대 2% 적립</div></div></div>
+    <div class="shop-card" onclick="showToast('11번가로 이동')"><div class="shop-logo">🔴</div><div class="shop-info"><div class="shop-name">11번가</div><div class="shop-desc">십일절 특가</div><div class="shop-reward">최대 4% 적립</div></div></div>
+    <div class="shop-card" onclick="showToast('무신사로 이동')"><div class="shop-logo">⚫</div><div class="shop-info"><div class="shop-name">무신사</div><div class="shop-desc">패션 전문몰</div><div class="shop-reward">최대 5% 적립</div></div></div>
+  </div>
+  <nav class="bottom-nav">
+    <button class="nav-item" onclick="showScreen('homeScreen')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></span><span class="nav-label">홈</span></button>
+    <button class="nav-item" onclick="showScreen('missionScreen')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></span><span class="nav-label">미션</span></button>
+    <button class="nav-item active" onclick="showScreen('shoppingScreen')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg></span><span class="nav-label">경유쇼핑</span></button>
+    <button class="nav-item" onclick="showScreen('benefitsScreen')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg></span><span class="nav-label">혜택</span></button>
+    <button class="nav-item" onclick="showScreen('mypageScreen')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></span><span class="nav-label">마이</span></button>
+  </nav>
+</div>
+
+<!-- BENEFITS -->
+<div class="screen benefits-screen" id="benefitsScreen">
+  <div class="page-header"><h1 class="page-title">혜택</h1></div>
+  <div class="benefits-tabs">
+    <button class="benefit-tab active">래플</button>
+    <button class="benefit-tab">매체사 상품</button>
+    <button class="benefit-tab">포인트 교환</button>
+  </div>
+  <div class="raffle-section">
+    <div class="raffle-card" onclick="showToast('래플 응모')">
+      <div class="raffle-image" style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%)"><div class="raffle-image-icon">🎧</div></div>
+      <div class="raffle-content"><div class="raffle-tag">D-2</div><div class="raffle-product">애플 에어팟 프로 2</div><div class="raffle-card-info"><span class="raffle-entries">234명 참여중</span><span class="raffle-cost">100P로 응모</span></div></div>
+    </div>
+    <div class="raffle-card" onclick="showToast('래플 응모')">
+      <div class="raffle-image" style="background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%)"><div class="raffle-image-icon">📱</div></div>
+      <div class="raffle-content"><div class="raffle-tag">D-5</div><div class="raffle-product">아이폰 15 Pro Max</div><div class="raffle-card-info"><span class="raffle-entries">1,892명 참여중</span><span class="raffle-cost">500P로 응모</span></div></div>
+    </div>
+    <div class="raffle-card" onclick="showToast('래플 응모')">
+      <div class="raffle-image" style="background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%)"><div class="raffle-image-icon">☕</div></div>
+      <div class="raffle-content"><div class="raffle-tag">D-1</div><div class="raffle-product">스타벅스 아메리카노 (100명)</div><div class="raffle-card-info"><span class="raffle-entries">567명 참여중</span><span class="raffle-cost">50P로 응모</span></div></div>
+    </div>
+  </div>
+  <nav class="bottom-nav">
+    <button class="nav-item" onclick="showScreen('homeScreen')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></span><span class="nav-label">홈</span></button>
+    <button class="nav-item" onclick="showScreen('missionScreen')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></span><span class="nav-label">미션</span></button>
+    <button class="nav-item" onclick="showScreen('shoppingScreen')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg></span><span class="nav-label">경유쇼핑</span></button>
+    <button class="nav-item active" onclick="showScreen('benefitsScreen')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg></span><span class="nav-label">혜택</span></button>
+    <button class="nav-item" onclick="showScreen('mypageScreen')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></span><span class="nav-label">마이</span></button>
+  </nav>
+</div>
+ 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></span><span class="nav-label">마이</span></button>
+  </nav>
+</div>
+
+<!-- MYPAGE -->
+<div class="screen mypage-screen" id="mypageScreen">
+  <div class="mypage-header">
+    <div class="profile-section">
+      <div class="profile-avatar"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+      <div><div class="profile-name">김에이닉</div><div class="profile-email">anick@email.com</div></div>
+    </div>
+    <div class="profile-level">🏆 실버 등급</div>
+    <div class="mypage-points">
+      <div class="mypage-point-row"><span class="mypage-point-label">보유 포인트</span><span class="mypage-point-value">24,850 P</span></div>
+      <div class="mypage-actions">
+        <button class="mypage-action-btn withdraw" onclick="showModal('withdraw')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>출금</button>
+        <button class="mypage-action-btn exchange" onclick="showModal('exchange')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V8H6M4 12v4h14M4 8l3-3 3 3M20 16l-3 3-3-3"/></svg>교환</button>
+      </div>
+    </div>
+  </div>
+  <div class="connected-services">
+    <div class="connected-title">연동된 서비스</div>
+    <div class="connected-list">
+      <div class="connected-item"><div class="connected-icon">🟢</div><span class="connected-name">하나페이</span></div>
+      <div class="connected-item"><div class="connected-icon">🔵</div><span class="connected-name">신한카드</span></div>
+      <div class="connected-item"><div class="connected-icon">🟡</div><span class="connected-name">카카오페이</span></div>
+    </div>
+  </div>
+  <div class="mypage-menu">
+    <div class="mypage-menu-group">
+      <button class="mypage-menu-item" onclick="showToast('등급 및 혜택')"><div class="mypage-menu-left"><span class="mypage-menu-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.63 1.5 1.98 2.63 3.61 2.96V19H7v2h10v-2h-4v-3.1c1.63-.33 2.98-1.46 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2z"/></svg></span><span class="mypage-menu-label">등급 및 혜택</span></div><span class="mypage-menu-arrow">›</span></button>
+      <button class="mypage-menu-item" onclick="showToast('포인트 내역')"><div class="mypage-menu-left"><span class="mypage-menu-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg></span><span class="mypage-menu-label">포인트 내역</span></div><span class="mypage-menu-arrow">›</span></button>
+      <button class="mypage-menu-item" onclick="showToast('래플 참여 내역')"><div class="mypage-menu-left"><span class="mypage-menu-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 10V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v4c1.1 0 2 .9 2 2s-.9 2-2 2v4c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-4c-1.1 0-2-.9-2-2s.9-2 2-2z"/></svg></span><span class="mypage-menu-label">래플 참여 내역</span></div><span class="mypage-menu-arrow">›</span></button>
+    </div>
+    <div class="mypage-menu-group">
+      <button class="mypage-menu-item" onclick="showToast('공지사항')"><div class="mypage-menu-left"><span class="mypage-menu-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 11v2h4v-2h-4zm-2 6.61c.96.71 2.21 1.65 3.2 2.39.4-.53.8-1.07 1.2-1.6-.99-.74-2.24-1.68-3.2-2.4-.4.54-.8 1.08-1.2 1.61zM4 9c-1.1 0-2 .9-2 2v2c0 1.1.9 2 2 2h1v4h2v-4h1l5 3V6L8 9H4z"/></svg></span><span class="mypage-menu-label">공지사항</span></div><span class="mypage-menu-arrow">›</span></button>
+      <button class="mypage-menu-item" onclick="showToast('고객센터')"><div class="mypage-menu-left"><span class="mypage-menu-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 12h-2v-2h2v2zm0-4h-2V6h2v4z"/></svg></span><span class="mypage-menu-label">고객센터 / FAQ</span></div><span class="mypage-menu-arrow">›</span></button>
+      <button class="mypage-menu-item" onclick="showToast('설정')"><div class="mypage-menu-left"><span class="mypage-menu-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.49.49 0 0 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></span><span class="mypage-menu-label">설정</span></div><span class="mypage-menu-arrow">›</span></button>
+    </div>
+  </div>
+  <nav class="bottom-nav">
+    <button class="nav-item" onclick="showScreen('homeScreen')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></span><span class="nav-label">홈</span></button>
+    <button class="nav-item" onclick="showScreen('missionScreen')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></span><span class="nav-label">미션</span></button>
+    <button class="nav-item" onclick="showScreen('shoppingScreen')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg></span><span class="nav-label">경유쇼핑</span></button>
+    <button class="nav-item" onclick="showScreen('benefitsScreen')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg></span><span class="nav-label">혜택</span></button>
+    <button class="nav-item active" onclick="showScreen('mypageScreen')"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></span><span class="nav-label">마이</span></button>
+  </nav>
+</div>
+
+<!-- MODALS -->
+<div class="modal" id="withdrawModal">
+  <div class="modal-content">
+    <div class="modal-icon">💰</div>
+    <div class="modal-title">출금하기</div>
+    <div class="modal-desc">보유 포인트: 24,850P<br>출금 가능 금액: ₩2,485<br><br>최소 출금 금액은 5,000원입니다.<br>포인트 10P = 현금 1원</div>
+    <button class="modal-btn" onclick="closeModal('withdrawModal')">확인</button>
+  </div>
+</div>
+
+<div class="modal" id="exchangeModal">
+  <div class="modal-content">
+    <div class="modal-icon">🎁</div>
+    <div class="modal-title">기프티콘 교환</div>
+    <div class="modal-desc">보유 포인트로 다양한 기프티콘을<br>교환할 수 있습니다.<br><br>스타벅스, 배달의민족, 편의점 등</div>
+    <button class="modal-btn" onclick="closeModal('exchangeModal')">교환하러 가기</button>
+  </div>
+</div>
+
+<div class="modal" id="attendanceModal">
+  <div class="modal-content">
+    <div class="modal-icon">🎉</div>
+    <div class="modal-title">출석 완료!</div>
+    <div class="modal-desc">오늘 출석체크를 완료했습니다.<br><br><strong style="color:var(--primary);font-size:24px">+50P</strong><br><br>7일 연속 출석 시 보너스 500P!</div>
+    <button class="modal-btn" onclick="closeModal('attendanceModal')">확인</button>
+  </div>
+</div>
+
+<div class="modal" id="adModal">
+  <div class="modal-content" style="padding:0;overflow:hidden">
+    <div style="background:var(--bg-gradient);padding:60px 24px;text-align:center">
+      <div style="font-size:48px;margin-bottom:16px">📺</div>
+      <div style="color:white;font-size:18px;font-weight:700;margin-bottom:8px">광고 시청 중...</div>
+      <div style="color:rgba(255,255,255,0.8);font-size:14px" id="adCountdown">5초 후 보상 받기</div>
+    </div>
+    <div style="padding:24px">
+      <button class="modal-btn" id="adRewardBtn" onclick="claimAdReward()" disabled style="opacity:0.5">보상 받기</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+</div>
+
+<script>
+function showScreen(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(screenId).classList.add('active');
+}
+
+setTimeout(() => showScreen('onboardingScreen'), 2500);
+
+function handleLogin() {
+  showToast('로그인 중...');
+  setTimeout(() => {
+    showScreen('homeScreen');
+    showToast('환영합니다! 🎉');
+  }, 1000);
+}
+
+function showToast(message) {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+function showModal(type) {
+  document.getElementById(type + 'Modal').classList.add('active');
+  if(type === 'ad') startAdTimer();
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('active');
+}
+
+let adTimer;
+function startAdTimer() {
+  const countdown = document.getElementById('adCountdown');
+  const btn = document.getElementById('adRewardBtn');
+  btn.disabled = true;
+  btn.style.opacity = '0.5';
+  let sec = 5;
+  countdown.textContent = sec + '초 후 보상 받기';
+  adTimer = setInterval(() => {
+    sec--;
+    if(sec > 0) {
+      countdown.textContent = sec + '초 후 보상 받기';
+    } else {
+      clearInterval(adTimer);
+      countdown.textContent = '보상 받을 준비 완료!';
+      btn.disabled = false;
+      btn.style.opacity = '1';
+    }
+  }, 1000);
+}
+
+function claimAdReward() {
+  clearInterval(adTimer);
+  document.getElementById('adModal').classList.remove('active');
+  showToast('🎉 +30P 획득!');
+}
+
+document.querySelectorAll('.mission-tab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.mission-tab').forEach(t => t.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+document.querySelectorAll('.benefit-tab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.benefit-tab').forEach(t => t.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+document.querySelectorAll('.category-chip').forEach(chip => {
+  chip.addEventListener('click', function() {
+    document.querySelectorAll('.category-chip').forEach(c => c.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+document.querySelectorAll('.modal').forEach(modal => {
+  modal.addEventListener('click', function(e) {
+    if(e.target === this) this.classList.remove('active');
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+.mypage-screen {
+  background: var(--bg-main);
+}
+
+.mypage-header {
+  background: var(--bg-card);
+  padding: 60px 20px 24px;
+}
+
+.profile-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.profile-avatar {
+  width: 64px;
+  height: 64px;
+  background: var(--bg-gradient);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-avatar svg {
+  width: 32px;
+  height: 32px;
+  color: #fff;
+}
+
+.profile-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.profile-email {
+  font-size: 14px;
+  color: var(--text-tertiary);
+}
+
+.mypage-points {
+  background: var(--bg-main);
+  border-radius: var(--radius-md);
+  padding: 20px;
+}
+
+.mypage-point-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.mypage-point-value {
+  font-family: 'Outfit';
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.mypage-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.mypage-action-btn {
+  padding: 14px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.mypage-action-btn.withdraw {
+  background: var(--primary);
+  color: #fff;
+}
+
+.mypage-action-btn.exchange {
+  background: var(--primary-50);
+  color: var(--primary);
+}
+
+/* Menu Sections */
+.mypage-menu {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.mypage-menu-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mypage-menu-section-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  padding: 0 4px 8px;
+}
+
+.mypage-menu-item {
+  width: 100%;
+  background: var(--bg-card);
+  padding: 16px;
+  border: none;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: inherit;
+  box-shadow: var(--shadow-sm);
+}
+
+.mypage-menu-item:active {
+  background: var(--bg-main);
+}
+
+.mypage-menu-icon {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  background: var(--bg-main);
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.mypage-menu-item > span:nth-child(2) {
+  flex: 1;
+  text-align: left;
+}
+
+.mypage-menu-item > span:last-child {
+  color: var(--text-tertiary);
+  font-size: 20px;
+  font-weight: 400;
+}

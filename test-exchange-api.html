@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>금융 API 테스트</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+    button {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+    button:hover {
+      background: #45a049;
+    }
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      background: #f9f9f9;
+      border-left: 4px solid #4CAF50;
+      border-radius: 4px;
+    }
+    .error {
+      border-left-color: #f44336;
+      background: #ffebee;
+    }
+    .rate-display {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+      margin: 10px 0;
+    }
+    .change {
+      font-size: 18px;
+      margin: 5px 0;
+    }
+    .change.up {
+      color: #f44336;
+    }
+    .change.down {
+      color: #2196F3;
+    }
+    pre {
+      background: #272822;
+      color: #f8f8f2;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+      font-size: 13px;
+    }
+    .info {
+      background: #e3f2fd;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      border-left: 4px solid #2196F3;
+    }
+    .loading {
+      display: inline-block;
+      margin-left: 10px;
+    }
+    .api-section {
+      margin-bottom: 40px;
+      padding-bottom: 30px;
+      border-bottom: 2px solid #e0e0e0;
+    }
+    .api-section:last-child {
+      border-bottom: none;
+    }
+    .api-section h2 {
+      color: #333;
+      margin-bottom: 15px;
+      font-size: 24px;
+    }
+    .button-group {
+      margin: 15px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>💰 금융 API 테스트</h1>
+
+    <!-- 환율 API 섹션 -->
+    <div class="api-section">
+      <h2>🌐 환율 API</h2>
+      <div class="info">
+        <strong>API 정보:</strong><br>
+        - URL: https://oapi.koreaexim.go.kr/site/program/financial/exchangeJSON<br>
+        - 인증키: 3JO9jPWtMqoHI6040kEYOufnmdI9ZQ9g<br>
+        - 파라미터: authkey + searchdate(YYYYMMDD) + data(AP01)<br>
+        - 업데이트 시간: 매일 오전 11시 (영업일 기준)
+      </div>
+
+      <div class="button-group">
+        <button onclick="fetchExchangeRate()">💵 환율 조회하기</button>
+        <button onclick="clearResult('exchange')">결과 지우기</button>
+        <span class="loading" id="exchange-loading" style="display:none;">⏳ 로딩 중...</span>
+      </div>
+
+      <div id="exchange-result"></div>
+    </div>
+
+    <!-- 금 시세 API 섹션 -->
+    <div class="api-section">
+      <h2>🥇 금 시세 API</h2>
+      <div class="info">
+        <strong>API 정보:</strong><br>
+        - URL: https://apis.data.go.kr/1160100/service/GetGeneralProductInfoService/getGoldPriceInfo<br>
+        - 인증키: 845759f2679dc4b2e5efa459737bba2c77d45bdaa00872733b34480d661715fb<br>
+        - 파라미터: serviceKey + pageNo + numOfRows<br>
+        - 제공: 공공데이터포털
+      </div>
+
+      <div class="button-group">
+        <button onclick="fetchGoldPrice()">🥇 금 시세 조회하기</button>
+        <button onclick="clearResult('gold')">결과 지우기</button>
+        <span class="loading" id="gold-loading" style="display:none;">⏳ 로딩 중...</span>
+      </div>
+
+      <div id="gold-result"></div>
+    </div>
+
+    <!-- 주식 시세 API 섹션 -->
+    <div class="api-section">
+      <h2>📈 주식 시세 API (코스피/코스닥)</h2>
+      <div class="info">
+        <strong>API 정보:</strong><br>
+        - 코스피 URL: https://data-dbg.krx.co.kr/svc/apis/idx/kospi_dd_trd<br>
+        - 코스닥 URL: https://data-dbg.krx.co.kr/svc/apis/idx/kosdaq_dd_trd<br>
+        - 인증키: 802C4FEDAB024D06B84E28A5B61CF90BD66EC39E<br>
+        - 제공: KRX (한국거래소)<br>
+        - 갱신주기: 일 단위 (실시간)
+      </div>
+
+      <div class="button-group">
+        <button onclick="fetchStockIndex()">📈 주식 시세 조회하기</button>
+        <button onclick="clearResult('stock')">결과 지우기</button>
+        <span class="loading" id="stock-loading" style="display:none;">⏳ 로딩 중...</span>
+      </div>
+
+      <div id="stock-result"></div>
+    </div>
+
+    <!-- 네이버 뉴스 API 섹션 -->
+    <div class="api-section">
+      <h2>📰 네이버 뉴스 API</h2>
+      <div class="info">
+        <strong>API 정보:</strong><br>
+        - URL: https://openapi.naver.com/v1/search/news.json<br>
+        - Client ID: dgDwzE004UQttLcTaSNE<br>
+        - Client Secret: H3bwaRxYUI<br>
+        - 파라미터: query + display + start + sort<br>
+        - 제공: 네이버 오픈 API
+      </div>
+
+      <div class="button-group">
+        <input type="text" id="news-query" placeholder="검색어 입력 (예: 금융)" style="padding: 12px; font-size: 16px; border: 1px solid #ddd; border-radius: 5px; width: 200px; margin-right: 10px;">
+        <button onclick="fetchNaverNews()">📰 뉴스 검색하기</button>
+        <button onclick="clearResult('news')">결과 지우기</button>
+        <span class="loading" id="news-loading" style="display:none;">⏳ 로딩 중...</span>
+      </div>
+
+      <div id="news-result"></div>
+    </div>
+  </div>
+
+  <script>
+    async function fetchExchangeRate(customDate = null) {
+      const resultDiv = document.getElementById('exchange-result');
+      const loading = document.getElementById('exchange-loading');
+
+      loading.style.display = 'inline-block';
+      resultDiv.innerHTML = '';
+
+      try {
+        const today = new Date();
+        let searchDate;
+
+        if (customDate) {
+          searchDate = customDate;
+        } else {
+          // 오늘 날짜 또는 주말이면 금요일
+          const dayOfWeek = today.getDay();
+          let targetDate = new Date(today);
+
+          if (dayOfWeek === 0) { // 일요일
+            targetDate.setDate(targetDate.getDate() - 2);
+          } else if (dayOfWeek === 6) { // 토요일
+            targetDate.setDate(targetDate.getDate() - 1);
+          }
+
+          searchDate = targetDate.toISOString().split('T')[0].replace(/-/g, '');
+        }
+
+        const API_URL = 'https://oapi.koreaexim.go.kr/site/program/financial/exchangeJSON';
+        const API_KEY = '3JO9jPWtMqoHI6040kEYOufnmdI9ZQ9g';
+        const url = `${API_URL}?authkey=${API_KEY}&searchdate=${searchDate}&data=AP01`;
+
+        console.log('API 호출:', url);
+
+        const response = await fetch(url);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('응답 데이터:', data);
+        console.log('응답 타입:', typeof data);
+        console.log('Array 여부:', Array.isArray(data));
+        if (Array.isArray(data)) {
+          console.log('데이터 길이:', data.length);
+        }
+
+        // 에러 체크
+        if (data.error) {
+          throw new Error(data.error);
+        }
+
+        if (!Array.isArray(data) || data.length === 0) {
+          // 전체 응답을 표시해서 무엇이 왔는지 확인
+          resultDiv.innerHTML = `
+            <div class="result error">
+              <h3>⚠️ 데이터가 없습니다</h3>
+              <p><strong>조회 날짜:</strong> ${searchDate.substr(0,4)}-${searchDate.substr(4,2)}-${searchDate.substr(6,2)}</p>
+              <p><strong>응답 타입:</strong> ${typeof data}</p>
+              <p><strong>Array 여부:</strong> ${Array.isArray(data)}</p>
+              <p><strong>데이터 개수:</strong> ${Array.isArray(data) ? data.length : 'N/A'}</p>
+              <details open>
+                <summary><strong>전체 응답 데이터</strong></summary>
+                <pre>${JSON.stringify(data, null, 2)}</pre>
+              </details>
+            </div>
+          `;
+          loading.style.display = 'none';
+          return;
+        }
+
+        // 모든 통화 목록 먼저 출력
+        console.log('사용 가능한 통화 목록:');
+        data.forEach((item, index) => {
+          console.log(`${index + 1}. ${item.CUR_UNIT || item.cur_unit || 'N/A'} - ${item.CUR_NM || item.cur_nm || 'N/A'}`);
+          console.log('   전체 필드:', Object.keys(item));
+        });
+
+        // USD 환율 찾기 (대소문자 구분 없이, 여러 필드명 시도)
+        const usdData = data.find(item =>
+          (item.CUR_UNIT && item.CUR_UNIT.toUpperCase() === 'USD') ||
+          (item.cur_unit && item.cur_unit.toUpperCase() === 'USD') ||
+          (item.cur_code && item.cur_code.toUpperCase() === 'USD')
+        );
+
+        if (!usdData) {
+          const availableCurrencies = data.map(item => item.CUR_UNIT || item.cur_unit || item.cur_code || 'unknown').join(', ');
+          throw new Error(`USD 환율 데이터를 찾을 수 없습니다. 사용 가능한 통화: ${availableCurrencies}`);
+        }
+
+        // 결과 표시 (필드명 소문자/대문자 모두 지원)
+        const dealBasR = usdData.deal_bas_r || usdData.DEAL_BAS_R || '0';
+        const bkpr = usdData.bkpr || usdData.BKPR || '0';
+        const rate = parseFloat(dealBasR.replace(/,/g, ''));
+        const prevRate = parseFloat(bkpr.replace(/,/g, ''));
+        const change = ((rate - prevRate) / prevRate * 100).toFixed(2);
+        const isUp = parseFloat(change) >= 0;
+
+        resultDiv.innerHTML = `
+          <div class="result">
+            <h3>✅ 조회 성공</h3>
+            <p><strong>조회 날짜:</strong> ${searchDate.substr(0,4)}-${searchDate.substr(4,2)}-${searchDate.substr(6,2)}</p>
+            <div class="rate-display">
+              💵 USD 환율: ${rate.toLocaleString('ko-KR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}원
+            </div>
+            <div class="change ${isUp ? 'up' : 'down'}">
+              ${isUp ? '▲' : '▼'} ${Math.abs(parseFloat(change))}% (전일 대비)
+            </div>
+            <hr>
+            <p><strong>상세 정보:</strong></p>
+            <ul>
+              <li>통화 코드: ${usdData.cur_unit || usdData.CUR_UNIT}</li>
+              <li>국가명: ${usdData.cur_nm || usdData.CUR_NM}</li>
+              <li>매매 기준율: ${usdData.deal_bas_r || usdData.DEAL_BAS_R}원</li>
+              <li>전신환(송금) 받을 때: ${usdData.ttb || usdData.TTB}원</li>
+              <li>전신환(송금) 보낼 때: ${usdData.tts || usdData.TTS}원</li>
+              <li>현찰 살 때: ${usdData.kftc_deal_bas_r || usdData.KFTC_DEAL_BAS_R}원</li>
+              <li>현찰 팔 때: ${usdData.kftc_bkpr || usdData.KFTC_BKPR}원</li>
+            </ul>
+            <details>
+              <summary><strong>📋 전체 응답 데이터 보기</strong></summary>
+              <pre>${JSON.stringify(usdData, null, 2)}</pre>
+            </details>
+          </div>
+        `;
+
+        // JSON 파일 업데이트용 코드 생성
+        const jsonCode = {
+          "USD": {
+            "rate": rate.toLocaleString('ko-KR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+            "change": change,
+            "lastUpdate": `${searchDate.substr(0,4)}-${searchDate.substr(4,2)}-${searchDate.substr(6,2)}`
+          }
+        };
+
+        resultDiv.innerHTML += `
+          <div class="result" style="margin-top: 10px;">
+            <h3>📝 exchangeRate.json 업데이트용 코드</h3>
+            <pre>${JSON.stringify(jsonCode, null, 2)}</pre>
+          </div>
+        `;
+
+      } catch (error) {
+        console.error('에러:', error);
+        resultDiv.innerHTML = `
+          <div class="result error">
+            <h3>❌ 에러 발생</h3>
+            <p><strong>에러 메시지:</strong> ${error.message}</p>
+            <p><strong>해결 방법:</strong></p>
+            <ul>
+              <li>CORS 에러인 경우: 이 파일을 브라우저에서 직접 열어야 합니다 (file:// 프로토콜)</li>
+              <li>날짜 오류인 경우: 주말이나 공휴일이 아닌 평일 날짜로 시도해보세요</li>
+              <li>API 제한인 경우: 잠시 후 다시 시도해보세요</li>
+            </ul>
+          </div>
+        `;
+      } finally {
+        loading.style.display = 'none';
+      }
+    }
+
+    async function fetchExchangeRateNoDate() {
+      const resultDiv = document.getElementById('result');
+      const loading = document.getElementById('loading');
+
+      loading.style.display = 'inline-block';
+      resultDiv.innerHTML = '';
+
+      try {
+        const API_URL = 'https://oapi.koreaexim.go.kr/site/program/financial/exchangeJSON';
+        const API_KEY = '3JO9jPWtMqoHI6040kEYOufnmdI9ZQ9g';
+        const url = `${API_URL}?authkey=${API_KEY}&searchdate=${searchDate}&data=AP01`;
+
+        console.log('API 호출 (authkey만 사용):', url);
+
+        const response = await fetch(url);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('응답 데이터:', data);
+        console.log('응답 타입:', typeof data);
+        console.log('Array 여부:', Array.isArray(data));
+        console.log('데이터 길이:', data.length);
+
+        // 전체 응답 데이터를 먼저 표시
+        resultDiv.innerHTML = `
+          <div class="result">
+            <h3>📡 API 응답 (날짜 파라미터 없음)</h3>
+            <p><strong>응답 타입:</strong> ${typeof data}</p>
+            <p><strong>Array 여부:</strong> ${Array.isArray(data)}</p>
+            <p><strong>데이터 개수:</strong> ${Array.isArray(data) ? data.length : 'N/A'}</p>
+            <details open>
+              <summary><strong>전체 응답 데이터</strong></summary>
+              <pre>${JSON.stringify(data, null, 2)}</pre>
+            </details>
+          </div>
+        `;
+
+        // 에러 체크
+        if (data.error) {
+          throw new Error(data.error);
+        }
+
+        if (!Array.isArray(data) || data.length === 0) {
+          resultDiv.innerHTML += `
+            <div class="result error" style="margin-top: 10px;">
+              <h3>⚠️ 데이터 없음</h3>
+              <p>API 응답에 환율 데이터가 없습니다.</p>
+            </div>
+          `;
+          return;
+        }
+
+        // USD 환율 찾기
+        const usdData = data.find(item => item.CUR_UNIT === 'USD');
+
+        if (!usdData) {
+          resultDiv.innerHTML += `
+            <div class="result error" style="margin-top: 10px;">
+              <h3>⚠️ USD 데이터 없음</h3>
+              <p>응답 데이터 중 USD를 찾을 수 없습니다.</p>
+              <p><strong>사용 가능한 통화:</strong> ${data.map(item => item.CUR_UNIT).join(', ')}</p>
+            </div>
+          `;
+          return;
+        }
+
+        // 결과 표시
+        const rate = parseFloat(usdData.DEAL_BAS_R.replace(/,/g, ''));
+        const prevRate = parseFloat(usdData.BKPR.replace(/,/g, ''));
+        const change = ((rate - prevRate) / prevRate * 100).toFixed(2);
+        const isUp = parseFloat(change) >= 0;
+
+        resultDiv.innerHTML += `
+          <div class="result" style="margin-top: 10px;">
+            <h3>✅ USD 환율 조회 성공</h3>
+            <div class="rate-display">
+              💵 USD 환율: ${rate.toLocaleString('ko-KR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}원
+            </div>
+            <div class="change ${isUp ? 'up' : 'down'}">
+              ${isUp ? '▲' : '▼'} ${Math.abs(parseFloat(change))}% (전일 대비)
+            </div>
+            <hr>
+            <p><strong>상세 정보:</strong></p>
+            <ul>
+              <li>통화 코드: ${usdData.CUR_UNIT}</li>
+              <li>국가명: ${usdData.CUR_NM}</li>
+              <li>매매 기준율: ${usdData.DEAL_BAS_R}원</li>
+              <li>전신환(송금) 받을 때: ${usdData.TTB}원</li>
+              <li>전신환(송금) 보낼 때: ${usdData.TTS}원</li>
+            </ul>
+          </div>
+        `;
+
+        // JSON 파일 업데이트용 코드 생성
+        const jsonCode = {
+          "USD": {
+            "rate": rate.toLocaleString('ko-KR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+            "change": change,
+            "lastUpdate": new Date().toISOString().split('T')[0]
+          }
+        };
+
+        resultDiv.innerHTML += `
+          <div class="result" style="margin-top: 10px;">
+            <h3>📝 exchangeRate.json 업데이트용 코드</h3>
+            <pre>${JSON.stringify(jsonCode, null, 2)}</pre>
+          </div>
+        `;
+
+      } catch (error) {
+        console.error('에러:', error);
+        resultDiv.innerHTML += `
+          <div class="result error" style="margin-top: 10px;">
+            <h3>❌ 에러 발생</h3>
+            <p><strong>에러 메시지:</strong> ${error.message}</p>
+          </div>
+        `;
+      } finally {
+        loading.style.display = 'none';
+      }
+    }
+
+    async function testVariousParams() {
+      const resultDiv = document.getElementById('result');
+      const loading = document.getElementById('loading');
+
+      loading.style.display = 'inline-block';
+      resultDiv.innerHTML = '<div class="result"><h3>🔍 다양한 파라미터 조합 테스트 중...</h3></div>';
+
+      const API_URL = 'https://oapi.koreaexim.go.kr/site/program/financial/exchangeJSON';
+      const API_KEY = '3JO9jPWtMqoHI6040kEYOufnmdI9ZQ9g';
+
+      const tests = [
+        { name: '기본 (authkey만)', url: `${API_URL}?authkey=${API_KEY}` },
+        { name: 'data=AP01', url: `${API_URL}?authkey=${API_KEY}&data=AP01` },
+        { name: 'searchdate=20250124', url: `${API_URL}?authkey=${API_KEY}&searchdate=20250124` },
+        { name: 'searchdate + data', url: `${API_URL}?authkey=${API_KEY}&searchdate=20250124&data=AP01` },
+        { name: 'searchdate=2025-01-24 (하이픈)', url: `${API_URL}?authkey=${API_KEY}&searchdate=2025-01-24&data=AP01` },
+      ];
+
+      for (const test of tests) {
+        try {
+          console.log(`테스트: ${test.name}`);
+          console.log(`URL: ${test.url}`);
+
+          const response = await fetch(test.url);
+          const data = await response.json();
+
+          const dataInfo = Array.isArray(data) ? `배열 (${data.length}개)` : typeof data;
+          const hasData = Array.isArray(data) && data.length > 0;
+
+          resultDiv.innerHTML += `
+            <div class="result ${hasData ? '' : 'error'}" style="margin-top: 10px;">
+              <h4>${hasData ? '✅' : '❌'} ${test.name}</h4>
+              <p><strong>응답 타입:</strong> ${dataInfo}</p>
+              ${hasData ? `<p><strong>통화 목록:</strong> ${data.slice(0, 5).map(item => item.CUR_UNIT || item.cur_unit).join(', ')}${data.length > 5 ? '...' : ''}</p>` : ''}
+              <details>
+                <summary>URL 보기</summary>
+                <pre style="font-size: 11px; word-break: break-all;">${test.url}</pre>
+              </details>
+              <details>
+                <summary>응답 데이터 보기</summary>
+                <pre style="max-height: 200px; overflow-y: auto;">${JSON.stringify(data, null, 2)}</pre>
+              </details>
+            </div>
+          `;
+
+          // 성공하면 중단
+          if (hasData) {
+            resultDiv.innerHTML += `
+              <div class="result" style="margin-top: 10px; background: #c8e6c9;">
+                <h3>🎉 성공한 파라미터 조합 발견!</h3>
+                <p>위의 "${test.name}" 조합이 작동합니다.</p>
+              </div>
+            `;
+            break;
+          }
+
+          // 다음 테스트 전에 잠시 대기
+          await new Promise(resolve => setTimeout(resolve, 500));
+
+        } catch (error) {
+          console.error(`${test.name} 에러:`, error);
+          resultDiv.innerHTML += `
+            <div class="result error" style="margin-top: 10px;">
+              <h4>❌ ${test.name}</h4>
+              <p><strong>에러:</strong> ${error.message}</p>
+            </div>
+          `;
+        }
+      }
+
+      loading.style.display = 'none';
+    }
+
+    async function fetchGoldPrice() {
+      const resultDiv = document.getElementById('gold-result');
+      const loading = document.getElementById('gold-loading');
+
+      loading.style.display = 'inline-block';
+      resultDiv.innerHTML = '';
+
+      try {
+        const API_URL = 'https://apis.data.go.kr/1160100/service/GetGeneralProductInfoService/getGoldPriceInfo';
+        const API_KEY = '845759f2679dc4b2e5efa459737bba2c77d45bdaa00872733b34480d661715fb';
+        const url = `${API_URL}?serviceKey=${API_KEY}&pageNo=1&numOfRows=1`;
+
+        console.log('금 시세 API 호출:', url);
+
+        const response = await fetch(url);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const textData = await response.text();
+        console.log('응답 원본:', textData);
+
+        // XML을 파싱
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(textData, 'text/xml');
+
+        // 에러 체크
+        const errorElement = xmlDoc.querySelector('returnReasonCode');
+        if (errorElement) {
+          throw new Error(`API 에러: ${errorElement.textContent}`);
+        }
+
+        // 데이터 추출
+        const item = xmlDoc.querySelector('item');
+        if (!item) {
+          resultDiv.innerHTML = `
+            <div class="result error">
+              <h3>⚠️ 데이터가 없습니다</h3>
+              <details open>
+                <summary><strong>전체 응답 데이터</strong></summary>
+                <pre>${textData}</pre>
+              </details>
+            </div>
+          `;
+          loading.style.display = 'none';
+          return;
+        }
+
+        const basDt = item.querySelector('basDt')?.textContent || 'N/A';
+        const clpr = item.querySelector('clpr')?.textContent || '0';
+        const vs = item.querySelector('vs')?.textContent || '0';
+        const fltRt = item.querySelector('fltRt')?.textContent || '0';
+        const mkp = item.querySelector('mkp')?.textContent || 'N/A';
+
+        const price = parseFloat(clpr.replace(/,/g, ''));
+        const change = parseFloat(vs.replace(/,/g, ''));
+        const changeRate = parseFloat(fltRt);
+        const isUp = change >= 0;
+
+        resultDiv.innerHTML = `
+          <div class="result">
+            <h3>✅ 조회 성공</h3>
+            <p><strong>기준 날짜:</strong> ${basDt.substr(0,4)}-${basDt.substr(4,2)}-${basDt.substr(6,2)}</p>
+            <div class="rate-display">
+              🥇 금 시세: ${price.toLocaleString('ko-KR')}원
+            </div>
+            <div class="change ${isUp ? 'up' : 'down'}">
+              ${isUp ? '▲' : '▼'} ${Math.abs(change).toLocaleString('ko-KR')}원 (${Math.abs(changeRate)}%)
+            </div>
+            <hr>
+            <p><strong>상세 정보:</strong></p>
+            <ul>
+              <li>시장 구분: ${mkp}</li>
+              <li>종가: ${clpr}원</li>
+              <li>전일 대비: ${vs}원</li>
+              <li>등락률: ${fltRt}%</li>
+            </ul>
+            <details>
+              <summary><strong>📋 전체 응답 데이터 보기</strong></summary>
+              <pre>${textData}</pre>
+            </details>
+          </div>
+        `;
+
+        // JSON 파일 업데이트용 코드 생성
+        const jsonCode = {
+          "gold": {
+            "price": price.toLocaleString('ko-KR'),
+            "change": changeRate.toString(),
+            "lastUpdate": `${basDt.substr(0,4)}-${basDt.substr(4,2)}-${basDt.substr(6,2)}`
+          }
+        };
+
+        resultDiv.innerHTML += `
+          <div class="result" style="margin-top: 10px;">
+            <h3>📝 금시세 JSON 업데이트용 코드</h3>
+            <pre>${JSON.stringify(jsonCode, null, 2)}</pre>
+          </div>
+        `;
+
+      } catch (error) {
+        console.error('에러:', error);
+        resultDiv.innerHTML = `
+          <div class="result error">
+            <h3>❌ 에러 발생</h3>
+            <p><strong>에러 메시지:</strong> ${error.message}</p>
+            <p><strong>해결 방법:</strong></p>
+            <ul>
+              <li>CORS 에러인 경우: 이 파일을 로컬 서버에서 실행해야 합니다</li>
+              <li>인증키 오류인 경우: 공공데이터포털에서 인증키를 확인해주세요</li>
+              <li>API 제한인 경우: 잠시 후 다시 시도해보세요</li>
+            </ul>
+          </div>
+        `;
+      } finally {
+        loading.style.display = 'none';
+      }
+    }
+
+    async function fetchStockIndex() {
+      const resultDiv = document.getElementById('stock-result');
+      const loading = document.getElementById('stock-loading');
+
+      loading.style.display = 'inline-block';
+      resultDiv.innerHTML = '';
+
+      try {
+        // 프록시 서버 URL (localhost:8082)
+        const PROXY_URL = 'http://localhost:8082';
+
+        // 최근 영업일 날짜 (2026년 1월 23일)
+        const dateStr = '20260123';
+
+        const kospiUrl = `${PROXY_URL}/kospi?basDd=${dateStr}`;
+        const kosdaqUrl = `${PROXY_URL}/kosdaq?basDd=${dateStr}`;
+
+        console.log('코스피 API 호출 (프록시):', kospiUrl);
+        console.log('코스닥 API 호출 (프록시):', kosdaqUrl);
+
+        // 코스피와 코스닥 데이터 병렬로 가져오기
+        const [responseKospi, responseKosdaq] = await Promise.all([
+          fetch(kospiUrl),
+          fetch(kosdaqUrl)
+        ]);
+
+        if (!responseKospi.ok || !responseKosdaq.ok) {
+          throw new Error(`HTTP error! KOSPI: ${responseKospi.status}, KOSDAQ: ${responseKosdaq.status}`);
+        }
+
+        const dataKospi = await responseKospi.json();
+        const dataKosdaq = await responseKosdaq.json();
+
+        console.log('코스피 응답:', dataKospi);
+        console.log('코스닥 응답:', dataKosdaq);
+
+        // 코스피 데이터 추출
+        let kospiData = null;
+        let kosdaqData = null;
+        let baseDate = '';
+
+        // KRX API 응답 구조: OutBlock_1 배열에서 IDX_NM이 "코스피" 또는 "코스닥"인 항목 찾기
+        if (dataKospi && dataKospi.OutBlock_1 && dataKospi.OutBlock_1.length > 0) {
+          const item = dataKospi.OutBlock_1.find(x => x.IDX_NM === '코스피');
+          if (item) {
+            baseDate = item.BAS_DD || '';
+            const clsPrice = parseFloat(item.CLSPRC_IDX || '0');
+            const change = parseFloat(item.CMPPREVDD_IDX || '0');
+            const changeRate = parseFloat(item.FLUC_RT || '0');
+
+            kospiData = {
+              price: clsPrice,
+              change: change,
+              changeRate: changeRate
+            };
+            console.log('코스피 데이터:', kospiData);
+          }
+        }
+
+        // 코스닥 데이터 추출
+        if (dataKosdaq && dataKosdaq.OutBlock_1 && dataKosdaq.OutBlock_1.length > 0) {
+          const item = dataKosdaq.OutBlock_1.find(x => x.IDX_NM === '코스닥');
+          if (item) {
+            if (!baseDate) baseDate = item.BAS_DD || '';
+            const clsPrice = parseFloat(item.CLSPRC_IDX || '0');
+            const change = parseFloat(item.CMPPREVDD_IDX || '0');
+            const changeRate = parseFloat(item.FLUC_RT || '0');
+
+            kosdaqData = {
+              price: clsPrice,
+              change: change,
+              changeRate: changeRate
+            };
+            console.log('코스닥 데이터:', kosdaqData);
+          }
+        }
+
+        let htmlOutput = '';
+        let jsonData = {};
+
+        if (!kospiData && !kosdaqData) {
+          htmlOutput = `
+            <div class="result error">
+              <h3>⚠️ 코스피/코스닥 데이터를 찾을 수 없습니다</h3>
+              <p>API 응답에서 '코스피' 또는 '코스닥' 지수를 찾을 수 없습니다.</p>
+              <details open>
+                <summary><strong>코스피 응답</strong></summary>
+                <pre>${JSON.stringify(dataKospi, null, 2)}</pre>
+              </details>
+              <details open>
+                <summary><strong>코스닥 응답</strong></summary>
+                <pre>${JSON.stringify(dataKosdaq, null, 2)}</pre>
+              </details>
+            </div>
+          `;
+        } else {
+          htmlOutput = `
+            <div class="result">
+              <h3>✅ 조회 성공</h3>
+              <p><strong>기준 날짜:</strong> ${baseDate.substr(0,4)}-${baseDate.substr(4,2)}-${baseDate.substr(6,2)}</p>
+              <hr>
+          `;
+
+          if (kospiData) {
+            const isUp = kospiData.change >= 0;
+            htmlOutput += `
+              <div style="margin-bottom: 20px;">
+                <div class="rate-display">
+                  📊 코스피: ${kospiData.price.toLocaleString('ko-KR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt
+                </div>
+                <div class="change ${isUp ? 'up' : 'down'}">
+                  ${isUp ? '▲' : '▼'} ${Math.abs(kospiData.change).toLocaleString('ko-KR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt (${Math.abs(kospiData.changeRate)}%)
+                </div>
+              </div>
+            `;
+
+            jsonData['KOSPI'] = {
+              "index": kospiData.price.toLocaleString('ko-KR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+              "change": kospiData.changeRate.toString(),
+              "lastUpdate": `${baseDate.substr(0,4)}-${baseDate.substr(4,2)}-${baseDate.substr(6,2)}`
+            };
+          }
+
+          if (kosdaqData) {
+            const isUp = kosdaqData.change >= 0;
+            htmlOutput += `
+              <div>
+                <div class="rate-display">
+                  📈 코스닥: ${kosdaqData.price.toLocaleString('ko-KR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt
+                </div>
+                <div class="change ${isUp ? 'up' : 'down'}">
+                  ${isUp ? '▲' : '▼'} ${Math.abs(kosdaqData.change).toLocaleString('ko-KR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt (${Math.abs(kosdaqData.changeRate)}%)
+                </div>
+              </div>
+            `;
+
+            jsonData['KOSDAQ'] = {
+              "index": kosdaqData.price.toLocaleString('ko-KR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+              "change": kosdaqData.changeRate.toString(),
+              "lastUpdate": `${baseDate.substr(0,4)}-${baseDate.substr(4,2)}-${baseDate.substr(6,2)}`
+            };
+          }
+
+          htmlOutput += `
+            </div>
+          `;
+        }
+
+        resultDiv.innerHTML = htmlOutput;
+
+        // JSON 파일 업데이트용 코드 생성
+        resultDiv.innerHTML += `
+          <div class="result" style="margin-top: 10px;">
+            <h3>📝 주식시세 JSON 업데이트용 코드</h3>
+            <pre>${JSON.stringify(jsonData, null, 2)}</pre>
+          </div>
+        `;
+
+        // 전체 응답 데이터
+        resultDiv.innerHTML += `
+          <div class="result" style="margin-top: 10px;">
+            <details>
+              <summary><strong>📋 전체 응답 데이터 보기</strong></summary>
+              <pre>${JSON.stringify({ kospi: dataKospi, kosdaq: dataKosdaq }, null, 2)}</pre>
+            </details>
+          </div>
+        `;
+
+      } catch (error) {
+        console.error('에러:', error);
+        resultDiv.innerHTML = `
+          <div class="result error">
+            <h3>❌ 에러 발생</h3>
+            <p><strong>에러 메시지:</strong> ${error.message}</p>
+            <p><strong>해결 방법:</strong></p>
+            <ul>
+              <li>CORS 에러인 경우: 이 파일을 로컬 서버에서 실행해야 합니다</li>
+              <li>인증키 오류인 경우: 공공데이터포털에서 인증키를 확인해주세요</li>
+              <li>API 제한인 경우: 잠시 후 다시 시도해보세요</li>
+            </ul>
+          </div>
+        `;
+      } finally {
+        loading.style.display = 'none';
+      }
+    }
+
+    async function fetchNaverNews() {
+      const resultDiv = document.getElementById('news-result');
+      const loading = document.getElementById('news-loading');
+      const query = document.getElementById('news-query').value.trim();
+
+      if (!query) {
+        resultDiv.innerHTML = `
+          <div class="result error">
+            <h3>⚠️ 검색어를 입력해주세요</h3>
+          </div>
+        `;
+        return;
+      }
+
+      loading.style.display = 'inline-block';
+      resultDiv.innerHTML = '';
+
+      try {
+        const API_URL = 'https://openapi.naver.com/v1/search/news.json';
+        const CLIENT_ID = 'dgDwzE004UQttLcTaSNE';
+        const CLIENT_SECRET = 'H3bwaRxYUI';
+        const url = `${API_URL}?query=${encodeURIComponent(query)}&display=10&start=1&sort=sim`;
+
+        console.log('네이버 뉴스 API 호출:', url);
+
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'X-Naver-Client-Id': CLIENT_ID,
+            'X-Naver-Client-Secret': CLIENT_SECRET
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('응답 데이터:', data);
+
+        if (!data.items || data.items.length === 0) {
+          resultDiv.innerHTML = `
+            <div class="result error">
+              <h3>⚠️ 검색 결과가 없습니다</h3>
+              <p><strong>검색어:</strong> ${query}</p>
+            </div>
+          `;
+          loading.style.display = 'none';
+          return;
+        }
+
+        let htmlOutput = `
+          <div class="result">
+            <h3>✅ 검색 성공</h3>
+            <p><strong>검색어:</strong> ${query}</p>
+            <p><strong>결과 수:</strong> ${data.items.length}건</p>
+            <hr>
+        `;
+
+        data.items.forEach((item, index) => {
+          // HTML 태그 제거
+          const title = item.title.replace(/<[^>]*>/g, '');
+          const description = item.description.replace(/<[^>]*>/g, '');
+          const pubDate = new Date(item.pubDate).toLocaleString('ko-KR');
+
+          htmlOutput += `
+            <div style="margin-bottom: 20px; padding: 15px; background: #f9f9f9; border-radius: 5px;">
+              <h4 style="margin: 0 0 8px 0; color: #333;">
+                ${index + 1}. <a href="${item.link}" target="_blank" style="color: #1a73e8; text-decoration: none;">${title}</a>
+              </h4>
+              <p style="margin: 0 0 8px 0; color: #666; line-height: 1.5;">${description}</p>
+              <div style="font-size: 13px; color: #999;">
+                <span>📅 ${pubDate}</span> | <span>📰 ${item.originallink ? '원문링크' : '네이버뉴스'}</span>
+              </div>
+            </div>
+          `;
+        });
+
+        htmlOutput += `
+          </div>
+        `;
+
+        resultDiv.innerHTML = htmlOutput;
+
+        // 전체 응답 데이터
+        resultDiv.innerHTML += `
+          <div class="result" style="margin-top: 10px;">
+            <details>
+              <summary><strong>📋 전체 응답 데이터 보기</strong></summary>
+              <pre>${JSON.stringify(data, null, 2)}</pre>
+            </details>
+          </div>
+        `;
+
+      } catch (error) {
+        console.error('에러:', error);
+        resultDiv.innerHTML = `
+          <div class="result error">
+            <h3>❌ 에러 발생</h3>
+            <p><strong>에러 메시지:</strong> ${error.message}</p>
+            <p><strong>해결 방법:</strong></p>
+            <ul>
+              <li>CORS 에러인 경우: 이 파일을 로컬 서버에서 실행해야 합니다</li>
+              <li>인증키 오류인 경우: 네이버 개발자센터에서 인증키를 확인해주세요</li>
+              <li>API 제한인 경우: 잠시 후 다시 시도해보세요</li>
+            </ul>
+          </div>
+        `;
+      } finally {
+        loading.style.display = 'none';
+      }
+    }
+
+    function clearResult(type) {
+      if (type === 'exchange') {
+        document.getElementById('exchange-result').innerHTML = '';
+      } else if (type === 'gold') {
+        document.getElementById('gold-result').innerHTML = '';
+      } else if (type === 'stock') {
+        document.getElementById('stock-result').innerHTML = '';
+      } else if (type === 'news') {
+        document.getElementById('news-result').innerHTML = '';
+      }
+    }
+
+    // 페이지 로드 시 안내 메시지
+    window.addEventListener('load', () => {
+      console.log('금융 API 테스트 페이지가 로드되었습니다.');
+      console.log('위의 버튼을 클릭하여 API를 테스트해보세요.');
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>에이닉(Anick) - 관리자 시스템 v0.6</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Outfit:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* [기본 스타일] */
+    :root {
+      --primary: #3182F6;
+      --primary-dark: #1B64DA;
+      --bg-light: #F7F8FA;
+      --bg-white: #FFFFFF;
+      --text-main: #191F28;
+      --text-sub: #8B95A1;
+      --border: #E5E8EB;
+      --sidebar-bg: #1B1F2A;
+      --sidebar-text: #E5E8EB;
+      --danger: #FF5252;
+      --success: #20C997;
+      --warning: #FFC107;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg-light); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+
+    /* Sidebar */
+    .sidebar { width: 260px; background: var(--sidebar-bg); color: var(--sidebar-text); display: flex; flex-direction: column; flex-shrink: 0; transition: all 0.3s; }
+    .sidebar-header { padding: 24px; font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 700; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 10px; }
+    
+    .nav-menu { padding: 20px 0; flex: 1; overflow-y: auto; }
+    .nav-item { padding: 14px 24px; cursor: pointer; display: flex; align-items: center; gap: 12px; color: rgba(255,255,255,0.7); font-size: 15px; transition: all 0.2s; }
+    .nav-item:hover { background: rgba(255,255,255,0.05); color: #fff; }
+    .nav-item.active { background: var(--primary); color: #fff; font-weight: 700; }
+    .nav-icon { width: 20px; text-align: center; }
+
+    .sidebar-footer { padding: 20px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 13px; color: rgba(255,255,255,0.4); }
+
+    /* Main Content */
+    .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    
+    /* Header */
+    .header { height: 64px; background: var(--bg-white); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 32px; }
+    .page-title { font-size: 18px; font-weight: 700; }
+    .user-profile { display: flex; align-items: center; gap: 12px; font-size: 14px; }
+    
+    /* Content Body */
+    .content-body { flex: 1; padding: 32px; overflow-y: auto; display: none; }
+    .content-body.active { display: block; animation: fadeIn 0.3s; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Tabs */
+    .tabs { display: flex; gap: 20px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+    .tab { padding: 10px 0; cursor: pointer; color: var(--text-sub); border-bottom: 2px solid transparent; font-weight: 500; }
+    .tab.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 700; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: fadeIn 0.3s; }
+
+    /* Components */
+    .card-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 24px; }
+    .card { background: var(--bg-white); padding: 24px; border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
+    .card-label { font-size: 14px; color: var(--text-sub); margin-bottom: 8px; }
+    .card-value { font-family: 'Outfit'; font-size: 28px; font-weight: 700; color: var(--text-main); }
+    .card-sub { font-size: 13px; color: var(--text-sub); margin-top: 4px; }
+    .card-trend { font-size: 13px; margin-top: 8px; display: flex; align-items: center; gap: 4px; }
+    .trend-up { color: var(--danger); }
+    .trend-down { color: var(--primary); }
+
+    .section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+    
+    /* Tables */
+    .table-container { background: var(--bg-white); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; margin-bottom: 24px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { background: #F9FAFB; padding: 12px 16px; text-align: left; font-weight: 600; color: var(--text-sub); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; white-space: nowrap; }
+    td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--text-main); vertical-align: middle; white-space: nowrap; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover { background: #F7F8FA; }
+
+    /* Filters */
+    .filter-bar { background: #fff; padding: 16px 20px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 20px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+    .filter-group { display: flex; align-items: center; gap: 10px; font-size: 14px; }
+    .filter-label { font-weight: 600; color: var(--text-sub); margin-right: 4px; }
+    .checkbox-label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+
+    /* Buttons & Inputs */
+    .badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    .badge.success { background: #E3FDF4; color: var(--success); }
+    .badge.warning { background: #FFF8E1; color: var(--warning); }
+    .badge.danger { background: #FFEBEE; color: var(--danger); }
+    .badge.primary { background: #E8F3FF; color: var(--primary); }
+    
+    .btn { padding: 8px 16px; border-radius: 8px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-danger { background: var(--danger); color: #fff; }
+    .btn-outline { background: #fff; border: 1px solid var(--border); color: var(--text-main); }
+    .btn-outline:hover { background: #F7F8FA; }
+    .btn-sm { padding: 4px 10px; font-size: 12px; }
+
+    .input-field, .textarea-field, .select-field { padding: 10px; border: 1px solid var(--border); border-radius: 8px; outline: none; }
+    .input-field { width: 100%; }
+    .textarea-field { width: 100%; resize: vertical; min-height: 120px; }
+
+    /* Detail View Container */
+    .detail-view-container { display: none; background: #fff; padding: 32px; border-radius: 16px; border: 1px solid var(--border); height: 100%; overflow-y: auto; }
+    .detail-view-container.active { display: block; animation: fadeIn 0.3s; }
+    
+    .detail-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+    .detail-title { font-size: 20px; font-weight: 700; }
+    
+    .form-row { display: flex; gap: 20px; margin-bottom: 16px; }
+    .form-col { flex: 1; }
+    .form-label { display: block; font-size: 13px; font-weight: 600; color: var(--text-sub); margin-bottom: 6px; }
+
+  </style>
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="sidebar-header">Anick Admin</div>
+    <nav class="nav-menu">
+      <div class="nav-item active" onclick="switchPage('dashboard', this)"><span class="nav-icon">📊</span> 대시보드</div>
+      <div class="nav-item" onclick="switchPage('members', this)"><span class="nav-icon">👥</span> 회원 관리</div>
+      <div class="nav-item" onclick="switchPage('sales', this)"><span class="nav-icon">💰</span> 매출 관리</div>
+      <div class="nav-item" onclick="switchPage('stats', this)"><span class="nav-icon">📈</span> 통계 (유저)</div>
+      <div class="nav-item" onclick="switchPage('cms', this)"><span class="nav-icon">⚙️</span> 운영 관리</div>
+      <div class="nav-item" onclick="switchPage('points', this)"><span class="nav-icon">🎁</span> 포인트/제휴</div>
+    </nav>
+    <div class="sidebar-footer">v0.6.0</div>
+  </aside>
+
+  <main class="main-content">
+    <header class="header">
+      <div class="page-title" id="pageTitle">대시보드</div>
+      <div class="user-profile">
+        <span>관리자(Admin)님</span>
+        <button class="btn btn-outline btn-sm">로그아웃</button>
+      </div>
+    </header>
+
+    <div id="dashboard" class="content-body active">
+      <div class="card-grid">
+        <div class="card"><div class="card-label">총 가입자</div><div class="card-value">12,450</div></div>
+        <div class="card"><div class="card-label">오늘 매출</div><div class="card-value">₩ 850,000</div></div>
+      </div>
+      <div class="section-title">환영합니다. 좌측 메뉴를 통해 상세 관리가 가능합니다.</div>
+    </div>
+
+    <div id="sales" class="content-body">
+        <div class="section-title">
+            <span>📅 월간 매출 현황 (Total Summary)</span>
+            <select class="select-field"><option>2026년 1월</option></select>
+        </div>
+
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-label">1월 총 매출 (누적)</div>
+                <div class="card-value">₩ 85,400,000</div>
+            </div>
+            <div class="card">
+                <div class="card-label">제휴 상품 매출</div>
+                <div class="card-value">₩ 50,200,000</div>
+                <div class="card-trend trend-up">59% 비중</div>
+            </div>
+            <div class="card">
+                <div class="card-label">광고 매출</div>
+                <div class="card-value">₩ 35,200,000</div>
+                <div class="card-trend trend-up">41% 비중</div>
+            </div>
+        </div>
+
+        <div class="filter-bar">
+            <div class="filter-group">
+                <span class="filter-label">상세 필터:</span>
+                <label class="checkbox-label"><input type="checkbox" checked> 카드(신한/하나)</label>
+                <label class="checkbox-label"><input type="checkbox" checked> 보험(DB/현대)</label>
+                <label class="checkbox-label"><input type="checkbox" checked> 광고(영상/배너)</label>
+            </div>
+            <button class="btn btn-primary btn-sm" style="margin-left:auto;">필터 적용</button>
+            <button class="btn btn-outline btn-sm">📥 엑셀 다운로드</button>
+        </div>
+
+        <div class="section-title">📊 일자별 상세 매출 (상품/광고 구분)</div>
+        <div class="table-container" style="max-height: 600px; overflow-y: auto;">
+            <table>
+                <thead style="position: sticky; top: 0; z-index: 10;">
+                    <tr>
+                        <th rowspan="2">일자</th>
+                        <th rowspan="2" style="background:#eef6ff;">일 합계</th>
+                        <th colspan="4" style="text-align:center; border-bottom:1px solid #ddd;">제휴 상품 (전환매출)</th>
+                        <th colspan="3" style="text-align:center; border-bottom:1px solid #ddd;">광고 수익</th>
+                    </tr>
+                    <tr>
+                        <th>신한카드</th>
+                        <th>하나페이</th>
+                        <th>카카오페이</th>
+                        <th>보험/대출</th>
+                        <th>동영상(Rwd)</th>
+                        <th>직광고(DA)</th>
+                        <th>네트워크</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#f0f7ff; font-weight:bold;">
+                        <td>01-23 (금)</td>
+                        <td style="color:var(--primary)">₩ 850,000</td>
+                        <td>300,000</td>
+                        <td>150,000</td>
+                        <td>50,000</td>
+                        <td>100,000</td>
+                        <td>150,000</td>
+                        <td>50,000</td>
+                        <td>50,000</td>
+                    </tr>
+                    <tr>
+                        <td>01-22 (목)</td>
+                        <td>₩ 720,000</td>
+                        <td>250,000</td>
+                        <td>120,000</td>
+                        <td>40,000</td>
+                        <td>80,000</td>
+                        <td>130,000</td>
+                        <td>60,000</td>
+                        <td>40,000</td>
+                    </tr>
+                    <tr>
+                        <td>01-21 (수)</td>
+                        <td>₩ 680,000</td>
+                        <td>220,000</td>
+                        <td>110,000</td>
+                        <td>30,000</td>
+                        <td>90,000</td>
+                        <td>140,000</td>
+                        <td>50,000</td>
+                        <td>40,000</td>
+                    </tr>
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="stats" class="content-body">
+        <div class="section-title">📅 콘텐츠별 이용 현황 (OS 분리)</div>
+        
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-label">전체 페이지뷰 (PV)</div>
+                <div class="card-value">1,540,200</div>
+            </div>
+            <div class="card">
+                <div class="card-label">AOS 비율</div>
+                <div class="card-value">65%</div>
+            </div>
+            <div class="card">
+                <div class="card-label">iOS 비율</div>
+                <div class="card-value">35%</div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>콘텐츠명</th>
+                        <th>Total PV</th>
+                        <th>AOS PV</th>
+                        <th>iOS PV</th>
+                        <th>참여 유저(UV)</th>
+                        <th>비고</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>출석체크</td>
+                        <td style="font-weight:bold;">450,000</td>
+                        <td>292,500 (65%)</td>
+                        <td>157,500 (35%)</td>
+                        <td>8,500</td>
+                        <td>최다 이용</td>
+                    </tr>
+                    <tr>
+                        <td>만보기</td>
+                        <td style="font-weight:bold;">320,000</td>
+                        <td>210,000</td>
+                        <td>110,000</td>
+                        <td>6,200</td>
+                        <td>체류시간 ↑</td>
+                    </tr>
+                    <tr>
+                        <td>데일리 미션</td>
+                        <td style="font-weight:bold;">280,000</td>
+                        <td>180,000</td>
+                        <td>100,000</td>
+                        <td>5,400</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>래플 (이벤트)</td>
+                        <td style="font-weight:bold;">150,000</td>
+                        <td>90,000</td>
+                        <td>60,000</td>
+                        <td>3,100</td>
+                        <td>iOS 비중 높음</td>
+                    </tr>
+                    <tr>
+                        <td>제휴 금융 (클릭)</td>
+                        <td style="font-weight:bold;">50,000</td>
+                        <td>30,000</td>
+                        <td>20,000</td>
+                        <td>1,200</td>
+                        <td>매출 직결</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="cms" class="content-body">
+        <div id="cms-list-view">
+            <div class="tabs">
+                <div class="tab active" onclick="switchSubTab('cms', 'notice', this)">공지사항/FAQ</div>
+                <div class="tab" onclick="switchSubTab('cms', 'push', this)">푸시 발송</div>
+                <div class="tab" onclick="switchSubTab('cms', 'banner', this)">배너 관리</div>
+            </div>
+
+            <div id="cms-notice" class="tab-content active">
+                <div class="section-title"><span>공지사항 목록</span><button class="btn btn-primary" onclick="showCmsDetail('new')">+ 등록</button></div>
+                <div class="table-container">
+                    <table>
+                        <thead><tr><th>No</th><th>분류</th><th>제목</th><th>상태</th><th>작성일</th><th>관리</th></tr></thead>
+                        <tbody>
+                            <tr><td>10</td><td>[공지]</td><td>설 연휴 고객센터 운영 안내</td><td><span class="badge success">노출중</span></td><td>2026-01-20</td><td><button class="btn btn-outline btn-sm" onclick="showCmsDetail('edit')">수정</button></td></tr>
+                            <tr><td>9</td><td>[이벤트]</td><td>1월 친구초대 이벤트</td><td><span class="badge gray">종료</span></td><td>2026-01-01</td><td><button class="btn btn-outline btn-sm" onclick="showCmsDetail('edit')">수정</button></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="cms-push" class="tab-content">
+                <div class="section-title"><span>푸시 발송 이력</span><button class="btn btn-primary" onclick="showPushDetail('new')">+ 새 푸시 발송</button></div>
+                <div class="table-container">
+                    <table>
+                        <thead><tr><th>발송일시</th><th>제목</th><th>대상</th><th>발송수</th><th>성공/실패</th><th>클릭률</th><th>관리</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td>2026-01-22 14:00</td>
+                                <td>(광고) 오늘만 포인트 2배!</td>
+                                <td>전체</td>
+                                <td>12,400</td>
+                                <td>12,300 / 100</td>
+                                <td>12.5%</td>
+                                <td><button class="btn btn-outline btn-sm" onclick="showPushDetail('report')">리포트</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div id="cms-banner" class="tab-content">
+                <div class="section-title">배너 관리 (생략)</div>
+            </div>
+        </div>
+
+        <div id="cms-detail-view" class="detail-view-container">
+            <div class="detail-header">
+                <div class="detail-title">공지사항 등록/수정</div>
+                <button class="btn btn-outline btn-sm" onclick="hideCmsDetail()">목록으로</button>
+            </div>
+            <div class="form-row">
+                <div class="form-col">
+                    <label class="form-label">분류</label>
+                    <select class="select-field" style="width:200px;"><option>[공지]</option><option>[이벤트]</option></select>
+                </div>
+                <div class="form-col">
+                    <label class="form-label">상태</label>
+                    <label class="checkbox-label"><input type="radio" name="st" checked> 노출</label>
+                    <label class="checkbox-label"><input type="radio" name="st"> 숨김</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">제목</label>
+                <input type="text" class="input-field" value="설 연휴 고객센터 운영 안내">
+            </div>
+            <div class="form-group">
+                <label class="form-label">내용 (Editor)</label>
+                <textarea class="textarea-field">안녕하세요, 에이닉입니다. 설 연휴 기간 동안...</textarea>
+            </div>
+            <div style="text-align:right; margin-top:20px;">
+                <button class="btn btn-primary" onclick="alert('저장되었습니다'); hideCmsDetail();">저장하기</button>
+            </div>
+        </div>
+
+        <div id="push-detail-view" class="detail-view-container">
+            <div class="detail-header">
+                <div class="detail-title">푸시 발송 결과 리포트</div>
+                <button class="btn btn-outline btn-sm" onclick="hidePushDetail()">목록으로</button>
+            </div>
+            <div class="card-grid">
+                <div class="card"><div class="card-label">대상 유저</div><div class="card-value">12,400</div></div>
+                <div class="card"><div class="card-label">발송 성공</div><div class="card-value" style="color:var(--success)">12,300</div></div>
+                <div class="card"><div class="card-label">오픈(클릭) 수</div><div class="card-value">1,540</div></div>
+                <div class="card"><div class="card-label">클릭률 (CTR)</div><div class="card-value">12.5%</div></div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">발송된 메시지</label>
+                <div style="padding:16px; background:#f9f9f9; border-radius:8px; border:1px solid #ddd;">
+                    <strong>(광고) 오늘만 포인트 2배!</strong><br>
+                    지금 접속해서 데일리 미션을 완료하면 포인트를 2배로 드려요!
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="members" class="content-body"><div class="section-title">회원 관리</div></div>
+    <div id="points" class="content-body"><div class="section-title">포인트/제휴 관리</div></div>
+
+  </main>
+
+  <script>
+    // Navigation
+    function switchPage(pageId, navElement) {
+      document.querySelectorAll('.content-body').forEach(p => p.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+      navElement.classList.add('active');
+      document.getElementById('pageTitle').innerText = navElement.innerText.trim();
+    }
+
+    // Tab Switching
+    function switchSubTab(parentId, tabId, tabElement) {
+      const parent = document.getElementById(parentId);
+      parent.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+      parent.querySelector('.tabs').querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.getElementById(`${parentId}-${tabId}`).classList.add('active');
+      tabElement.classList.add('active');
+    }
+
+    // CMS Detail Logic
+    function showCmsDetail(mode) {
+        document.getElementById('cms-list-view').style.display = 'none';
+        document.getElementById('cms-detail-view').classList.add('active');
+    }
+    function hideCmsDetail() {
+        document.getElementById('cms-detail-view').classList.remove('active');
+        document.getElementById('cms-list-view').style.display = 'block';
+    }
+
+    // Push Detail Logic
+    function showPushDetail(mode) {
+        document.getElementById('cms-list-view').style.display = 'none';
+        document.getElementById('push-detail-view').classList.add('active');
+    }
+    function hidePushDetail() {
+        document.getElementById('push-detail-view').classList.remove('active');
+        document.getElementById('cms-list-view').style.display = 'block';
+    }
+  </script>
+</body>
+</html>

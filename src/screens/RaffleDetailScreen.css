@@ -1,0 +1,25 @@
+.raffle-detail-screen { background: var(--bg-main); padding-bottom: 0; }
+.raffle-detail-header { padding: 60px 20px 40px; position: relative; }
+.page-back-btn.white { position: absolute; top: 60px; left: 20px; background: rgba(255,255,255,0.2); border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.page-back-btn.white svg { color: #fff; }
+.raffle-image-large { font-size: 120px; text-align: center; }
+.raffle-detail-content { padding: 20px; }
+.raffle-detail-info { margin-bottom: 24px; }
+.raffle-badge-row { display: flex; gap: 8px; margin-bottom: 12px; }
+.raffle-tag { display: inline-block; padding: 4px 10px; border-radius: var(--radius-full); font-size: 11px; font-weight: 600; }
+.raffle-tag.hot { background: rgba(255,82,82,0.1); color: var(--error); }
+.raffle-tag.dday { background: rgba(255,193,7,0.1); color: var(--warning); }
+.raffle-name { font-size: 24px; font-weight: 800; color: var(--text-primary); margin-bottom: 12px; }
+.raffle-meta { display: flex; gap: 16px; font-size: 14px; color: var(--text-secondary); }
+.raffle-section { margin-bottom: 24px; }
+.raffle-section .section-title { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 12px; }
+.info-card { background: var(--bg-card); border-radius: var(--radius-md); padding: 16px; }
+.info-row { display: flex; justify-content: space-between; margin-bottom: 12px; }
+.info-row:last-child { margin-bottom: 0; }
+.info-label { font-size: 14px; color: var(--text-secondary); }
+.info-value { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+.raffle-description { font-size: 14px; color: var(--text-secondary); line-height: 1.6; white-space: pre-wrap; }
+.notice-list { list-style: none; padding: 0; margin: 0; }
+.notice-list li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding-left: 16px; position: relative; margin-bottom: 8px; }
+.notice-list li::before { content: '•'; position: absolute; left: 0; color: var(--primary); }
+.raffle-enter-section { position: fixed; bottom: 28px; left: 0; right: 0; padding: 0 20px; max-width: 390px; margin: 0 auto; }

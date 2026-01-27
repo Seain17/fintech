@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>에이닉(Anick) - 관리자 시스템</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Outfit:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* [기존 스타일 유지 및 탭 관련 스타일 보강] */
+    :root {
+      --primary: #3182F6;
+      --primary-dark: #1B64DA;
+      --bg-light: #F7F8FA;
+      --bg-white: #FFFFFF;
+      --text-main: #191F28;
+      --text-sub: #8B95A1;
+      --border: #E5E8EB;
+      --sidebar-bg: #1B1F2A;
+      --sidebar-text: #E5E8EB;
+      --danger: #FF5252;
+      --success: #20C997;
+      --warning: #FFC107;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg-light); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+
+    /* Sidebar */
+    .sidebar { width: 260px; background: var(--sidebar-bg); color: var(--sidebar-text); display: flex; flex-direction: column; flex-shrink: 0; transition: all 0.3s; }
+    .sidebar-header { padding: 24px; font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 700; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 10px; }
+    .logo-icon { width: 32px; height: 32px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+    
+    .nav-menu { padding: 20px 0; flex: 1; overflow-y: auto; }
+    .nav-item { padding: 14px 24px; cursor: pointer; display: flex; align-items: center; gap: 12px; color: rgba(255,255,255,0.7); font-size: 15px; transition: all 0.2s; }
+    .nav-item:hover { background: rgba(255,255,255,0.05); color: #fff; }
+    .nav-item.active { background: var(--primary); color: #fff; font-weight: 700; }
+    .nav-icon { width: 20px; text-align: center; }
+
+    .sidebar-footer { padding: 20px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 13px; color: rgba(255,255,255,0.4); }
+
+    /* Main Content */
+    .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    
+    /* Header */
+    .header { height: 64px; background: var(--bg-white); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 32px; }
+    .page-title { font-size: 18px; font-weight: 700; }
+    .user-profile { display: flex; align-items: center; gap: 12px; font-size: 14px; }
+    
+    /* Content Body */
+    .content-body { flex: 1; padding: 32px; overflow-y: auto; display: none; }
+    .content-body.active { display: block; animation: fadeIn 0.3s; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Sub-Tab Content Logic */
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: fadeIn 0.3s; }
+
+    /* Components */
+    .card-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 24px; }
+    .card { background: var(--bg-white); padding: 24px; border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
+    .card-label { font-size: 14px; color: var(--text-sub); margin-bottom: 8px; }
+    .card-value { font-family: 'Outfit'; font-size: 28px; font-weight: 700; color: var(--text-main); }
+    .card-trend { font-size: 13px; margin-top: 8px; display: flex; align-items: center; gap: 4px; }
+    .trend-up { color: var(--danger); }
+    .trend-down { color: var(--primary); }
+
+    .section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+    
+    /* Tables */
+    .table-container { background: var(--bg-white); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; margin-bottom: 24px; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th { background: #F9FAFB; padding: 14px 20px; text-align: left; font-weight: 600; color: var(--text-sub); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; }
+    td { padding: 14px 20px; border-bottom: 1px solid var(--border); color: var(--text-main); vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover { background: #F7F8FA; }
+
+    /* Buttons & Inputs */
+    .badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    .badge.success { background: #E3FDF4; color: var(--success); }
+    .badge.warning { background: #FFF8E1; color: var(--warning); }
+    .badge.danger { background: #FFEBEE; color: var(--danger); }
+    .badge.primary { background: #E8F3FF; color: var(--primary); }
+    .badge.gray { background: #F2F4F6; color: var(--text-sub); }
+    
+    .btn { padding: 8px 16px; border-radius: 8px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-outline { background: #fff; border: 1px solid var(--border); color: var(--text-main); }
+    .btn-outline:hover { background: #F7F8FA; }
+    .btn-sm { padding: 4px 10px; font-size: 12px; }
+
+    .search-bar { display: flex; gap: 10px; margin-bottom: 20px; }
+    .input-field, .textarea-field { padding: 10px; border: 1px solid var(--border); border-radius: 8px; width: 100%; outline: none; }
+    .textarea-field { resize: vertical; min-height: 80px; }
+    .select-field { padding: 10px; border: 1px solid var(--border); border-radius: 8px; outline: none; cursor: pointer;}
+
+    /* Tabs */
+    .tabs { display: flex; gap: 20px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+    .tab { padding: 10px 0; cursor: pointer; color: var(--text-sub); border-bottom: 2px solid transparent; font-weight: 500; }
+    .tab.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 700; }
+
+    /* Modals */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: none; align-items: center; justify-content: center; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: #fff; width: 400px; padding: 24px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+    .modal-header { font-size: 18px; font-weight: 700; margin-bottom: 20px; }
+    .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px; }
+    .form-group { margin-bottom: 16px; }
+    .form-label { display: block; font-size: 13px; font-weight: 600; color: var(--text-sub); margin-bottom: 6px; }
+
+  </style>
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-icon">A</div>
+      Anick Admin
+    </div>
+    <nav class="nav-menu">
+      <div class="nav-item active" onclick="switchPage('dashboard', this)">
+        <span class="nav-icon">📊</span> 대시보드
+      </div>
+      <div class="nav-item" onclick="switchPage('members', this)">
+        <span class="nav-icon">👥</span> 회원 관리
+      </div>
+      <div class="nav-item" onclick="switchPage('withdrawals', this)">
+        <span class="nav-icon">💸</span> 출금/정산 관리
+      </div>
+      <div class="nav-item" onclick="switchPage('sales', this)">
+        <span class="nav-icon">📈</span> 매출/통계
+      </div>
+      <div class="nav-item" onclick="switchPage('cms', this)">
+        <span class="nav-icon">⚙️</span> 운영 관리 (CMS)
+      </div>
+      <div class="nav-item" onclick="switchPage('points', this)">
+        <span class="nav-icon">🎁</span> 포인트/제휴 관리
+      </div>
+    </nav>
+    <div class="sidebar-footer">v0.3.0</div>
+  </aside>
+
+  <main class="main-content">
+    <header class="header">
+      <div class="page-title" id="pageTitle">대시보드</div>
+      <div class="user-profile">
+        <span>관리자(Admin)님</span>
+        <button class="btn btn-outline btn-sm">로그아웃</button>
+      </div>
+    </header>
+
+    <div id="dashboard" class="content-body active">
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-label">총 가입자 수</div>
+          <div class="card-value">12,450명</div>
+          <div class="card-trend trend-up">▲ 120명 (오늘)</div>
+        </div>
+        <div class="card">
+          <div class="card-label">오늘 총 매출</div>
+          <div class="card-value">₩ 850,000</div>
+          <div class="card-trend trend-up">▲ 5.2% (전일비)</div>
+        </div>
+        <div class="card">
+          <div class="card-label">출금 대기 건수</div>
+          <div class="card-value" style="color:var(--danger)">15건</div>
+          <div class="card-trend">빠른 처리가 필요합니다</div>
+        </div>
+        <div class="card">
+          <div class="card-label">총 적립 포인트</div>
+          <div class="card-value">45.2M P</div>
+          <div class="card-trend">전체 유저 보유량</div>
+        </div>
+      </div>
+      
+      <div class="section-title">
+        <span>🕒 최근 출금 신청 내역</span>
+        <button class="btn btn-outline btn-sm" onclick="switchPage('withdrawals', document.querySelectorAll('.nav-item')[2])">전체보기</button>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>신청일시</th>
+              <th>회원명</th>
+              <th>출금 신청액</th>
+              <th>상태</th>
+              <th>관리</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2026-01-23 10:45</td>
+              <td>김철수 (user_01)</td>
+              <td>10,000원</td>
+              <td><span class="badge warning">대기중</span></td>
+              <td><button class="btn btn-primary btn-sm">처리</button></td>
+            </tr>
+            <tr>
+              <td>2026-01-23 09:30</td>
+              <td>이영희 (user_02)</td>
+              <td>50,000원</td>
+              <td><span class="badge warning">대기중</span></td>
+              <td><button class="btn btn-primary btn-sm">처리</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="members" class="content-body">
+      <div class="search-bar">
+        <select class="select-field"><option>전체 회원</option></select>
+        <input type="text" class="input-field" placeholder="이름/ID 검색" style="width:240px;">
+        <button class="btn btn-primary">검색</button>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr><th>No.</th><th>회원명</th><th>이메일</th><th>보유 포인트</th><th>상태</th><th>관리</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1024</td><td>홍길동</td><td>hong@email.com</td>
+              <td style="font-weight:700;color:var(--primary)">26,350 P</td>
+              <td><span class="badge success">정상</span></td>
+              <td><button class="btn btn-outline btn-sm" onclick="openPointModal('홍길동')">포인트 관리</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="withdrawals" class="content-body">
+      <div class="tabs">
+        <div class="tab active" onclick="switchTab('wd-list', this, 'all')">전체</div>
+        <div class="tab" onclick="switchTab('wd-list', this, 'pending')">대기중 (15)</div>
+        <div class="tab" onclick="switchTab('wd-list', this, 'approved')">승인완료</div>
+        <div class="tab" onclick="switchTab('wd-list', this, 'rejected')">반려됨</div>
+      </div>
+
+      <div class="section-title">출금 신청 리스트</div>
+      <div class="table-container">
+        <table id="wd-table">
+          <thead><tr><th>신청번호</th><th>회원명</th><th>신청 금액</th><th>실 지급액</th><th>상태</th><th>관리</th></tr></thead>
+          <tbody>
+            <tr class="row-pending">
+              <td>WD-01</td><td>김철수</td><td>10,000원</td><td>9,500원</td>
+              <td><span class="badge warning">대기중</span></td>
+              <td><button class="btn btn-primary btn-sm">승인</button></td>
+            </tr>
+            <tr class="row-approved">
+              <td>WD-02</td><td>최유리</td><td>55,000원</td><td>42,900원</td>
+              <td><span class="badge success">지급완료</span></td>
+              <td>-</td>
+            </tr>
+            <tr class="row-approved">
+                <td>WD-03</td><td>박지성</td><td>5,000원</td><td>4,500원</td>
+                <td><span class="badge success">지급완료</span></td>
+                <td>-</td>
+            </tr>
+            <tr class="row-rejected">
+                <td>WD-04</td><td>이영희</td><td>100,000원</td><td>-</td>
+                <td><span class="badge danger">반려</span></td>
+                <td><span style="font-size:12px; color:#888;">계좌 불일치</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="sales" class="content-body">
+        <div class="section-title" style="justify-content: space-between;">
+            <div style="display:flex; align-items:center; gap:12px;">
+                <span>📅 일자별 매출/지표 현황</span>
+                <select class="select-field" style="font-weight:bold;">
+                    <option selected>2026년 1월</option>
+                    <option>2025년 12월</option>
+                </select>
+            </div>
+            <button class="btn btn-outline" onclick="alert('1월 매출 데이터 다운로드')">📥 엑셀 다운로드</button>
+        </div>
+
+        <div class="table-container" style="max-height: 600px; overflow-y: auto;">
+            <table>
+                <thead style="position: sticky; top: 0; z-index: 10;">
+                    <tr>
+                        <th width="15%">일자</th>
+                        <th width="20%">총 매출</th>
+                        <th width="15%">DAU (활성유저)</th>
+                        <th width="15%">신규 가입</th>
+                        <th width="20%">주요 수익원</th>
+                        <th width="15%">비고</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#f0f7ff; font-weight:bold;">
+                        <td>2026-01-23 (금)</td>
+                        <td style="color:var(--primary)">₩ 850,000</td>
+                        <td>3,450</td>
+                        <td>120</td>
+                        <td>제휴카드 (신한)</td>
+                        <td><span class="badge primary">Today</span></td>
+                    </tr>
+                    <tr>
+                        <td>2026-01-22 (목)</td>
+                        <td>₩ 720,000</td>
+                        <td>3,210</td>
+                        <td>95</td>
+                        <td>제휴카드</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>2026-01-21 (수)</td>
+                        <td>₩ 680,000</td>
+                        <td>3,100</td>
+                        <td>88</td>
+                        <td>오퍼월 광고</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="cms" class="content-body">
+        <div class="tabs">
+            <div class="tab active" onclick="switchSubTab('cms', 'banner', this)">배너/팝업 관리</div>
+            <div class="tab" onclick="switchSubTab('cms', 'notice', this)">공지사항/FAQ</div>
+            <div class="tab" onclick="switchSubTab('cms', 'push', this)">푸시 발송</div>
+        </div>
+
+        <div id="cms-banner" class="tab-content active">
+            <div class="section-title"><span>홈 배너 리스트</span><button class="btn btn-primary">+ 배너 등록</button></div>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>제목</th><th>이미지</th><th>링크 URL</th><th>기간</th><th>상태</th><th>관리</th></tr></thead>
+                    <tbody>
+                        <tr>
+                            <td>하나 트래블로그 이벤트</td>
+                            <td><div style="width:60px; height:30px; background:#ddd;"></div></td>
+                            <td>/event/hana</td>
+                            <td>26.01.01 ~ 01.31</td>
+                            <td><span class="badge success">노출중</span></td>
+                            <td><button class="btn btn-outline btn-sm">수정</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="cms-notice" class="tab-content">
+            <div class="section-title"><span>공지사항 관리</span><button class="btn btn-primary">+ 새 공지 등록</button></div>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>분류</th><th>제목</th><th>등록일</th><th>작성자</th><th>상태</th><th>관리</th></tr></thead>
+                    <tbody>
+                        <tr>
+                            <td>[공지]</td>
+                            <td>서비스 점검 안내 (1/25 02:00~04:00)</td>
+                            <td>2026-01-23</td>
+                            <td>Admin</td>
+                            <td><span class="badge success">노출중</span></td>
+                            <td><button class="btn btn-outline btn-sm">수정</button></td>
+                        </tr>
+                        <tr>
+                            <td>[이벤트]</td>
+                            <td>1월 래플 이벤트 당첨자 발표</td>
+                            <td>2026-01-20</td>
+                            <td>Marketing</td>
+                            <td><span class="badge success">노출중</span></td>
+                            <td><button class="btn btn-outline btn-sm">수정</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="cms-push" class="tab-content">
+            <div class="card" style="margin-bottom:24px; border:1px solid var(--primary);">
+                <div class="section-title" style="margin-bottom:10px;">🔔 새 푸시 발송하기</div>
+                <div class="form-group">
+                    <label class="form-label">발송 대상</label>
+                    <select class="select-field" style="width:200px;"><option>전체 회원</option><option>안드로이드 유저</option><option>마케팅 동의자</option></select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">푸시 제목</label>
+                    <input type="text" class="input-field" placeholder="제목을 입력하세요 (20자 이내)">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">푸시 내용</label>
+                    <textarea class="textarea-field" placeholder="내용을 입력하세요"></textarea>
+                </div>
+                <div style="text-align:right;">
+                    <button class="btn btn-outline">예약 발송</button>
+                    <button class="btn btn-primary" onclick="alert('푸시가 발송되었습니다.')">즉시 발송</button>
+                </div>
+            </div>
+
+            <div class="section-title">발송 이력</div>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>발송일시</th><th>제목</th><th>대상</th><th>도달률</th><th>클릭률</th></tr></thead>
+                    <tbody>
+                        <tr>
+                            <td>2026-01-22 12:00</td>
+                            <td>(광고) 오늘만 포인트 2배!</td>
+                            <td>전체 회원</td>
+                            <td>98%</td>
+                            <td>12.5%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="points" class="content-body">
+        <div class="tabs">
+            <div class="tab active" onclick="switchSubTab('points', 'raffle', this)">래플 상품 관리</div>
+            <div class="tab" onclick="switchSubTab('points', 'affiliate', this)">제휴 상품/링크 관리</div>
+        </div>
+
+        <div id="points-raffle" class="tab-content active">
+            <div class="section-title">🎁 진행중인 래플</div>
+            <div class="card-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="card" style="text-align:center; border: 2px dashed #ddd; cursor:pointer;">
+                    <div style="font-size:40px; color:#ddd; margin-top:20px;">+</div>
+                    <div style="margin-top:10px; color:#888;">새 상품 등록</div>
+                </div>
+                <div class="card">
+                    <div class="card-label">진행중 (D-2)</div>
+                    <div style="font-weight:700; margin-bottom:10px;">애플 에어팟 프로 2</div>
+                    <div style="font-size:13px; color:#666;">참여자: 234명</div>
+                    <div style="margin-top:10px;">
+                        <button class="btn btn-outline btn-sm">수정</button>
+                        <button class="btn btn-outline btn-sm">조기마감</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="points-affiliate" class="tab-content">
+            <div class="section-title"><span>제휴 링크 리스트</span><button class="btn btn-primary">+ 제휴사 추가</button></div>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>제휴사</th><th>상품명</th><th>유형</th><th>적립 포인트</th><th>상태</th><th>클릭 수(1월)</th><th>관리</th></tr></thead>
+                    <tbody>
+                        <tr>
+                            <td>신한카드</td>
+                            <td>Deep Dream 카드</td>
+                            <td><span class="badge primary">카드</span></td>
+                            <td>15,000 P</td>
+                            <td><span class="badge success">활성</span></td>
+                            <td>1,240</td>
+                            <td><button class="btn btn-outline btn-sm">수정</button></td>
+                        </tr>
+                        <tr>
+                            <td>DB손해보험</td>
+                            <td>다이렉트 자동차보험</td>
+                            <td><span class="badge warning">보험</span></td>
+                            <td>5,000 P</td>
+                            <td><span class="badge success">활성</span></td>
+                            <td>850</td>
+                            <td><button class="btn btn-outline btn-sm">수정</button></td>
+                        </tr>
+                        <tr>
+                            <td>쿠팡</td>
+                            <td>쇼핑 경유 적립</td>
+                            <td><span class="badge gray">쇼핑</span></td>
+                            <td>최대 2%</td>
+                            <td><span class="badge success">활성</span></td>
+                            <td>5,400</td>
+                            <td><button class="btn btn-outline btn-sm">수정</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+  </main>
+
+  <div class="modal-overlay" id="pointModal">
+    <div class="modal">
+      <div class="modal-header">포인트 관리</div>
+      <div class="modal-body">
+        <div class="form-group"><label class="form-label">대상 회원</label><input type="text" class="form-input" id="modalUserName" readonly></div>
+        <div class="form-group"><label class="form-label">금액</label><input type="number" class="form-input" placeholder="0"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('pointModal')">취소</button>
+        <button class="btn btn-primary" onclick="closeModal('pointModal')">확인</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Main Menu Switching
+    function switchPage(pageId, navElement) {
+      document.querySelectorAll('.content-body').forEach(p => p.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+      navElement.classList.add('active');
+      document.getElementById('pageTitle').innerText = navElement.innerText.trim();
+    }
+
+    // Sub-Tab Switching Logic (For CMS, Points, etc.)
+    function switchSubTab(parentId, tabId, tabElement) {
+      // 1. Hide all tab contents in this section
+      const parent = document.getElementById(parentId);
+      parent.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+      });
+      // 2. Remove active class from all tabs in this section
+      parent.querySelector('.tabs').querySelectorAll('.tab').forEach(t => {
+        t.classList.remove('active');
+      });
+
+      // 3. Activate selected tab and content
+      document.getElementById(`${parentId}-${tabId}`).classList.add('active');
+      tabElement.classList.add('active');
+    }
+
+    // Withdrawal List Filtering Logic (Simulation)
+    function switchTab(tableId, tabElement, filterType) {
+        // Update Tab UI
+        tabElement.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        tabElement.classList.add('active');
+
+        // Filter Rows
+        const rows = document.querySelectorAll('#wd-table tbody tr');
+        rows.forEach(row => {
+            if (filterType === 'all') {
+                row.style.display = '';
+            } else if (filterType === 'pending') {
+                row.style.display = row.classList.contains('row-pending') ? '' : 'none';
+            } else if (filterType === 'approved') {
+                row.style.display = row.classList.contains('row-approved') ? '' : 'none';
+            } else if (filterType === 'rejected') {
+                row.style.display = row.classList.contains('row-rejected') ? '' : 'none';
+            }
+        });
+    }
+
+    function openPointModal(name) {
+      document.getElementById('modalUserName').value = name;
+      document.getElementById('pointModal').classList.add('open');
+    }
+    
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('open');
+    }
+  </script>
+</body>
+</html>

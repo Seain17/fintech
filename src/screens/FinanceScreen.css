@@ -1,0 +1,292 @@
+.finance-screen {
+  background: var(--bg-main);
+}
+
+.finance-header {
+  padding: 60px 20px 20px;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-light);
+}
+
+/* Finance Calculator Card */
+.finance-calculator-card {
+  background: #fff;
+  margin: 0 0 24px;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: var(--shadow-md);
+}
+
+.calc-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  background: var(--border-light);
+  padding: 4px;
+  border-radius: 12px;
+}
+
+.calc-tab {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.calc-tab.active {
+  background: #fff;
+  color: var(--text-primary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.calc-content-area {
+  display: block;
+}
+
+.input-group label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.input-select,
+.input-text {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  background-color: var(--bg-main);
+  outline: none;
+  font-family: inherit;
+}
+
+.input-select:focus,
+.input-text:focus {
+  border-color: var(--primary);
+}
+
+.input-text::placeholder {
+  color: var(--text-tertiary);
+  font-weight: 400;
+}
+
+.btn-calc {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--primary) 0%, #667eea 100%);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: 0 4px 12px rgba(49, 130, 246, 0.3);
+}
+
+.btn-calc:active {
+  opacity: 0.9;
+  transform: translateY(1px);
+}
+
+.calc-result {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px dashed var(--border-light);
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.finance-content {
+  padding: 16px;
+}
+
+.finance-scroll-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Card List */
+.card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.finance-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  display: flex;
+  gap: 14px;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+}
+
+.finance-card:active {
+  transform: scale(0.98);
+}
+
+.finance-card-visual {
+  width: 70px;
+  height: 100px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.finance-card-visual::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+}
+
+.finance-card-visual.shinhan {
+  background: linear-gradient(135deg, #0046ff 0%, #003cb8 100%);
+}
+
+.finance-card-visual.samsung {
+  background: linear-gradient(135deg, #1428a0 0%, #0d1b6b 100%);
+}
+
+.finance-card-visual.kb {
+  background: linear-gradient(135deg, #ffb300 0%, #ff8f00 100%);
+}
+
+.finance-card-visual.hyundai {
+  background: linear-gradient(135deg, #000000 0%, #333333 100%);
+}
+
+.finance-card-visual.kakao {
+  background: linear-gradient(135deg, #fee500 0%, #fdd800 100%);
+}
+
+.finance-card-visual.toss {
+  background: linear-gradient(135deg, #0064ff 0%, #004ed6 100%);
+}
+
+.finance-card-visual.woori {
+  background: linear-gradient(135deg, #0083ca 0%, #0066a1 100%);
+}
+
+.card-logo {
+  font-size: 14px;
+  font-weight: 800;
+  color: #fff;
+  position: relative;
+  z-index: 1;
+}
+
+.finance-card-visual.kakao .card-logo {
+  color: #3c1e1e;
+}
+
+.finance-card-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.finance-card-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.finance-card-benefit {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  margin-bottom: 8px;
+}
+
+.finance-card-reward {
+  font-family: 'Outfit';
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* Insurance Grid */
+.insurance-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.insurance-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+}
+
+.insurance-card:active {
+  transform: scale(0.98);
+}
+
+.insurance-icon {
+  width: 60px;
+  height: 60px;
+  background: var(--primary-50);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+}
+
+.insurance-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.insurance-desc {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.insurance-reward {
+  font-family: 'Outfit';
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+}

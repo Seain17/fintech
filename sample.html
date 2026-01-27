@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UI 규격 샘플 (14pt / 48dp)</title>
+    <style>
+        /* 기본 설정 */
+        body {
+            background-color: #f0f2f5;
+            font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", Roboto, "Malgun Gothic", sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        /* 모바일 디바이스 프레임 (iPhone X/11/12/13 mini 기준 너비 375px) */
+        .mobile-frame {
+            width: 375px;
+            height: 812px;
+            background-color: #ffffff;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            border-radius: 40px;
+            border: 8px solid #333;
+            position: relative;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        /* 상단 네비게이션 */
+        .header {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            font-weight: 700;
+            border-bottom: 1px solid #eee;
+            margin-top: 20px; /* 노치 여백 */
+        }
+
+        /* 컨텐츠 영역 */
+        .content {
+            padding: 24px;
+        }
+
+        /* 카드 UI */
+        .card {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .point-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .point-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: #1a237e;
+            margin-bottom: 0;
+        }
+
+        /* [핵심] 14pt 텍스트 테스트 영역 */
+        .guide-box {
+            border: 1px dashed red;
+            padding: 10px;
+            margin-bottom: 40px;
+            background-color: rgba(255, 0, 0, 0.03);
+            position: relative;
+        }
+        
+        .guide-label {
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            background: red;
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        /* 웹에서 14pt는 약 18.6px ~ 19px 입니다 */
+        .text-14pt {
+            font-size: 19px; /* 14pt 근사치 */
+            line-height: 1.5;
+            color: #333;
+            word-break: keep-all;
+        }
+
+        /* 하단 버튼 영역 */
+        .bottom-area {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 24px;
+            background: white;
+            box-sizing: border-box;
+            border-top: 1px solid #f1f1f1;
+        }
+
+        /* [핵심] 48dp 버튼 */
+        .btn-48dp {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 48px; /* 높이 48dp */
+            background-color: #2962FF;
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        /* 치수 가이드 라인 */
+        .measure-line {
+            position: absolute;
+            right: -10px;
+            top: 0;
+            height: 48px;
+            border-right: 2px solid red;
+        }
+        .measure-line::after {
+            content: '48dp (최소 터치 높이)';
+            position: absolute;
+            right: 5px;
+            top: 15px;
+            color: red;
+            font-size: 10px;
+            white-space: nowrap;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="mobile-frame">
+        <div class="header">포인트 전환</div>
+
+        <div class="content">
+            <div class="card">
+                <div class="point-label">신한카드 포인트</div>
+                <div class="point-value">5,000 P</div>
+            </div>
+
+            <div class="guide-box">
+                <span class="guide-label">본문 14pt (약 19px)</span>
+                <p class="text-14pt">
+                    1포인트는 현금 1원과 동일한 가치를 가집니다.<br>
+                    <strong>3040 세대에게 가장 편안한 크기입니다.</strong>
+                </p>
+            </div>
+            
+            <p style="font-size: 14px; color:#888; text-align: center;">
+                (참고: 일반적인 앱의 작은 글씨는 12~14px입니다)
+            </p>
+        </div>
+
+        <div class="bottom-area">
+            <div class="btn-48dp">
+                전환하기
+                <div class="measure-line"></div>
+            </div>
+            <div style="text-align: center; margin-top: 10px; color: red; font-size: 11px;">
+                ▲ 성인 엄지손가락 터치에 최적화된 높이
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

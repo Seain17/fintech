@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>에이닉 - 제휴 금융 (프로토타입)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* 기존 프로토타입 스타일 상속 */
+    :root{--primary:#3182F6;--primary-light:#5BA0FF;--primary-dark:#1B64DA;--primary-50:rgba(49,130,246,0.08);--accent:#FF6B35;--success:#20C997;--warning:#FFC107;--error:#FF5252;--bg-main:#F7F8FA;--bg-card:#FFF;--bg-dark:#191F28;--bg-gradient:linear-gradient(135deg,#3182F6 0%,#1B64DA 100%);--text-primary:#191F28;--text-secondary:#4E5968;--text-tertiary:#8B95A1;--border:#E5E8EB;--border-light:#F2F4F6;--shadow-sm:0 1px 3px rgba(0,0,0,0.04);--shadow-md:0 4px 12px rgba(0,0,0,0.08);--shadow-lg:0 8px 24px rgba(0,0,0,0.12);--radius-md:16px;--radius-lg:20px;--radius-full:9999px}
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    body{font-family:'Noto Sans KR',-apple-system,sans-serif;background:#0D1117;min-height:100vh;display:flex;justify-content:center;padding:20px}
+    
+    .phone-frame{width:100%;max-width:390px;height:844px;background:var(--bg-main);border-radius:44px;position:relative;overflow:hidden;box-shadow:0 50px 100px rgba(0,0,0,0.5),0 0 0 11px #1a1a1a,0 0 0 13px #333}
+    .screen{position:absolute;inset:0;background:var(--bg-main);overflow-y:auto; padding-bottom: 90px;}
+    .screen::-webkit-scrollbar{display:none}
+
+    /* Header */
+    .page-header{background:var(--bg-card);padding:60px 20px 20px;border-bottom:1px solid var(--border-light); display:flex; justify-content:space-between; align-items:center;}
+    .page-title{font-size:24px;font-weight:800;color:var(--text-primary)}
+    .header-badge{background:var(--primary-50); color:var(--primary); font-size:12px; font-weight:700; padding:6px 12px; border-radius:12px;}
+
+    /* Banner */
+    .finance-banner{background:linear-gradient(135deg,#1c1c1c 0%,#333 100%);margin:20px 16px;border-radius:var(--radius-lg);padding:24px;color:#fff;position:relative;overflow:hidden;box-shadow:var(--shadow-md);}
+    .finance-banner-tag{display:inline-block;background:var(--primary);padding:4px 10px;border-radius:4px;font-size:11px;font-weight:700;margin-bottom:12px;}
+    .finance-banner-title{font-size:20px;font-weight:700;line-height:1.4;margin-bottom:8px;}
+    .finance-banner-desc{font-size:13px;opacity:0.8;margin-bottom:16px;}
+    .finance-banner-btn{background:#fff;color:#1c1c1c;border:none;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;}
+    .finance-banner-img{position:absolute;right:-10px;bottom:-20px;font-size:80px;opacity:0.9;}
+
+    /* Categories */
+    .category-scroll{display:flex;gap:10px;padding:0 16px;overflow-x:auto;margin-bottom:24px;}
+    .category-scroll::-webkit-scrollbar{display:none}
+    .category-item{min-width:70px; display:flex; flex-direction:column; align-items:center; gap:8px; cursor:pointer;}
+    .cat-icon{width:56px; height:56px; background:var(--bg-card); border-radius:18px; display:flex; align-items:center; justify-content:center; font-size:24px; box-shadow:var(--shadow-sm); border:1px solid var(--border-light);}
+    .cat-icon.active{background:var(--primary); color:#fff; border-color:var(--primary);}
+    .cat-label{font-size:13px; font-weight:600; color:var(--text-secondary);}
+    .cat-label.active{color:var(--primary); font-weight:700;}
+
+    /* Product Section */
+    .product-section{margin-bottom:32px;}
+    .section-head{padding:0 20px 12px; display:flex; justify-content:space-between; align-items:end;}
+    .section-title{font-size:18px; font-weight:800; color:var(--text-primary);}
+    .section-sub{font-size:13px; color:var(--text-tertiary);}
+
+    /* Card List Style */
+    .card-list{padding:0 16px; display:flex; flex-direction:column; gap:16px;}
+    .finance-card{background:var(--bg-card); border-radius:20px; padding:20px; box-shadow:var(--shadow-sm); display:flex; gap:16px; align-items:center; position:relative; overflow:hidden;}
+    .finance-card::before{content:''; position:absolute; top:0; left:0; width:4px; height:100%; background:var(--border-light);}
+    .finance-card.best::before{background:var(--primary);}
+    
+    .card-img{width:50px; height:80px; background:#ddd; border-radius:6px; object-fit:cover; flex-shrink:0; box-shadow:0 2px 6px rgba(0,0,0,0.1);}
+    /* Placeholder for card images */
+    .card-img.shinhan{background:linear-gradient(45deg, #2c3e50, #4ca1af);} 
+    .card-img.hyundai{background:linear-gradient(45deg, #833ab4, #fd1d1d, #fcb045);}
+    
+    .card-info{flex:1;}
+    .card-tags{display:flex; gap:6px; margin-bottom:6px;}
+    .tag{font-size:10px; font-weight:700; padding:3px 6px; border-radius:4px;}
+    .tag.point{background:var(--primary-50); color:var(--primary);}
+    .tag.event{background:#FFF0F0; color:#FF5252;}
+    
+    .card-name{font-size:16px; font-weight:700; color:var(--text-primary); margin-bottom:4px;}
+    .card-benefit{font-size:13px; color:var(--text-secondary); line-height:1.4;}
+    .card-highlight{color:var(--primary); font-weight:700;}
+    
+    .btn-apply{background:var(--bg-main); color:var(--text-primary); border:none; padding:8px 16px; border-radius:8px; font-size:12px; font-weight:700; cursor:pointer;}
+
+    /* Insurance List Style (Grid) */
+    .insurance-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px; padding:0 16px;}
+    .ins-card{background:var(--bg-card); border-radius:16px; padding:20px 16px; text-align:center; box-shadow:var(--shadow-sm); border:1px solid transparent; transition:all .2s;}
+    .ins-card:active{transform:scale(0.98); border-color:var(--primary);}
+    .ins-icon{font-size:32px; margin-bottom:12px;}
+    .ins-title{font-size:15px; font-weight:700; color:var(--text-primary); margin-bottom:4px;}
+    .ins-reward{font-size:13px; color:var(--primary); font-weight:700; background:var(--primary-50); display:inline-block; padding:4px 8px; border-radius:12px;}
+
+    /* Floating Action */
+    .compare-btn-wrap{position:fixed; bottom:30px; left:0; width:100%; display:flex; justify-content:center; z-index:100;}
+    .compare-btn{background:var(--text-primary); color:#fff; padding:14px 24px; border-radius:30px; font-weight:700; box-shadow:0 8px 20px rgba(0,0,0,0.3); display:flex; align-items:center; gap:8px;}
+
+  </style>
+</head>
+<body>
+
+<div class="phone-frame">
+  <div class="screen">
+    <div class="page-header">
+      <div class="page-title">제휴 금융</div>
+      <div class="header-badge">💰 자산 +UP</div>
+    </div>
+
+    <div class="finance-calculator-card" style="background:#fff; margin:20px 16px; border-radius:20px; padding:24px; box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+  <div style="margin-bottom:20px;">
+    <h2 style="font-size:20px; font-weight:800; color:#191F28; margin-bottom:8px; line-height:1.4;">
+      지금 쓰는 카드,<br>
+      <span style="color:#3182F6;">혜택 잘 받고 계신가요?</span> 🤔
+    </h2>
+    <p style="font-size:13px; color:#8B95A1;">10초 만에 혜택 진단해 드려요</p>
+  </div>
+
+  <div class="input-group" style="margin-bottom:16px;">
+    <label style="display:block; font-size:12px; font-weight:700; color:#4E5968; margin-bottom:6px;">사용 중인 카드사</label>
+    <select style="width:100%; padding:14px; border:1px solid #E5E8EB; border-radius:12px; font-size:15px; font-weight:600; color:#191F28; appearance:none; background:url('data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'24\' height=\'24\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%238B95A1\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'><polyline points=\'6 9 12 15 18 9\'></polyline></svg>') no-repeat right 12px center; background-color:#F9FAFB;">
+      <option value="">카드사를 선택해주세요</option>
+      <option value="shinhan">신한카드</option>
+      <option value="hyundai">현대카드</option>
+      <option value="samsung">삼성카드</option>
+      <option value="kb">KB국민카드</option>
+    </select>
+  </div>
+
+  <div class="input-group" style="margin-bottom:24px;">
+    <label style="display:block; font-size:12px; font-weight:700; color:#4E5968; margin-bottom:6px;">월 평균 이용 금액</label>
+    <div style="position:relative;">
+      <input type="number" placeholder="예: 100" style="width:100%; padding:14px; padding-right:40px; border:1px solid #E5E8EB; border-radius:12px; font-size:15px; font-weight:600; color:#191F28; background-color:#F9FAFB;">
+      <span style="position:absolute; right:14px; top:50%; transform:translateY(-50%); font-size:14px; color:#8B95A1;">만원</span>
+    </div>
+  </div>
+
+  <button onclick="showResult()" style="width:100%; padding:16px; border:none; border-radius:16px; background:linear-gradient(135deg,#3182F6 0%,#1B64DA 100%); color:#fff; font-size:16px; font-weight:700; cursor:pointer; box-shadow:0 4px 12px rgba(49,130,246,0.3);">
+    내 잃어버린 혜택 확인하기 >
+  </button>
+  
+  <div id="calc-result" style="display:none; margin-top:24px; padding-top:24px; border-top:1px dashed #E5E8EB; animation: slideDown 0.3s ease-out;">
+    <div style="background:#F2F4F6; border-radius:12px; padding:16px; text-align:center; margin-bottom:16px;">
+      <span style="font-size:13px; color:#4E5968;">지금 바꾸면 월 예상 혜택</span>
+      <div style="font-size:24px; font-weight:800; color:#3182F6; margin-top:4px;">+ 15,000 P</div>
+    </div>
+    
+    <div style="display:flex; align-items:center; gap:12px; padding:12px; border:1px solid #3182F6; border-radius:12px; background:#F0F7FF;">
+      <div style="width:40px; height:26px; background:#3182F6; border-radius:4px;"></div>
+      <div style="flex:1;">
+        <div style="font-size:12px; font-weight:700; color:#3182F6;">추천 1위</div>
+        <div style="font-size:14px; font-weight:700; color:#191F28;">에이닉 제휴 신한카드</div>
+      </div>
+      <button style="background:#3182F6; color:#fff; border:none; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:700;">신청</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showResult() {
+    const resultDiv = document.getElementById('calc-result');
+    resultDiv.style.display = 'block';
+    // 스크롤 자연스럽게 이동
+    resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+</script>
+
+<style>
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+
+    <div class="category-scroll">
+      <div class="category-item">
+        <div class="cat-icon active">💳</div>
+        <span class="cat-label active">카드</span>
+      </div>
+      <div class="category-item">
+        <div class="cat-icon">🛡️</div>
+        <span class="cat-label">보험</span>
+      </div>
+      <div class="category-item">
+        <div class="cat-icon">🏦</div>
+        <span class="cat-label">대출</span>
+      </div>
+      <div class="category-item">
+        <div class="cat-icon">📈</div>
+        <span class="cat-label">투자</span>
+      </div>
+      <div class="category-item">
+        <div class="cat-icon">📱</div>
+        <span class="cat-label">통신</span>
+      </div>
+    </div>
+
+    <div class="product-section">
+      <div class="section-head">
+        <div class="section-title">🔥 지금 가장 핫한 카드</div>
+        <div class="section-sub">광고 아님, 진짜 혜택</div>
+      </div>
+      
+      <div class="card-list">
+        <div class="finance-card best">
+          <div class="card-img shinhan"></div>
+          <div class="card-info">
+            <div class="card-tags">
+              <span class="tag point">최대 15만P</span>
+              <span class="tag event">연회비 캐시백</span>
+            </div>
+            <div class="card-name">신한 Deep Dream (에이닉)</div>
+            <div class="card-benefit">전월 실적 없어도 <span class="card-highlight">무조건 2% 적립</span><br>에이닉 포인트 전환 시 +10%</div>
+          </div>
+        </div>
+
+        <div class="finance-card">
+          <div class="card-img hyundai"></div>
+          <div class="card-info">
+            <div class="card-tags">
+              <span class="tag point">즉시 5만P</span>
+            </div>
+            <div class="card-name">현대카드 ZERO Edition3</div>
+            <div class="card-benefit">모든 가맹점 할인형<br>발급 즉시 <span class="card-highlight">50,000P 지급</span></div>
+          </div>
+          <button class="btn-apply">신청</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-section">
+      <div class="section-head">
+        <div class="section-title">💰 내 돈 찾아주는 보험</div>
+        <div class="section-sub">가입 안 해도 포인트 드려요</div>
+      </div>
+      <div class="insurance-grid">
+        <div class="ins-card">
+          <div class="ins-icon">🚘</div>
+          <div class="ins-title">내 차 보험료 확인</div>
+          <div class="ins-reward">+ 5,000 P</div>
+        </div>
+        <div class="ins-card">
+          <div class="ins-icon">🏥</div>
+          <div class="ins-title">숨은 병원비 찾기</div>
+          <div class="ins-reward">+ 1,000 P</div>
+        </div>
+        <div class="ins-card">
+          <div class="ins-icon">🦷</div>
+          <div class="ins-title">치아 보험료 계산</div>
+          <div class="ins-reward">+ 300 P</div>
+        </div>
+        <div class="ins-card">
+          <div class="ins-icon">🐕</div>
+          <div class="ins-title">펫 보험 알아보기</div>
+          <div class="ins-reward">+ 500 P</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-section">
+      <div class="section-head">
+        <div class="section-title">📉 최저 금리 & 투자</div>
+      </div>
+      <div class="card-list">
+        <div class="finance-card">
+          <div style="font-size:32px; width:50px; text-align:center;">🏦</div>
+          <div class="card-info">
+            <div class="card-name">내 대출 한도 조회</div>
+            <div class="card-benefit">조회만 해도 포인트 적립<br>최저 금리 갈아타기 진단</div>
+          </div>
+          <div style="font-weight:700; color:var(--primary);">+ 500P</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  
+  <div class="compare-btn-wrap">
+    <button class="compare-btn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+      내게 맞는 상품 검색하기
+    </button>
+  </div>
+
+</div>
+
+</body>
+</html>

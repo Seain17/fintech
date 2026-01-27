@@ -1,0 +1,74 @@
+.splash-screen {
+  background: var(--bg-gradient);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 0;
+  position: absolute;
+  inset: 0;
+}
+
+.splash-logo-wrap {
+  width: 100px;
+  height: 100px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  animation: pulse 2s infinite;
+  backdrop-filter: blur(20px);
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.splash-logo {
+  font-family: 'Outfit';
+  font-size: 36px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.splash-title {
+  font-family: 'Outfit';
+  font-size: 32px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.splash-subtitle {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 80px;
+}
+
+.splash-loading {
+  width: 160px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.splash-loading-bar {
+  width: 0;
+  height: 100%;
+  background: #fff;
+  animation: loading 2.2s ease-out forwards;
+}
+
+@keyframes loading {
+  to {
+    width: 100%;
+  }
+}
