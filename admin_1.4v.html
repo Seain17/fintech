@@ -153,6 +153,17 @@
     .answer-item:last-child { margin-bottom: 0; }
     .answer-meta { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; color: var(--text-sub); }
     .answer-content { font-size: 14px; line-height: 1.6; color: var(--text-main); }
+
+    /* 채팅 스타일 히스토리 */
+    .chat-history { padding: 20px; background: #f9fafb; border-radius: 12px; max-height: 500px; overflow-y: auto; }
+    .chat-message { margin-bottom: 16px; display: flex; }
+    .chat-message.user { justify-content: flex-start; }
+    .chat-message.admin { justify-content: flex-end; }
+    .chat-bubble { max-width: 70%; padding: 12px 16px; border-radius: 12px; }
+    .chat-bubble.user { background: white; border: 1px solid #e5e8eb; }
+    .chat-bubble.admin { background: var(--primary); color: white; }
+    .chat-meta { font-size: 11px; margin-bottom: 4px; opacity: 0.7; }
+    .chat-content { font-size: 14px; line-height: 1.5; }
   </style>
 </head>
 <body>
@@ -166,7 +177,7 @@
       <div class="nav-item" onclick="switchPage('stats', this)"><span class="nav-icon">📈</span> 통계</div>
       <div class="nav-item" onclick="switchPage('withdrawals', this)"><span class="nav-icon">💸</span> 출금/정산</div>
       <div class="nav-item" onclick="switchPage('cms', this)"><span class="nav-icon">⚙️</span> 운영 관리</div>
-      <div class="nav-item" onclick="switchPage('points', this)"><span class="nav-icon">🎁</span> 포인트/혜택</div>
+      <div class="nav-item" onclick="switchPage('points', this)"><span class="nav-icon">🎁</span> 혜택/금융 상품 관리</div>
       <div class="nav-item" onclick="switchPage('cs', this)"><span class="nav-icon">🎧</span> 고객센터</div>
     </nav>
     <div class="sidebar-footer">v1.3.0</div>
@@ -289,6 +300,7 @@
               <div class="tab active" onclick="switchMemberTab('point', this)">포인트 내역</div>
               <div class="tab" onclick="switchMemberTab('withdrawal', this)">출금 내역</div>
               <div class="tab" onclick="switchMemberTab('raffle', this)">래플 참여</div>
+              <div class="tab" onclick="switchMemberTab('gifticon', this)">기프티콘 교환</div>
               <div class="tab" onclick="switchMemberTab('activity', this)">활동 로그</div>
             </div>
 
@@ -329,6 +341,20 @@
                     <tr><td>갤럭시 버즈 프로</td><td>2026-01-22 16:45</td><td><span class="badge danger">미당첨</span></td></tr>
                     <tr><td>스타벅스 기프티콘</td><td>2026-01-20 11:30</td><td><span class="badge success">당첨</span></td></tr>
                     <tr><td>아이패드 프로</td><td>2026-01-18 09:15</td><td><span class="badge danger">미당첨</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div id="member-tab-gifticon" class="tab-content">
+              <div class="table-container">
+                <table>
+                  <thead><tr><th>일시</th><th>상품명</th><th>사용 포인트</th><th>상태</th></tr></thead>
+                  <tbody>
+                    <tr><td>2026-01-24 15:30</td><td>스타벅스 아메리카노 (5,000원)</td><td>5,000 P</td><td><span class="badge success">발송완료</span></td></tr>
+                    <tr><td>2026-01-20 11:20</td><td>GS25 상품권 (10,000원)</td><td>10,000 P</td><td><span class="badge success">발송완료</span></td></tr>
+                    <tr><td>2026-01-15 09:40</td><td>BBQ 황금올리브 세트</td><td>18,000 P</td><td><span class="badge success">발송완료</span></td></tr>
+                    <tr><td>2026-01-10 14:15</td><td>CU 모바일 상품권 (5,000원)</td><td>5,000 P</td><td><span class="badge success">발송완료</span></td></tr>
                   </tbody>
                 </table>
               </div>
@@ -786,17 +812,17 @@
             <div id="cms-banner" class="tab-content active">
                 <div class="section-title"><span>배너 리스트</span><button class="btn btn-primary" onclick="showCmsBannerDetail('new')">+ 등록</button></div>
                 <div class="table-container">
-                    <table>
+                    <table id="banner-table">
                       <thead><tr><th>순서</th><th>이미지</th><th>제목</th><th>배너 지면</th><th>기간</th><th>상태</th><th>관리</th></tr></thead>
                       <tbody>
                         <tr onclick="showCmsBannerDetail('edit')">
-                          <td><span class="order-btn">▲</span> <span class="order-btn">▼</span></td><td>🖼️</td><td>신규 가입 이벤트</td><td>홈</td><td>2026-01-20 ~ 2026-01-31</td><td><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></td><td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); showCmsBannerDetail('edit')">수정</button></td>
+                          <td onclick="event.stopPropagation();"><span class="order-btn" onclick="moveRowUp('banner-table', this, event)">▲</span> <span class="order-btn" onclick="moveRowDown('banner-table', this, event)">▼</span></td><td>🖼️</td><td>신규 가입 이벤트</td><td>홈</td><td>2026-01-20 ~ 2026-01-31</td><td onclick="event.stopPropagation();"><label class="toggle-switch"><input type="checkbox" checked onclick="toggleStatus(this, '배너', event)"><span class="toggle-slider"></span></label></td><td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); showCmsBannerDetail('edit')">수정</button></td>
                         </tr>
                         <tr onclick="showCmsBannerDetail('edit')">
-                          <td><span class="order-btn">▲</span> <span class="order-btn">▼</span></td><td>🖼️</td><td>래플 이벤트 진행중</td><td>이벤트</td><td>2026-01-15 ~ 2026-02-15</td><td><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></td><td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); showCmsBannerDetail('edit')">수정</button></td>
+                          <td onclick="event.stopPropagation();"><span class="order-btn" onclick="moveRowUp('banner-table', this, event)">▲</span> <span class="order-btn" onclick="moveRowDown('banner-table', this, event)">▼</span></td><td>🖼️</td><td>래플 이벤트 진행중</td><td>이벤트</td><td>2026-01-15 ~ 2026-02-15</td><td onclick="event.stopPropagation();"><label class="toggle-switch"><input type="checkbox" checked onclick="toggleStatus(this, '배너', event)"><span class="toggle-slider"></span></label></td><td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); showCmsBannerDetail('edit')">수정</button></td>
                         </tr>
                         <tr onclick="showCmsBannerDetail('edit')">
-                          <td><span class="order-btn">▲</span> <span class="order-btn">▼</span></td><td>🖼️</td><td>포인트 충전 보너스</td><td>마이페이지</td><td>2026-01-10 ~ 2026-01-25</td><td><label class="toggle-switch"><input type="checkbox"><span class="toggle-slider"></span></label></td><td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); showCmsBannerDetail('edit')">수정</button></td>
+                          <td onclick="event.stopPropagation();"><span class="order-btn" onclick="moveRowUp('banner-table', this, event)">▲</span> <span class="order-btn" onclick="moveRowDown('banner-table', this, event)">▼</span></td><td>🖼️</td><td>포인트 충전 보너스</td><td>마이페이지</td><td>2026-01-10 ~ 2026-01-25</td><td onclick="event.stopPropagation();"><label class="toggle-switch"><input type="checkbox" onclick="toggleStatus(this, '배너', event)"><span class="toggle-slider"></span></label></td><td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); showCmsBannerDetail('edit')">수정</button></td>
                         </tr>
                       </tbody>
                     </table>
@@ -1017,9 +1043,17 @@
         </div>
     </div>
 
-    <!-- 포인트/혜택 -->
+    <!-- 혜택/금융 상품 -->
     <div id="points" class="content-body">
-        <div id="raffle-list-view">
+        <div id="benefits-list-view">
+            <div class="tabs">
+                <div class="tab active" onclick="switchSubTab('points', 'raffle', this)">래플</div>
+                <div class="tab" onclick="switchSubTab('points', 'shopping', this)">쇼핑적립</div>
+                <div class="tab" onclick="switchSubTab('points', 'partner', this)">제휴사 상품</div>
+            </div>
+
+            <!-- 래플 탭 -->
+            <div id="points-raffle" class="tab-content active">
             <div class="section-title"><span>🎁 래플 관리</span><button class="btn btn-primary" onclick="showRaffleDetail('new')">+ 상품 등록</button></div>
             <div class="card-grid">
                 <div class="card" style="text-align:center; cursor: pointer;" onclick="showRaffleDetail('edit')">
@@ -1044,28 +1078,72 @@
 
             <div class="section-title" style="margin-top: 40px;">래플 내역</div>
             <div class="table-container">
-              <table>
+              <table id="raffle-table">
                 <thead><tr><th>순서</th><th>상품명</th><th>최대 인원</th><th>현재 참여</th><th>기간</th><th>상태</th><th>관리</th></tr></thead>
                 <tbody>
                   <tr onclick="showRaffleDetail('edit')">
-                    <td><span class="order-btn">▲</span> <span class="order-btn">▼</span></td><td><span style="margin-right: 8px;">🎧</span>에어팟 프로 2세대</td><td>500명</td><td>342명</td><td>2026-01-20 ~ 01-31</td><td><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></td><td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); showRaffleDetail('edit')">상세</button></td>
+                    <td onclick="event.stopPropagation();"><span class="order-btn" onclick="moveRowUp('raffle-table', this, event)">▲</span> <span class="order-btn" onclick="moveRowDown('raffle-table', this, event)">▼</span></td><td><span style="margin-right: 8px;">🎧</span>에어팟 프로 2세대</td><td>500명</td><td>342명</td><td>2026-01-20 ~ 01-31</td><td onclick="event.stopPropagation();"><label class="toggle-switch"><input type="checkbox" checked onclick="toggleStatus(this, '래플', event)"><span class="toggle-slider"></span></label></td><td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); showRaffleDetail('edit')">상세</button></td>
                   </tr>
                   <tr onclick="showRaffleDetail('edit')">
-                    <td><span class="order-btn">▲</span> <span class="order-btn">▼</span></td><td><span style="margin-right: 8px;">💻</span>맥북 프로 14</td><td>1000명</td><td>128명</td><td>2026-01-15 ~ 02-15</td><td><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></td><td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); showRaffleDetail('edit')">상세</button></td>
+                    <td onclick="event.stopPropagation();"><span class="order-btn" onclick="moveRowUp('raffle-table', this, event)">▲</span> <span class="order-btn" onclick="moveRowDown('raffle-table', this, event)">▼</span></td><td><span style="margin-right: 8px;">💻</span>맥북 프로 14</td><td>1000명</td><td>128명</td><td>2026-01-15 ~ 02-15</td><td onclick="event.stopPropagation();"><label class="toggle-switch"><input type="checkbox" checked onclick="toggleStatus(this, '래플', event)"><span class="toggle-slider"></span></label></td><td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); showRaffleDetail('edit')">상세</button></td>
                   </tr>
                   <tr onclick="showRaffleDetail('edit')">
-                    <td><span class="order-btn">▲</span> <span class="order-btn">▼</span></td><td><span style="margin-right: 8px;">☕</span>스타벅스 기프티콘</td><td>500명</td><td>500명</td><td>2026-01-10 ~ 01-20</td><td><label class="toggle-switch"><input type="checkbox"><span class="toggle-slider"></span></label></td><td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); showRaffleDetail('edit')">상세</button></td>
+                    <td onclick="event.stopPropagation();"><span class="order-btn" onclick="moveRowUp('raffle-table', this, event)">▲</span> <span class="order-btn" onclick="moveRowDown('raffle-table', this, event)">▼</span></td><td><span style="margin-right: 8px;">☕</span>스타벅스 기프티콘</td><td>500명</td><td>500명</td><td>2026-01-10 ~ 01-20</td><td onclick="event.stopPropagation();"><label class="toggle-switch"><input type="checkbox" onclick="toggleStatus(this, '래플', event)"><span class="toggle-slider"></span></label></td><td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); showRaffleDetail('edit')">상세</button></td>
                   </tr>
                 </tbody>
               </table>
             </div>
         </div>
 
+            <!-- 쇼핑적립 탭 -->
+            <div id="points-shopping" class="tab-content">
+                <div class="section-title"><span>🛒 쇼핑적립 상품 관리</span><button class="btn btn-primary" onclick="showShoppingDetail('new')">+ 상품 등록</button></div>
+                <div class="table-container">
+                    <table>
+                      <thead><tr><th>No.</th><th>쇼핑몰</th><th>적립률</th><th>상태</th><th>등록일</th><th>관리</th></tr></thead>
+                      <tbody>
+                        <tr onclick="showShoppingDetail('edit')">
+                          <td>1</td><td>쿠팡</td><td>2.5%</td><td><span class="badge success">활성</span></td><td>2026-01-20</td><td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); showShoppingDetail('edit')">수정</button></td>
+                        </tr>
+                        <tr onclick="showShoppingDetail('edit')">
+                          <td>2</td><td>G마켓</td><td>3.0%</td><td><span class="badge success">활성</span></td><td>2026-01-18</td><td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); showShoppingDetail('edit')">수정</button></td>
+                        </tr>
+                        <tr onclick="showShoppingDetail('edit')">
+                          <td>3</td><td>11번가</td><td>2.0%</td><td><span class="badge gray">비활성</span></td><td>2026-01-15</td><td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); showShoppingDetail('edit')">수정</button></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 제휴사 상품 탭 -->
+            <div id="points-partner" class="tab-content">
+                <div class="section-title"><span>🤝 제휴사 상품 관리</span><button class="btn btn-primary" onclick="showPartnerDetail('new')">+ 상품 등록</button></div>
+                <div class="table-container">
+                    <table>
+                      <thead><tr><th>No.</th><th>제휴사</th><th>상품명</th><th>수수료</th><th>상태</th><th>등록일</th><th>관리</th></tr></thead>
+                      <tbody>
+                        <tr onclick="showPartnerDetail('edit')">
+                          <td>1</td><td>신한카드</td><td>신한카드 체크카드</td><td>50,000원</td><td><span class="badge success">활성</span></td><td>2026-01-22</td><td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); showPartnerDetail('edit')">수정</button></td>
+                        </tr>
+                        <tr onclick="showPartnerDetail('edit')">
+                          <td>2</td><td>삼성화재</td><td>자동차보험</td><td>80,000원</td><td><span class="badge success">활성</span></td><td>2026-01-20</td><td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); showPartnerDetail('edit')">수정</button></td>
+                        </tr>
+                        <tr onclick="showPartnerDetail('edit')">
+                          <td>3</td><td>카카오페이</td><td>카카오페이 가입</td><td>10,000원</td><td><span class="badge gray">비활성</span></td><td>2026-01-15</td><td><button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); showPartnerDetail('edit')">수정</button></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
         <!-- 래플 상세 -->
-        <div id="raffle-detail-view" class="detail-view-container">
+        <div id="raffle-detail-view" class="detail-view-container" style="display: none;">
             <div class="detail-header">
               <div class="detail-title">래플 상품 등록/수정</div>
-              <button class="btn btn-outline btn-sm" onclick="hideRaffleDetail()">취소</button>
+              <button class="btn btn-outline btn-sm" onclick="hideBenefitsDetail()">취소</button>
             </div>
 
             <div class="card" style="margin-bottom: 24px; text-align: center; padding: 40px;">
@@ -1146,7 +1224,51 @@
             <div class="action-bar">
               <button class="btn btn-danger">삭제</button>
               <button class="btn btn-outline">추첨하기</button>
-              <button class="btn btn-primary" onclick="hideRaffleDetail(); alert('저장되었습니다.')">저장</button>
+              <button class="btn btn-primary" onclick="hideBenefitsDetail(); alert('저장되었습니다.')">저장</button>
+            </div>
+        </div>
+
+        <!-- 쇼핑적립 상세 -->
+        <div id="shopping-detail-view" class="detail-view-container" style="display: none;">
+            <div class="detail-header">
+              <div class="detail-title">쇼핑적립 상품 등록/수정</div>
+              <button class="btn btn-outline btn-sm" onclick="hideBenefitsDetail()">취소</button>
+            </div>
+            <div class="form-group">
+              <label class="form-label">쇼핑몰명</label>
+              <input type="text" class="input-field" placeholder="예: 쿠팡">
+            </div>
+            <div class="form-group">
+              <label class="form-label">적립률 (%)</label>
+              <input type="number" class="input-field" placeholder="2.5" step="0.1">
+            </div>
+            <div class="action-bar">
+              <button class="btn btn-danger">삭제</button>
+              <button class="btn btn-primary" onclick="hideBenefitsDetail(); alert('저장되었습니다.')">저장</button>
+            </div>
+        </div>
+
+        <!-- 제휴사 상품 상세 -->
+        <div id="partner-detail-view" class="detail-view-container" style="display: none;">
+            <div class="detail-header">
+              <div class="detail-title">제휴사 상품 등록/수정</div>
+              <button class="btn btn-outline btn-sm" onclick="hideBenefitsDetail()">취소</button>
+            </div>
+            <div class="form-group">
+              <label class="form-label">제휴사명</label>
+              <input type="text" class="input-field" placeholder="예: 신한카드">
+            </div>
+            <div class="form-group">
+              <label class="form-label">상품명</label>
+              <input type="text" class="input-field" placeholder="예: 신한카드 체크카드">
+            </div>
+            <div class="form-group">
+              <label class="form-label">수수료 (원)</label>
+              <input type="number" class="input-field" placeholder="50000">
+            </div>
+            <div class="action-bar">
+              <button class="btn btn-danger">삭제</button>
+              <button class="btn btn-primary" onclick="hideBenefitsDetail(); alert('저장되었습니다.')">저장</button>
             </div>
         </div>
     </div>
@@ -1233,23 +1355,37 @@
             </div>
 
             <div class="section-title">답변 히스토리</div>
-            <div class="answer-history">
-              <div class="answer-item">
-                <div class="answer-meta">
-                  <span><strong>관리자</strong></span>
-                  <span>2026-01-20 15:30</span>
-                </div>
-                <div class="answer-content">
-                  안녕하세요. 고객님. 입금 확인이 완료되었으며, 포인트가 정상적으로 충전되었습니다. 감사합니다.
+            <div class="chat-history">
+              <div class="chat-message user">
+                <div class="chat-bubble user">
+                  <div class="chat-meta"><strong>유저 문의</strong> - 2026-01-25 14:30</div>
+                  <div class="chat-content">
+                    안녕하세요. 포인트 충전을 위해 1만원을 입금했는데 포인트가 충전되지 않았습니다. 확인 부탁드립니다.
+                  </div>
                 </div>
               </div>
-              <div class="answer-item">
-                <div class="answer-meta">
-                  <span><strong>관리자</strong></span>
-                  <span>2026-01-15 10:20</span>
+              <div class="chat-message admin">
+                <div class="chat-bubble admin">
+                  <div class="chat-meta"><strong>관리자 답변</strong> - 2026-01-25 15:10</div>
+                  <div class="chat-content">
+                    문의 주신 내용 확인하였습니다. 입금 내역 확인 중이오니 잠시만 기다려주시기 바랍니다.
+                  </div>
                 </div>
-                <div class="answer-content">
-                  문의 주신 내용 확인하였습니다. 입금 내역 확인 중이오니 잠시만 기다려주시기 바랍니다.
+              </div>
+              <div class="chat-message user">
+                <div class="chat-bubble user">
+                  <div class="chat-meta"><strong>유저 문의</strong> - 2026-01-25 16:20</div>
+                  <div class="chat-content">
+                    확인은 얼마나 걸리나요?
+                  </div>
+                </div>
+              </div>
+              <div class="chat-message admin">
+                <div class="chat-bubble admin">
+                  <div class="chat-meta"><strong>관리자 답변</strong> - 2026-01-25 16:30</div>
+                  <div class="chat-content">
+                    안녕하세요. 고객님. 입금 확인이 완료되었으며, 포인트가 정상적으로 충전되었습니다. 감사합니다.
+                  </div>
                 </div>
               </div>
             </div>
@@ -1361,12 +1497,8 @@
 
     // [래플] 상세
     function showRaffleDetail(mode) {
-        document.getElementById('raffle-list-view').style.display = 'none';
-        document.getElementById('raffle-detail-view').classList.add('active');
-    }
-    function hideRaffleDetail() {
-        document.getElementById('raffle-detail-view').classList.remove('active');
-        document.getElementById('raffle-list-view').style.display = 'block';
+        document.getElementById('benefits-list-view').style.display = 'none';
+        document.getElementById('raffle-detail-view').style.display = 'block';
     }
 
     // [CS] 상세
@@ -1400,6 +1532,48 @@
           row.style.display = row.dataset.status === status ? '' : 'none';
         }
       });
+    }
+
+    // 순서 변경
+    function moveRowUp(table, button, event) {
+      if (event) event.stopPropagation();
+      const row = button.closest('tr');
+      const prevRow = row.previousElementSibling;
+      if (prevRow && !prevRow.querySelector('th')) {
+        row.parentNode.insertBefore(row, prevRow);
+      }
+    }
+
+    function moveRowDown(table, button, event) {
+      if (event) event.stopPropagation();
+      const row = button.closest('tr');
+      const nextRow = row.nextElementSibling;
+      if (nextRow) {
+        row.parentNode.insertBefore(nextRow, row);
+      }
+    }
+
+    // 토글 상태 변경 (상세페이지 이동 없이)
+    function toggleStatus(checkbox, type, event) {
+      if (event) event.stopPropagation();
+      const status = checkbox.checked ? '활성' : '비활성';
+      alert(type + ' 상태가 ' + status + '로 변경되었습니다.');
+    }
+
+    // 혜택/금융 상품 상세 보기
+    function showShoppingDetail(mode) {
+      document.getElementById('benefits-list-view').style.display = 'none';
+      document.getElementById('shopping-detail-view').style.display = 'block';
+    }
+
+    function showPartnerDetail(mode) {
+      document.getElementById('benefits-list-view').style.display = 'none';
+      document.getElementById('partner-detail-view').style.display = 'block';
+    }
+
+    function hideBenefitsDetail() {
+      document.querySelectorAll('#points .detail-view-container').forEach(el => el.style.display = 'none');
+      document.getElementById('benefits-list-view').style.display = 'block';
     }
   </script>
 </body>

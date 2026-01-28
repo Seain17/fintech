@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './HomeScreen.css';
-import exchangeRateData from '../data/exchangeRate.json';
+import exchangeRateData from '../../shared/data/exchangeRate.json';
 
 const HomeScreen = ({ userPoints, showToast }) => {
   const navigate = useNavigate();
