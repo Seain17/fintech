@@ -118,6 +118,58 @@
   }
 }
 
+/* Product Tabs - 카드/보험/대출 */
+.product-tabs-container {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 8px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.product-tabs {
+  display: flex;
+  gap: 8px;
+}
+
+.product-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 10px;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.product-tab:active {
+  transform: scale(0.98);
+}
+
+.product-tab.active {
+  background: var(--primary-bg);
+}
+
+.product-tab-icon {
+  font-size: 24px;
+}
+
+.product-tab-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+}
+
+.product-tab.active .product-tab-label {
+  color: var(--primary);
+  font-weight: 700;
+}
+
 .finance-content {
   padding: 16px;
 }

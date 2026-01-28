@@ -4,7 +4,7 @@ import './MypageScreen.css';
 
 const MypageScreen = ({ userPoints, showToast }) => {
   const navigate = useNavigate();
-  
+
   return (
     <div className="screen mypage-screen">
       <div className="mypage-header">
@@ -18,7 +18,8 @@ const MypageScreen = ({ userPoints, showToast }) => {
             <div className="profile-name">홍길동</div>
             <div className="profile-email">hong@email.com</div>
           </div>
-        </div>
+                  </div>
+
         <div className="mypage-points">
           <div className="mypage-point-row">
             <span>보유 포인트</span>
@@ -30,14 +31,10 @@ const MypageScreen = ({ userPoints, showToast }) => {
           </div>
         </div>
       </div>
+
       <div className="mypage-menu">
         <div className="mypage-menu-section">
-          <div className="mypage-menu-section-title">포인트 관리</div>
-          <button className="mypage-menu-item" onClick={() => navigate('/withdraw')}>
-            <div className="mypage-menu-icon">💰</div>
-            <span>출금 신청</span>
-            <span>›</span>
-          </button>
+          <div className="mypage-menu-section-title">포인트</div>
           <button className="mypage-menu-item" onClick={() => navigate('/withdraw-history')}>
             <div className="mypage-menu-icon">📋</div>
             <span>출금 내역</span>
@@ -51,15 +48,10 @@ const MypageScreen = ({ userPoints, showToast }) => {
         </div>
 
         <div className="mypage-menu-section">
-          <div className="mypage-menu-section-title">이벤트</div>
+          <div className="mypage-menu-section-title">혜택</div>
           <button className="mypage-menu-item" onClick={() => navigate('/raffle-history')}>
             <div className="mypage-menu-icon">🎰</div>
-            <span>응모 내역</span>
-            <span>›</span>
-          </button>
-          <button className="mypage-menu-item" onClick={() => navigate('/winner-history')}>
-            <div className="mypage-menu-icon">🏆</div>
-            <span>당첨 내역</span>
+            <span>래플 내역</span>
             <span>›</span>
           </button>
         </div>
@@ -71,6 +63,11 @@ const MypageScreen = ({ userPoints, showToast }) => {
             <span>1:1 문의</span>
             <span>›</span>
           </button>
+          <button className="mypage-menu-item" onClick={() => navigate('/faq')}>
+            <div className="mypage-menu-icon">❓</div>
+            <span>자주 묻는 질문</span>
+            <span>›</span>
+          </button>
           <button className="mypage-menu-item" onClick={() => navigate('/notice')}>
             <div className="mypage-menu-icon">📢</div>
             <span>공지사항</span>
@@ -79,12 +76,15 @@ const MypageScreen = ({ userPoints, showToast }) => {
         </div>
 
         <div className="mypage-menu-section">
-          <div className="mypage-menu-section-title">기타</div>
           <button className="mypage-menu-item" onClick={() => navigate('/settings')}>
             <div className="mypage-menu-icon">⚙️</div>
-            <span>설정</span>
+            <span>앱 설정</span>
             <span>›</span>
           </button>
+        </div>
+
+        <div className="mypage-footer">
+          <div className="app-version">앱 버전 1.0.0</div>
         </div>
       </div>
     </div>

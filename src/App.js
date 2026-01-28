@@ -13,11 +13,19 @@ import MypageScreen from './mobile/screens/MypageScreen';
 
 // Mobile Detail Screens
 import WithdrawDetailScreen from './mobile/screens/WithdrawDetailScreen';
+import WithdrawHistoryScreen from './mobile/screens/WithdrawHistoryScreen';
 import PointHistoryScreen from './mobile/screens/PointHistoryScreen';
 import RaffleDetailScreen from './mobile/screens/RaffleDetailScreen';
+import RaffleHistoryScreen from './mobile/screens/RaffleHistoryScreen';
 import ShoppingBridgeScreen from './mobile/screens/ShoppingBridgeScreen';
 import SettingsScreen from './mobile/screens/SettingsScreen';
 import GamePlayScreen from './mobile/screens/GamePlayScreen';
+import InquiryScreen from './mobile/screens/InquiryScreen';
+import FAQScreen from './mobile/screens/FAQScreen';
+import NoticeScreen from './mobile/screens/NoticeScreen';
+import ProfileEditScreen from './mobile/screens/ProfileEditScreen';
+import TermsScreen from './mobile/screens/TermsScreen';
+import PrivacyScreen from './mobile/screens/PrivacyScreen';
 
 // Mobile Components
 import BottomNav from './mobile/components/BottomNav';
@@ -45,11 +53,19 @@ function MobileApp({ isLoggedIn, handleLogin, showToast, userPoints, updatePoint
 
             {/* Detail Pages */}
             <Route path="/withdraw" element={<WithdrawDetailScreen userPoints={userPoints} showToast={showToast} />} />
+            <Route path="/withdraw-history" element={<WithdrawHistoryScreen />} />
             <Route path="/point-history" element={<PointHistoryScreen />} />
             <Route path="/raffle/:id" element={<RaffleDetailScreen userPoints={userPoints} updatePoints={updatePoints} showToast={showToast} />} />
+            <Route path="/raffle-history" element={<RaffleHistoryScreen />} />
             <Route path="/shopping/bridge/:shopId" element={<ShoppingBridgeScreen />} />
             <Route path="/settings" element={<SettingsScreen showToast={showToast} />} />
             <Route path="/game/:gameType" element={<GamePlayScreen updatePoints={updatePoints} showToast={showToast} />} />
+            <Route path="/inquiry" element={<InquiryScreen showToast={showToast} />} />
+            <Route path="/faq" element={<FAQScreen />} />
+            <Route path="/notice" element={<NoticeScreen />} />
+            <Route path="/profile-edit" element={<ProfileEditScreen showToast={showToast} />} />
+            <Route path="/terms" element={<TermsScreen />} />
+            <Route path="/privacy" element={<PrivacyScreen />} />
 
             <Route path="*" element={<Navigate to="/" replace />} />
           </>

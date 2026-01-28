@@ -1,4 +1,4 @@
-.raffle-detail-screen { background: var(--bg-main); padding-bottom: 0; }
+.raffle-detail-screen { background: var(--bg-main); padding-bottom: 100px; }
 .raffle-detail-header { padding: 60px 20px 40px; position: relative; }
 .page-back-btn.white { position: absolute; top: 60px; left: 20px; background: rgba(255,255,255,0.2); border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 .page-back-btn.white svg { color: #fff; }
@@ -22,4 +22,76 @@
 .notice-list { list-style: none; padding: 0; margin: 0; }
 .notice-list li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding-left: 16px; position: relative; margin-bottom: 8px; }
 .notice-list li::before { content: '•'; position: absolute; left: 0; color: var(--primary); }
-.raffle-enter-section { position: fixed; bottom: 28px; left: 0; right: 0; padding: 0 20px; max-width: 390px; margin: 0 auto; }
+.my-tickets {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--primary-bg);
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  margin-top: 16px;
+}
+.my-tickets span:first-child {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+.ticket-count {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary);
+}
+.raffle-enter-section {
+  padding: 20px 0 80px;
+  margin-top: 20px;
+}
+.ticket-selector {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-card);
+  padding: 16px;
+  border-radius: var(--radius-md);
+  margin-bottom: 16px;
+}
+.ticket-label {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.ticket-counter {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.counter-btn {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--bg-main);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.counter-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+.counter-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary);
+  min-width: 30px;
+  text-align: center;
+}
+.raffle-enter-section .btn-primary {
+  margin-bottom: 0;
+}
+.raffle-enter-section .btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

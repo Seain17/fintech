@@ -1,9 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import './FinanceScreen.css';
 
 const FinanceScreen = ({ showToast }) => {
   const [activeCalcTab, setActiveCalcTab] = useState('card');
   const [showResult, setShowResult] = useState(false);
+  const [activeProductTab, setActiveProductTab] = useState('card');
+
+  // Refs for scroll sections
+  const cardSectionRef = useRef(null);
+  const insuranceSectionRef = useRef(null);
+  const loanSectionRef = useRef(null);
+
+  const handleProductTabClick = (tabId) => {
+    setActiveProductTab(tabId);
+
+    const sectionRef = {
+      card: cardSectionRef,
+      insurance: insuranceSectionRef,
+      loan: loanSectionRef
+    }[tabId];
+
+    if (sectionRef.current) {
+      sectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
 
   // Card inputs
   const [cardCompany, setCardCompany] = useState('');
@@ -166,8 +186,35 @@ const FinanceScreen = ({ showToast }) => {
             )}
           </div>
 
+          {/* 상품 탭 네비게이션 */}
+          <div className="product-tabs-container">
+            <div className="product-tabs">
+              <button
+                className={`product-tab ${activeProductTab === 'card' ? 'active' : ''}`}
+                onClick={() => handleProductTabClick('card')}
+              >
+                <span className="product-tab-icon">💳</span>
+                <span className="product-tab-label">카드</span>
+              </button>
+              <button
+                className={`product-tab ${activeProductTab === 'insurance' ? 'active' : ''}`}
+                onClick={() => handleProductTabClick('insurance')}
+              >
+                <span className="product-tab-icon">🛡️</span>
+                <span className="product-tab-label">보험</span>
+              </button>
+              <button
+                className={`product-tab ${activeProductTab === 'loan' ? 'active' : ''}`}
+                onClick={() => handleProductTabClick('loan')}
+              >
+                <span className="product-tab-icon">💸</span>
+                <span className="product-tab-label">대출</span>
+              </button>
+            </div>
+          </div>
+
           {/* 추천 카드 섹션 */}
-          <div className="section">
+          <div className="section" ref={cardSectionRef}>
             <div className="section-header">
               <h2 className="section-title">💳 추천 카드</h2>
             </div>
@@ -219,7 +266,7 @@ const FinanceScreen = ({ showToast }) => {
           </div>
 
           {/* 추천 보험 섹션 */}
-          <div className="section">
+          <div className="section" ref={insuranceSectionRef}>
             <div className="section-header">
               <h2 className="section-title">🛡️ 추천 보험</h2>
             </div>
@@ -269,7 +316,7 @@ const FinanceScreen = ({ showToast }) => {
           </div>
 
           {/* 추천 대출 섹션 */}
-          <div className="section">
+          <div className="section" ref={loanSectionRef}>
             <div className="section-header">
               <h2 className="section-title">💸 추천 대출</h2>
             </div>

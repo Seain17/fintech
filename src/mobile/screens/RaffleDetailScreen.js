@@ -2,36 +2,53 @@ import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './RaffleDetailScreen.css';
 
-const RaffleDetailScreen = ({ userPoints, updatePoints, showToast }) => {
+const RaffleDetailScreen = ({ userTickets = 5, updateTickets, showToast }) => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [ticketCount, setTicketCount] = useState(1);
+  const [currentTickets, setCurrentTickets] = useState(userTickets);
 
   const raffleData = {
     id: 1,
     name: '애플 에어팟 프로 2',
     image: '🎧',
-    cost: 100,
+    ticketCost: 1,
     participants: 234,
-    dueDate: '2024-01-25',
-    announceDate: '2024-01-26',
+    dueDate: '2026-01-30',
+    announceDate: '2026-01-31',
     description: '애플 에어팟 프로 2세대 (새 제품)\n노이즈 캔슬링 기능이 탑재된 무선 이어폰입니다.',
     color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
   };
 
   const handleEnter = () => {
-    if (userPoints < raffleData.cost) {
-      showToast('포인트가 부족합니다');
+    if (currentTickets < ticketCount) {
+      showToast('응모권이 부족합니다');
       return;
     }
     setShowConfirmModal(true);
   };
 
   const confirmEnter = () => {
-    updatePoints(-raffleData.cost);
+    setCurrentTickets(prev => prev - ticketCount);
+    if (updateTickets) {
+      updateTickets(-ticketCount);
+    }
     setShowConfirmModal(false);
     showToast('🎉 응모 완료! 행운을 빕니다!');
     setTimeout(() => navigate('/benefits'), 1500);
+  };
+
+  const increaseTicket = () => {
+    if (ticketCount < currentTickets) {
+      setTicketCount(prev => prev + 1);
+    }
+  };
+
+  const decreaseTicket = () => {
+    if (ticketCount > 1) {
+      setTicketCount(prev => prev - 1);
+    }
   };
 
   return (
@@ -53,8 +70,12 @@ const RaffleDetailScreen = ({ userPoints, updatePoints, showToast }) => {
           </div>
           <h1 className="raffle-name">{raffleData.name}</h1>
           <div className="raffle-meta">
-            <span>💎 응모 포인트: {raffleData.cost}P</span>
+            <span>🎟️ 응모권 1장당 1회 응모</span>
             <span>👥 {raffleData.participants}명 참여중</span>
+          </div>
+          <div className="my-tickets">
+            <span>보유 응모권</span>
+            <span className="ticket-count">{currentTickets}장</span>
           </div>
         </div>
 
@@ -92,8 +113,16 @@ const RaffleDetailScreen = ({ userPoints, updatePoints, showToast }) => {
         </div>
 
         <div className="raffle-enter-section">
-          <button className="btn-primary" onClick={handleEnter}>
-            {raffleData.cost}P로 응모하기
+          <div className="ticket-selector">
+            <span className="ticket-label">사용할 응모권</span>
+            <div className="ticket-counter">
+              <button className="counter-btn" onClick={decreaseTicket} disabled={ticketCount <= 1}>-</button>
+              <span className="counter-value">{ticketCount}</span>
+              <button className="counter-btn" onClick={increaseTicket} disabled={ticketCount >= currentTickets}>+</button>
+            </div>
+          </div>
+          <button className="btn-primary" onClick={handleEnter} disabled={currentTickets < 1}>
+            {ticketCount}장으로 응모하기
           </button>
         </div>
       </div>
@@ -101,11 +130,11 @@ const RaffleDetailScreen = ({ userPoints, updatePoints, showToast }) => {
       {showConfirmModal && (
         <div className="modal active" onClick={() => setShowConfirmModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-icon">🎁</div>
+            <div className="modal-icon">🎟️</div>
             <div className="modal-title">래플 응모</div>
             <div className="modal-desc">
               {raffleData.name}에<br />
-              {raffleData.cost}P를 사용하여 응모하시겠습니까?
+              응모권 {ticketCount}장을 사용하여 응모하시겠습니까?
             </div>
             <button className="modal-btn" onClick={confirmEnter}>응모하기</button>
             <button className="btn-secondary" onClick={() => setShowConfirmModal(false)} style={{ marginTop: '8px' }}>
