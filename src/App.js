@@ -26,6 +26,9 @@ import NoticeScreen from './mobile/screens/NoticeScreen';
 import ProfileEditScreen from './mobile/screens/ProfileEditScreen';
 import TermsScreen from './mobile/screens/TermsScreen';
 import PrivacyScreen from './mobile/screens/PrivacyScreen';
+import ShoppingHistoryScreen from './mobile/screens/ShoppingHistoryScreen';
+import ShoppingDetailScreen from './mobile/screens/ShoppingDetailScreen';
+import QuizScreen from './mobile/screens/QuizScreen';
 
 // Mobile Components
 import BottomNav from './mobile/components/BottomNav';
@@ -57,7 +60,10 @@ function MobileApp({ isLoggedIn, handleLogin, showToast, userPoints, updatePoint
             <Route path="/point-history" element={<PointHistoryScreen />} />
             <Route path="/raffle/:id" element={<RaffleDetailScreen userPoints={userPoints} updatePoints={updatePoints} showToast={showToast} />} />
             <Route path="/raffle-history" element={<RaffleHistoryScreen />} />
+            <Route path="/shopping-history" element={<ShoppingHistoryScreen />} />
+            <Route path="/shopping/:mallId" element={<ShoppingDetailScreen />} />
             <Route path="/shopping/bridge/:shopId" element={<ShoppingBridgeScreen />} />
+            <Route path="/quiz" element={<QuizScreen showToast={showToast} updatePoints={updatePoints} />} />
             <Route path="/settings" element={<SettingsScreen showToast={showToast} />} />
             <Route path="/game/:gameType" element={<GamePlayScreen updatePoints={updatePoints} showToast={showToast} />} />
             <Route path="/inquiry" element={<InquiryScreen showToast={showToast} />} />

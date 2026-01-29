@@ -54,6 +54,11 @@ const MypageScreen = ({ userPoints, showToast }) => {
             <span>래플 내역</span>
             <span>›</span>
           </button>
+          <button className="mypage-menu-item" onClick={() => navigate('/shopping-history')}>
+            <div className="mypage-menu-icon">🛒</div>
+            <span>쇼핑적립 내역</span>
+            <span>›</span>
+          </button>
         </div>
 
         <div className="mypage-menu-section">

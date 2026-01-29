@@ -4,55 +4,80 @@
 
 .benefits-header {
   padding: 60px 20px 0;
-  background: var(--bg-card);
-  border-bottom: 1px solid var(--border-light);
+  background: linear-gradient(180deg, #fff 0%, #f8f9fa 100%);
+  border-bottom: none;
 }
 
 /* SNB Tabs */
 .benefits-tabs {
   display: flex;
-  gap: 4px;
+  gap: 6px;
   margin-top: 16px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  padding-bottom: 12px;
+  padding-bottom: 16px;
 }
 
 .benefits-tabs::-webkit-scrollbar {
   display: none;
 }
 
+.benefits-tabs.dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.benefits-tabs.dragging .benefits-tab {
+  pointer-events: none;
+}
+
 .benefits-tab {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  padding: 10px 14px;
+  gap: 6px;
+  padding: 12px 16px;
   border: none;
-  background: transparent;
-  border-radius: var(--radius-md);
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: var(--radius-lg);
   cursor: pointer;
   flex-shrink: 0;
   font-family: inherit;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  touch-action: pan-x;
 }
 
 .benefits-tab .tab-icon {
-  font-size: 22px;
+  font-size: 24px;
+  transition: all 0.3s ease;
 }
 
 .benefits-tab .tab-label {
   font-size: 12px;
   font-weight: 600;
   color: var(--text-tertiary);
+  transition: all 0.3s ease;
 }
 
 .benefits-tab.active {
-  background: var(--primary-bg);
+  background: var(--bg-gradient);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.35);
+  transform: translateY(-2px);
+}
+
+.benefits-tab.active .tab-icon {
+  transform: scale(1.15);
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
 }
 
 .benefits-tab.active .tab-label {
-  color: var(--primary);
+  color: #fff;
+  font-weight: 700;
+}
+
+.benefits-tab:active {
+  transform: scale(0.95);
 }
 
 .benefits-content {
@@ -62,14 +87,15 @@
 .tab-content {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
+  animation: fadeInUp 0.4s ease-out;
 }
 
 .mission-reward-badge {
   display: inline-block;
-  padding: 4px 10px;
-  background: var(--primary-bg);
-  color: var(--primary);
+  padding: 6px 14px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+  color: #667eea;
   border-radius: var(--radius-full);
   font-size: 13px;
   font-weight: 700;
@@ -86,18 +112,25 @@
 .benefit-list-vertical {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .benefit-list-item {
   background: var(--bg-card);
-  border-radius: var(--radius-lg);
-  padding: 16px;
+  border-radius: var(--radius-xl);
+  padding: 18px;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
   cursor: pointer;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.02);
+}
+
+.benefit-list-item:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
 }
 
 .benefit-list-item:active {
@@ -224,6 +257,15 @@
   gap: 14px;
   cursor: pointer;
   box-shadow: var(--shadow-sm);
+  margin-top: 12px;
+}
+
+.mission-card.quiz-card {
+  border: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+.mission-card.quiz-card:active {
+  background: var(--primary-50);
 }
 
 .mission-icon {
