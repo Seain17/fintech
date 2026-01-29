@@ -25,9 +25,11 @@ const BenefitsScreen = ({ showToast, updatePoints }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+  const hasMoved = useRef(false);
 
   const handleTouchStart = (e) => {
     setIsDragging(true);
+    hasMoved.current = false;
     setStartX(e.touches[0].pageX - tabsRef.current.offsetLeft);
     setScrollLeft(tabsRef.current.scrollLeft);
   };
@@ -36,6 +38,9 @@ const BenefitsScreen = ({ showToast, updatePoints }) => {
     if (!isDragging) return;
     const x = e.touches[0].pageX - tabsRef.current.offsetLeft;
     const walk = (x - startX) * 1.5;
+    if (Math.abs(x - startX) > 5) {
+      hasMoved.current = true;
+    }
     tabsRef.current.scrollLeft = scrollLeft - walk;
   };
 
@@ -45,6 +50,7 @@ const BenefitsScreen = ({ showToast, updatePoints }) => {
 
   const handleMouseDown = (e) => {
     setIsDragging(true);
+    hasMoved.current = false;
     setStartX(e.pageX - tabsRef.current.offsetLeft);
     setScrollLeft(tabsRef.current.scrollLeft);
   };
@@ -54,6 +60,9 @@ const BenefitsScreen = ({ showToast, updatePoints }) => {
     e.preventDefault();
     const x = e.pageX - tabsRef.current.offsetLeft;
     const walk = (x - startX) * 1.5;
+    if (Math.abs(x - startX) > 5) {
+      hasMoved.current = true;
+    }
     tabsRef.current.scrollLeft = scrollLeft - walk;
   };
 
@@ -66,6 +75,8 @@ const BenefitsScreen = ({ showToast, updatePoints }) => {
   };
 
   const handleTabClick = (tabId) => {
+    if (hasMoved.current) return;
+
     const refMap = {
       raffle: raffleRef,
       mission: missionRef,

@@ -101,12 +101,6 @@ const ShoppingHistoryScreen = () => {
         )}
       </div>
 
-      <div className="shopping-history-summary">
-        <div className="summary-item">
-          <span className="summary-label">총 적립 포인트</span>
-          <span className="summary-value">5,770 P</span>
-        </div>
-      </div>
     </div>
   );
 };

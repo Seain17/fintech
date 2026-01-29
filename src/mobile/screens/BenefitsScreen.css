@@ -27,10 +27,6 @@
   user-select: none;
 }
 
-.benefits-tabs.dragging .benefits-tab {
-  pointer-events: none;
-}
-
 .benefits-tab {
   display: flex;
   flex-direction: column;
