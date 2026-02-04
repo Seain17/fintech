@@ -48,6 +48,8 @@ function Benefits() {
   const [shopping, setShopping] = useState(initialShoppingData);
   const [partners, setPartners] = useState(initialPartnerData);
   const [draggedIndex, setDraggedIndex] = useState(null);
+  const [dragTarget, setDragTarget] = useState(null); // 'raffle' | 'shopping' | 'partner'
+  const [dragOverIndex, setDragOverIndex] = useState(null);
 
   // 래플 상태 토글
   const handleRaffleToggle = (id, checked) => {
@@ -71,8 +73,9 @@ function Benefits() {
   };
 
   // 드래그 시작
-  const handleDragStart = (e, index) => {
+  const handleDragStart = (e, index, target) => {
     setDraggedIndex(index);
+    setDragTarget(target || 'raffle');
     e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData('text/plain', index);
   };
@@ -80,24 +83,43 @@ function Benefits() {
   // 드래그 종료
   const handleDragEnd = () => {
     setDraggedIndex(null);
+    setDragTarget(null);
+    setDragOverIndex(null);
   };
 
   // 드래그 오버 (드롭 허용)
-  const handleDragOver = (e) => {
+  const handleDragOver = (e, index) => {
     e.preventDefault();
+    setDragOverIndex(index);
   };
 
-  // 드롭 시 순서 변경
-  const handleDrop = (e, dropIndex) => {
+  // 드롭 시 순서 변경 (공통)
+  const handleDrop = (e, dropIndex, target) => {
     e.preventDefault();
     if (draggedIndex === null || draggedIndex === dropIndex) return;
 
-    const newRaffles = [...raffles];
-    const draggedItem = newRaffles[draggedIndex];
-    newRaffles.splice(draggedIndex, 1);
-    newRaffles.splice(dropIndex, 0, draggedItem);
-    setRaffles(newRaffles);
+    if (target === 'shopping') {
+      const newList = [...shopping];
+      const item = newList[draggedIndex];
+      newList.splice(draggedIndex, 1);
+      newList.splice(dropIndex, 0, item);
+      setShopping(newList);
+    } else if (target === 'partner') {
+      const newList = [...partners];
+      const item = newList[draggedIndex];
+      newList.splice(draggedIndex, 1);
+      newList.splice(dropIndex, 0, item);
+      setPartners(newList);
+    } else {
+      const newRaffles = [...raffles];
+      const draggedItem = newRaffles[draggedIndex];
+      newRaffles.splice(draggedIndex, 1);
+      newRaffles.splice(dropIndex, 0, draggedItem);
+      setRaffles(newRaffles);
+    }
     setDraggedIndex(null);
+    setDragTarget(null);
+    setDragOverIndex(null);
   };
 
   const renderRaffleDetail = () => (
@@ -285,15 +307,15 @@ function Benefits() {
                   <tr
                     key={item.id}
                     draggable
-                    onDragStart={(e) => handleDragStart(e, index)}
+                    onDragStart={(e) => handleDragStart(e, index, 'raffle')}
                     onDragEnd={handleDragEnd}
-                    onDragOver={handleDragOver}
-                    onDrop={(e) => handleDrop(e, index)}
+                    onDragOver={(e) => handleDragOver(e, index)}
+                    onDrop={(e) => handleDrop(e, index, 'raffle')}
                     style={{ cursor: 'grab' }}
-                    className={draggedIndex === index ? 'dragging' : ''}
+                    className={`${dragTarget === 'raffle' && draggedIndex === index ? 'dragging' : ''} ${dragTarget === 'raffle' && dragOverIndex === index && draggedIndex !== index ? 'drag-over' : ''}`}
                   >
                     <td>
-                      <span className="order-number">{index + 1}</span>
+                      <span className="drag-handle">☰</span><span className="order-number">{index + 1}</span>
                     </td>
                     <td onClick={() => setDetailView('raffle')}><span style={{ marginRight: 8 }}>{item.icon}</span>{item.name}</td>
                     <td>{item.max}</td>
@@ -319,14 +341,26 @@ function Benefits() {
             <span>🛒 쇼핑적립 상품 관리</span>
             <Button variant="primary" onClick={() => setDetailView('shopping')}>+ 상품 등록</Button>
           </div>
+          <p style={{ fontSize: 12, color: 'var(--admin-text-sub)', marginBottom: 12 }}>
+            ↕ 행을 드래그하여 순서를 변경할 수 있습니다
+          </p>
           <div className="table-container">
             <table className="admin-table">
-              <thead><tr><th>No.</th><th>쇼핑몰</th><th>적립률</th><th>상태</th><th>등록일</th><th>관리</th></tr></thead>
+              <thead><tr><th style={{ width: 60 }}>순서</th><th>쇼핑몰</th><th>적립률</th><th>상태</th><th>등록일</th><th>관리</th></tr></thead>
               <tbody>
-                {shopping.map((item) => (
-                  <tr key={item.id} onClick={() => setDetailView('shopping')}>
-                    <td>{item.id}</td>
-                    <td>{item.name}</td>
+                {shopping.map((item, index) => (
+                  <tr
+                    key={item.id}
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, index, 'shopping')}
+                    onDragEnd={handleDragEnd}
+                    onDragOver={(e) => handleDragOver(e, index)}
+                    onDrop={(e) => handleDrop(e, index, 'shopping')}
+                    style={{ cursor: 'grab' }}
+                    className={`${dragTarget === 'shopping' && draggedIndex === index ? 'dragging' : ''} ${dragTarget === 'shopping' && dragOverIndex === index && draggedIndex !== index ? 'drag-over' : ''}`}
+                  >
+                    <td><span className="drag-handle">☰</span><span className="order-number">{index + 1}</span></td>
+                    <td onClick={() => setDetailView('shopping')}>{item.name}</td>
                     <td>{item.rate}</td>
                     <td onClick={(e) => e.stopPropagation()}>
                       <Toggle checked={item.active} onChange={(checked) => handleShoppingToggle(item.id, checked)} />
@@ -349,14 +383,26 @@ function Benefits() {
             <span>🤝 제휴사 상품 관리</span>
             <Button variant="primary" onClick={() => setDetailView('partner')}>+ 상품 등록</Button>
           </div>
+          <p style={{ fontSize: 12, color: 'var(--admin-text-sub)', marginBottom: 12 }}>
+            ↕ 행을 드래그하여 순서를 변경할 수 있습니다
+          </p>
           <div className="table-container">
             <table className="admin-table">
-              <thead><tr><th>No.</th><th>제휴사</th><th>상품명</th><th>수수료</th><th>상태</th><th>등록일</th><th>관리</th></tr></thead>
+              <thead><tr><th style={{ width: 60 }}>순서</th><th>제휴사</th><th>상품명</th><th>수수료</th><th>상태</th><th>등록일</th><th>관리</th></tr></thead>
               <tbody>
-                {partners.map((item) => (
-                  <tr key={item.id} onClick={() => setDetailView('partner')}>
-                    <td>{item.id}</td>
-                    <td>{item.partner}</td>
+                {partners.map((item, index) => (
+                  <tr
+                    key={item.id}
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, index, 'partner')}
+                    onDragEnd={handleDragEnd}
+                    onDragOver={(e) => handleDragOver(e, index)}
+                    onDrop={(e) => handleDrop(e, index, 'partner')}
+                    style={{ cursor: 'grab' }}
+                    className={`${dragTarget === 'partner' && draggedIndex === index ? 'dragging' : ''} ${dragTarget === 'partner' && dragOverIndex === index && draggedIndex !== index ? 'drag-over' : ''}`}
+                  >
+                    <td><span className="drag-handle">☰</span><span className="order-number">{index + 1}</span></td>
+                    <td onClick={() => setDetailView('partner')}>{item.partner}</td>
                     <td>{item.product}</td>
                     <td>{item.fee}</td>
                     <td onClick={(e) => e.stopPropagation()}>

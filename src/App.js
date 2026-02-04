@@ -6,6 +6,7 @@ import './mobile/styles/global.css';
 import SplashScreen from './mobile/screens/SplashScreen';
 import OnboardingScreen from './mobile/screens/OnboardingScreen';
 import LoginScreen from './mobile/screens/LoginScreen';
+import SignupScreen from './mobile/screens/SignupScreen';
 import HomeScreen from './mobile/screens/HomeScreen';
 import BenefitsScreen from './mobile/screens/BenefitsScreen';
 import FinanceScreen from './mobile/screens/FinanceScreen';
@@ -37,7 +38,19 @@ import Toast from './mobile/components/Toast';
 // Admin
 import AdminApp from './AdminApp';
 
-function MobileApp({ isLoggedIn, handleLogin, showToast, userPoints, updatePoints, toast }) {
+// 네비게이션바를 숨길 상세 페이지 경로
+const hideNavPaths = [
+  '/withdraw', '/withdraw-history', '/point-history',
+  '/raffle-history', '/shopping-history', '/quiz',
+  '/settings', '/inquiry', '/faq', '/notice'
+];
+const hideNavPrefixes = ['/raffle/', '/shopping/'];
+
+function MobileApp({ isLoggedIn, handleLogin, handleSignup, showToast, userPoints, updatePoints, toast }) {
+  const location = useLocation();
+  const shouldHideNav = hideNavPaths.includes(location.pathname)
+    || hideNavPrefixes.some(p => location.pathname.startsWith(p));
+
   return (
     <div className="phone-frame">
       <Routes>
@@ -45,6 +58,7 @@ function MobileApp({ isLoggedIn, handleLogin, showToast, userPoints, updatePoint
           <>
             <Route path="/" element={<OnboardingScreen />} />
             <Route path="/login" element={<LoginScreen onLogin={handleLogin} />} />
+            <Route path="/signup" element={<SignupScreen onSignup={handleSignup} />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </>
         ) : (
@@ -78,7 +92,7 @@ function MobileApp({ isLoggedIn, handleLogin, showToast, userPoints, updatePoint
         )}
       </Routes>
 
-      {isLoggedIn && <BottomNav />}
+      {isLoggedIn && !shouldHideNav && <BottomNav />}
       <Toast show={toast.show} message={toast.message} />
     </div>
   );
@@ -121,6 +135,12 @@ function AppContent() {
     showToastMessage('환영합니다! 🎉');
   };
 
+  const handleSignup = () => {
+    setIsLoggedIn(true);
+    updatePoints(1000);
+    showToastMessage('회원가입 완료! 웰컴포인트 1,000P 지급 🎉');
+  };
+
   const showToastMessage = (message) => {
     setToast({ show: true, message });
     setTimeout(() => {
@@ -154,6 +174,7 @@ function AppContent() {
     <MobileApp
       isLoggedIn={isLoggedIn}
       handleLogin={handleLogin}
+      handleSignup={handleSignup}
       showToast={showToastMessage}
       userPoints={userPoints}
       updatePoints={updatePoints}

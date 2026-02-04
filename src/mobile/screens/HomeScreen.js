@@ -159,7 +159,11 @@ const HomeScreen = ({ userPoints, showToast }) => {
         </div>
         <div className="asset-row">
           <div className="asset-name">🇰🇷 코스피</div>
-          <div className="asset-val">2,650.12 <span className="asset-change down">▼0.1%</span></div>
+          <div className="asset-val">4,949.67 <span className="asset-change down">▼5.26%</span></div>
+        </div>
+        <div className="asset-row">
+          <div className="asset-name">🇰🇷 코스닥</div>
+          <div className="asset-val">1,098.36 <span className="asset-change down">▼4.44%</span></div>
         </div>
         <div className="asset-row">
           <div className="asset-name">🇺🇸 달러 환율</div>

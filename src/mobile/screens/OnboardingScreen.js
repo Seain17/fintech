@@ -27,7 +27,7 @@ const OnboardingScreen = () => {
           </p>
         </div>
         <div className="onboarding-actions">
-          <button className="btn-primary" onClick={() => navigate('/login')}>
+          <button className="btn-primary" onClick={() => navigate('/signup')}>
             처음이신가요? (시작하기)
           </button>
           <button className="btn-secondary" onClick={() => navigate('/login')}>

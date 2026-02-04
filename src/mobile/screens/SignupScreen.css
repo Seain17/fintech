@@ -1,0 +1,461 @@
+.signup-screen {
+  background: var(--bg-main);
+  padding-bottom: 0;
+}
+
+.signup-content {
+  padding: 60px 24px 40px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+/* Top Bar: Back + Progress */
+.signup-top-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.signup-back-btn {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: -8px;
+}
+
+.signup-back-btn svg {
+  width: 24px;
+  height: 24px;
+  color: var(--text-primary);
+}
+
+/* Progress Bar */
+.signup-progress {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.signup-progress-bar {
+  flex: 1;
+  height: 4px;
+  background: var(--border);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.signup-progress-bar.active {
+  background: var(--bg-gradient);
+  box-shadow: 0 0 8px rgba(102, 126, 234, 0.3);
+}
+
+.signup-progress-bar.completed {
+  background: var(--bg-gradient);
+}
+
+.signup-step-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}
+
+/* Step Header */
+.signup-step-header {
+  margin-bottom: 32px;
+}
+
+.signup-step-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  animation: fadeInUp 0.4s ease-out;
+}
+
+.signup-step-desc {
+  font-size: 14px;
+  color: var(--text-tertiary);
+  line-height: 1.5;
+  animation: fadeInUp 0.4s ease-out 0.1s both;
+}
+
+/* Step 1: Social Login */
+.signup-social-section {
+  animation: fadeInUp 0.4s ease-out 0.2s both;
+}
+
+/* Step 3: Verification */
+.signup-verify-section {
+  animation: fadeInUp 0.4s ease-out 0.2s both;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* SSO 연동 정보 */
+.signup-sso-info {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.signup-sso-item {
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.signup-sso-item + .signup-sso-item {
+  border-top: 1px solid var(--border-light);
+}
+
+.signup-sso-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  min-width: 52px;
+}
+
+.signup-sso-value-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.signup-sso-value {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.signup-sso-badge {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--primary);
+  background: var(--primary-50);
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+}
+
+/* 폼 입력 */
+.signup-form-group {
+  margin-bottom: 24px;
+}
+
+.signup-form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.signup-form-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  font-family: inherit;
+  color: var(--text-primary);
+  background: var(--bg-card);
+  transition: border-color 0.2s;
+}
+
+.signup-form-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-50);
+}
+
+.signup-form-input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.signup-next-btn {
+  width: 100%;
+  padding: 18px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--bg-gradient);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: var(--shadow-primary);
+  transition: all 0.3s ease;
+  margin-top: auto;
+}
+
+.signup-next-btn:active {
+  transform: scale(0.96);
+}
+
+.signup-next-btn:disabled {
+  background: var(--border);
+  color: var(--text-tertiary);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* Step 2: Terms */
+.signup-terms-section {
+  animation: fadeInUp 0.4s ease-out 0.2s both;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.signup-terms-list {
+  flex: 1;
+}
+
+.signup-term-all {
+  padding: 18px 16px;
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  margin-bottom: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: all 0.2s;
+}
+
+.signup-term-all.checked {
+  border-color: var(--primary);
+  background: var(--primary-50);
+}
+
+.signup-term-item {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.signup-term-item:last-child {
+  border-bottom: none;
+}
+
+.signup-checkbox {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.signup-checkbox.checked {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.signup-checkbox.checked svg {
+  opacity: 1;
+}
+
+.signup-checkbox svg {
+  width: 14px;
+  height: 14px;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.signup-term-text {
+  flex: 1;
+  font-size: 15px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.signup-term-all .signup-term-text {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.signup-term-required {
+  font-size: 12px;
+  color: var(--error);
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+.signup-term-optional {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  font-weight: 500;
+  margin-left: 4px;
+}
+
+/* Step 4: Complete */
+.signup-complete-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 0;
+}
+
+.signup-complete-icon {
+  width: 100px;
+  height: 100px;
+  background: var(--bg-gradient-gold);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 52px;
+  margin-bottom: 28px;
+  box-shadow: 0 12px 40px rgba(255, 165, 0, 0.35);
+  animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  position: relative;
+}
+
+.signup-complete-icon::before,
+.signup-complete-icon::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: var(--bg-gradient-gold);
+  border-radius: 50%;
+}
+
+.signup-complete-icon::before {
+  top: -8px;
+  right: -4px;
+  animation: sparkle 1.5s ease-in-out infinite;
+}
+
+.signup-complete-icon::after {
+  bottom: -4px;
+  left: -8px;
+  animation: sparkle 1.5s ease-in-out infinite 0.5s;
+}
+
+.signup-sparkle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--warning);
+  border-radius: 50%;
+}
+
+.signup-sparkle:nth-child(1) {
+  top: 10px;
+  left: -16px;
+  animation: sparkle 2s ease-in-out infinite 0.2s;
+}
+
+.signup-sparkle:nth-child(2) {
+  top: -12px;
+  left: 30px;
+  animation: sparkle 2s ease-in-out infinite 0.7s;
+}
+
+.signup-sparkle:nth-child(3) {
+  bottom: 10px;
+  right: -16px;
+  animation: sparkle 2s ease-in-out infinite 1.2s;
+}
+
+.signup-complete-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  animation: fadeInUp 0.5s ease-out 0.3s both;
+}
+
+.signup-complete-desc {
+  font-size: 15px;
+  color: var(--text-secondary);
+  margin-bottom: 36px;
+  line-height: 1.5;
+  animation: fadeInUp 0.5s ease-out 0.4s both;
+}
+
+.signup-points-badge {
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF8C00 100%);
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite, bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.5s both;
+  padding: 20px 40px;
+  border-radius: var(--radius-xl);
+  margin-bottom: 40px;
+  box-shadow: 0 10px 30px rgba(255, 165, 0, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+.signup-points-badge::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  animation: shimmer 2s ease-in-out infinite 1s;
+}
+
+.signup-points-label {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.signup-points-value {
+  font-size: 32px;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.signup-start-btn {
+  width: 100%;
+  padding: 18px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--bg-gradient);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: var(--shadow-primary);
+  transition: all 0.3s ease;
+  animation: fadeInUp 0.5s ease-out 0.7s both;
+  margin-top: auto;
+}
+
+.signup-start-btn:active {
+  transform: scale(0.96);
+}

@@ -339,8 +339,12 @@ body.admin-mode #root {
 }
 
 .admin-container .admin-table tbody tr.dragging {
-  opacity: 0.5;
+  opacity: 0.4;
   background: #E8F3FF;
+}
+
+.admin-container .admin-table tbody tr.drag-over {
+  border-top: 2px solid #3182F6;
 }
 
 .admin-container .order-number {
@@ -354,6 +358,19 @@ body.admin-mode #root {
   font-weight: 600;
   font-size: 13px;
   color: var(--text-sub);
+}
+
+.admin-container .drag-handle {
+  cursor: grab;
+  color: #bbb;
+  font-size: 16px;
+  margin-right: 6px;
+  user-select: none;
+  display: inline-block;
+  vertical-align: middle;
+}
+.admin-container .drag-handle:hover {
+  color: #666;
 }
 
 /* ==========================================
