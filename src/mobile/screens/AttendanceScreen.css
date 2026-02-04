@@ -1,0 +1,472 @@
+.attendance-screen {
+  background: var(--bg-main);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-bottom: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.attendance-screen .page-header {
+  flex-shrink: 0;
+}
+
+/* 김미소 대리 */
+.att-teller {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(180deg, #E8F3FF 0%, var(--bg-main) 100%);
+  padding: 8px 0 4px;
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.att-bubble {
+  background: var(--bg-card);
+  padding: 8px 16px;
+  border-radius: 16px;
+  border-bottom-left-radius: 2px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 5px;
+  transition: transform 0.2s;
+}
+
+.att-avatar {
+  font-size: 55px;
+  margin-bottom: -5px;
+}
+
+.att-nametag {
+  background: var(--primary);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 10px;
+  z-index: 2;
+  margin-bottom: 5px;
+}
+
+/* 도장 액션 영역 */
+.att-action-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 20;
+  padding-bottom: 10px;
+}
+
+/* 도장 */
+.att-stamp-object {
+  width: 150px;
+  height: 180px;
+  cursor: pointer;
+  transition: none;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.att-stamp-object.pressing {
+  transform: scale(0.95) translateY(5px);
+}
+
+.att-stamp-object.pressing .att-stamp-img {
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+}
+
+/* 퇴장 애니메이션 */
+.att-stamp-object.exiting {
+  transition: all 0.3s;
+  opacity: 0;
+  transform: translateY(-50px);
+  pointer-events: none;
+}
+
+.att-stamp-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 15px rgba(0,0,0,0.25));
+  transition: none;
+  transform: scale(2.2);
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: none;
+}
+
+
+/* 스파클 이펙트 */
+.att-sparkle {
+  position: absolute;
+  pointer-events: none;
+  z-index: 100;
+  font-size: 20px;
+  animation: sparkleUp 0.4s ease-out forwards;
+}
+
+@keyframes sparkleUp {
+  from {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: translate(-50%, calc(-50% - 50px)) scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* 에너지 게이지 */
+.att-energy-gauge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  position: absolute;
+  right: 80px;
+  top: 50%;
+  transform: translateY(-65%);
+}
+
+/* 게이지 퇴장 애니메이션 */
+.att-energy-gauge.exiting {
+  transition: all 0.3s;
+  opacity: 0;
+  transform: translateY(-50px);
+}
+
+.att-energy-label {
+  font-size: 10px;
+  font-weight: 800;
+  color: #D84315;
+  letter-spacing: 1px;
+}
+
+.att-energy-bar-container {
+  width: 18px;
+  height: 140px;
+  background: #E5E8EB;
+  border-radius: 9px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+  border: 2px solid #D5D8DB;
+}
+
+.att-energy-bar {
+  width: 100%;
+  background: linear-gradient(0deg, #FF7043, #FF5722, #D84315);
+  border-radius: 0 0 7px 7px;
+  transition: height 0.15s ease-out;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.att-energy-percent {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-tertiary);
+}
+
+.att-click-guide {
+  margin-top: 25px;
+  font-size: 13px;
+  color: var(--text-tertiary);
+  font-weight: 600;
+  animation: attBlink 1.5s infinite;
+}
+
+@keyframes attBlink {
+  50% { opacity: 0.5; }
+}
+
+/* 날아가는 도장 */
+.att-flying-stamp {
+  position: absolute;
+  width: 120px;
+  height: 140px;
+  z-index: 100;
+  pointer-events: none;
+  transform-origin: center bottom;
+}
+
+.att-flying-stamp img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* 화면 흔들림 */
+.att-shake {
+  animation: attShake 0.3s ease-out;
+}
+
+@keyframes attShake {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(-3px, 3px); }
+  50% { transform: translate(3px, -3px); }
+  75% { transform: translate(-3px, -3px); }
+}
+
+/* 달력 (통장) 영역 */
+.att-bankbook {
+  height: 42%;
+  background: #FFFCF5;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+  padding: 20px 15px;
+  overflow-y: auto;
+  border-top: 1px solid rgba(0,0,0,0.05);
+  position: relative;
+  z-index: 5;
+  flex-shrink: 0;
+}
+
+.att-bankbook::-webkit-scrollbar {
+  display: none;
+}
+
+.att-bankbook-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 15px;
+  border-bottom: 1px dashed #ddd;
+  padding-bottom: 10px;
+}
+
+.att-bankbook-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #5C4D38;
+}
+
+.att-bankbook-sub {
+  font-size: 11px;
+  color: #888;
+  margin-top: 2px;
+}
+
+.att-streak-badge {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+/* 달력 그리드 */
+.att-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.att-day-head {
+  text-align: center;
+  font-size: 10px;
+  color: #C4B9A7;
+  margin-bottom: 4px;
+}
+
+.att-date-cell {
+  height: 42px;
+  background: rgba(255,255,255,0.6);
+  border: 1px solid #EBE4D3;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  padding-top: 3px;
+  font-size: 10px;
+  color: #9A8C74;
+  position: relative;
+}
+
+.att-date-cell.empty {
+  background: transparent;
+  border: none;
+}
+
+.att-date-cell.today {
+  background: #fff;
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  font-weight: 800;
+}
+
+.att-date-cell.milestone {
+  background: #FFFDE7;
+  border-color: #FBC02D;
+}
+
+.att-date-cell.milestone-gold {
+  border-color: #FFD700;
+  background: #FFF8E1;
+}
+
+/* 마일스톤 아이콘 */
+.att-milestone-icon {
+  font-size: 14px;
+  margin-top: 2px;
+  opacity: 0.5;
+  filter: grayscale(100%);
+  transition: 0.3s;
+}
+
+.att-milestone-icon.unlocked {
+  opacity: 1;
+  filter: grayscale(0%);
+  transform: scale(1.3);
+}
+
+.att-milestone-label {
+  font-size: 8px;
+  color: #F57F17;
+  font-weight: 700;
+  position: absolute;
+  bottom: 2px;
+  white-space: nowrap;
+}
+
+/* 잉크 마크 */
+.att-ink-mark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.att-ink-mark-inner {
+  width: 32px;
+  height: 32px;
+  border: 2px solid #D84315;
+  border-radius: 50%;
+  color: #D84315;
+  font-size: 8px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transform: rotate(-10deg);
+  background: rgba(255,255,255,0.7);
+}
+
+/* 모달 */
+.att-modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  animation: attFadeIn 0.3s;
+}
+
+.att-modal-card {
+  background: var(--bg-card);
+  width: 85%;
+  padding: 25px 20px;
+  border-radius: 24px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  animation: attBounceIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.att-popup-badge {
+  background: #FFE082;
+  color: #5D4037;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 12px;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.att-modal-emoji {
+  font-size: 48px;
+  margin: 10px 0;
+}
+
+.att-modal-title {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.att-modal-desc {
+  color: #888;
+  font-size: 14px;
+  margin: 5px 0 20px;
+}
+
+.att-btn-ad-double {
+  background: linear-gradient(90deg, #FF6F00, #FF8F00);
+  color: #fff;
+  border: none;
+  padding: 16px;
+  width: 100%;
+  border-radius: 14px;
+  font-weight: 800;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(255, 111, 0, 0.3);
+  margin-top: 15px;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.att-btn-ad-double:active {
+  transform: scale(0.98);
+}
+
+.att-btn-just-get {
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 13px;
+  margin-top: 12px;
+  text-decoration: underline;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+@keyframes attFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes attBounceIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}

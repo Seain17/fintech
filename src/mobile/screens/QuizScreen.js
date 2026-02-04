@@ -3,178 +3,178 @@ import { useNavigate } from 'react-router-dom';
 import './QuizScreen.css';
 
 const quizData = [
-  {
-    id: 1,
-    question: '원금에 이자를 더한 금액에 다시 이자가 붙는 방식을 무엇이라고 할까요?',
-    options: ['단리', '복리', '고정금리', '변동금리'],
-    answer: 1,
-    reward: 100,
-  },
-  {
-    id: 2,
-    question: '예금자보호법에 따라 보호받을 수 있는 최대 금액은?',
-    options: ['3천만원', '5천만원', '1억원', '무제한'],
-    answer: 1,
-    reward: 100,
-  },
-  {
-    id: 3,
-    question: '물가가 지속적으로 오르는 현상을 무엇이라고 할까요?',
-    options: ['디플레이션', '스태그플레이션', '인플레이션', '리플레이션'],
-    answer: 2,
-    reward: 100,
-  },
+  { q: '체크카드 소득공제율은 신용카드보다 높다?', a: 'O' },
+  { q: '금리가 오르면 대출 이자부담은 줄어든다?', a: 'X' },
+  { q: '예금자보호법은 5천만원까지 보호된다?', a: 'O' },
 ];
+
+const bubbleMessages = {
+  start: '3단계 완주하고 돈다발 챙기세요! 💸',
+  correct: '정답입니다! +10P 적립!',
+  wrong: '아쉽네요! 그래도 다음 단계로!',
+  finish: '모두 맞히셨네요! 돈다발을 확인하세요!',
+};
 
 const QuizScreen = ({ showToast, updatePoints }) => {
   const navigate = useNavigate();
-  const [currentQuiz, setCurrentQuiz] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [current, setCurrent] = useState(0);
+  const [selected, setSelected] = useState(null);
   const [isAnswered, setIsAnswered] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(false);
   const [totalEarned, setTotalEarned] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [bubble, setBubble] = useState(bubbleMessages.start);
 
-  const quiz = quizData[currentQuiz];
-
-  const handleAnswer = (index) => {
+  const handleAnswer = (choice) => {
     if (isAnswered) return;
-
-    setSelectedAnswer(index);
+    setSelected(choice);
     setIsAnswered(true);
 
-    if (index === quiz.answer) {
-      setTotalEarned((prev) => prev + quiz.reward);
-      updatePoints(quiz.reward);
+    const correct = quizData[current].a === choice;
+    setIsCorrect(correct);
+
+    if (correct) {
+      setBubble(bubbleMessages.correct);
+      setTotalEarned(prev => prev + 10);
+      updatePoints(10);
+    } else {
+      setBubble(bubbleMessages.wrong);
     }
   };
 
   const handleNext = () => {
-    if (currentQuiz < quizData.length - 1) {
-      setCurrentQuiz((prev) => prev + 1);
-      setSelectedAnswer(null);
+    if (current < quizData.length - 1) {
+      setCurrent(prev => prev + 1);
+      setSelected(null);
       setIsAnswered(false);
+      setIsCorrect(false);
     } else {
       setIsComplete(true);
+      setBubble(bubbleMessages.finish);
+      setTimeout(() => setShowModal(true), 800);
     }
   };
 
-  const handleComplete = () => {
+  const handleBonusAd = () => {
+    updatePoints(10);
+    showToast('보너스 돈다발 +10P 추가 적립!');
+    navigate(-1);
+  };
+
+  const handleSkip = () => {
     if (totalEarned > 0) {
       showToast(`총 ${totalEarned}P 획득!`);
     }
     navigate(-1);
   };
 
-  if (isComplete) {
-    return (
-      <div className="screen quiz-screen">
-        <div className="page-header">
-          <button className="page-back-btn" onClick={() => navigate(-1)}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M15 18l-6-6 6-6"/>
-            </svg>
-          </button>
-          <h1 className="page-title">금융 퀴즈</h1>
-        </div>
-
-        <div className="quiz-complete">
-          <div className="complete-icon">🎉</div>
-          <h2 className="complete-title">퀴즈 완료!</h2>
-          <p className="complete-desc">오늘의 금융 퀴즈를 모두 풀었어요</p>
-          <div className="complete-reward">
-            <span className="reward-label">획득 포인트</span>
-            <span className="reward-value">+{totalEarned}P</span>
-          </div>
-          <button className="btn-complete" onClick={handleComplete}>
-            확인
-          </button>
-        </div>
-      </div>
-    );
-  }
+  // 로드맵 진행률
+  const progress = isComplete ? 100 : (current / quizData.length) * 100;
 
   return (
     <div className="screen quiz-screen">
       <div className="page-header">
         <button className="page-back-btn" onClick={() => navigate(-1)}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M15 18l-6-6 6-6"/>
+            <path d="M15 18l-6-6 6-6" />
           </svg>
         </button>
-        <h1 className="page-title">금융 퀴즈</h1>
+        <h1 className="page-title">돈다발 퀴즈</h1>
       </div>
 
-      <div className="quiz-content">
-        <div className="quiz-progress-section">
-          <div className="quiz-progress-bar">
+      {/* 김미소 대리 */}
+      <div className="quiz-teller">
+        <div className="quiz-bubble">{bubble}</div>
+        <div className="quiz-avatar">👩🏻‍💼</div>
+        <div className="quiz-nametag">김미소 대리</div>
+      </div>
+
+      {/* 로드맵 */}
+      <div className="quiz-roadmap">
+        <div className="roadmap-track">
+          <div className="roadmap-line-bg" />
+          <div className="roadmap-line-fill" style={{ width: `${progress}%` }} />
+          {[0, 1, 2].map(i => (
             <div
-              className="quiz-progress-fill"
-              style={{ width: `${((currentQuiz + 1) / quizData.length) * 100}%` }}
-            ></div>
-          </div>
-          <div className="quiz-progress-text">
-            {currentQuiz + 1} / {quizData.length}
+              key={i}
+              className={`roadmap-node ${i < current || isComplete ? 'passed' : ''} ${i === current && !isComplete ? 'active' : ''}`}
+            >
+              {i < current || isComplete ? '✔' : i + 1}
+              <span className="roadmap-node-label">10P</span>
+            </div>
+          ))}
+          <div className={`roadmap-node money-bundle ${isComplete ? 'active' : ''}`}>
+            💵
+            <span className="roadmap-node-label">돈다발</span>
           </div>
         </div>
+      </div>
 
-        <div className="quiz-card-large">
-          <div className="quiz-number">Q{quiz.id}</div>
-          <div className="quiz-question-text">{quiz.question}</div>
-          <div className="quiz-point-badge">+{quiz.reward}P</div>
-        </div>
+      {/* 퀴즈 카드 */}
+      {!isComplete && (
+        <div className="quiz-content">
+          <div className="quiz-card-ox">
+            <div className="quiz-card-header">
+              <span className="quiz-step-badge">STEP {current + 1}</span>
+              <span className="quiz-point-display">+10P</span>
+            </div>
 
-        <div className="quiz-options-list">
-          {quiz.options.map((option, index) => {
-            let optionClass = 'quiz-option-btn';
-            if (isAnswered) {
-              if (index === quiz.answer) {
-                optionClass += ' correct';
-              } else if (index === selectedAnswer) {
-                optionClass += ' wrong';
-              }
-            }
+            <div className="quiz-text-ox">{quizData[current].q}</div>
 
-            return (
+            <div className="quiz-ox-container">
               <button
-                key={index}
-                className={optionClass}
-                onClick={() => handleAnswer(index)}
+                className={`quiz-ox-btn o ${selected === 'O' ? 'selected' : ''} ${isAnswered ? 'disabled' : ''}`}
+                onClick={() => handleAnswer('O')}
                 disabled={isAnswered}
               >
-                <span className="option-number">{index + 1}</span>
-                <span className="option-text">{option}</span>
-                {isAnswered && index === quiz.answer && (
-                  <span className="option-icon correct">O</span>
-                )}
-                {isAnswered && index === selectedAnswer && index !== quiz.answer && (
-                  <span className="option-icon wrong">X</span>
-                )}
+                O
               </button>
-            );
-          })}
-        </div>
-
-        {isAnswered && (
-          <div className="quiz-result-section">
-            <div className={`quiz-result-message ${selectedAnswer === quiz.answer ? 'correct' : 'wrong'}`}>
-              {selectedAnswer === quiz.answer ? (
-                <>
-                  <span className="result-icon">🎉</span>
-                  <span>정답입니다! +{quiz.reward}P 획득</span>
-                </>
-              ) : (
-                <>
-                  <span className="result-icon">😅</span>
-                  <span>아쉽게도 오답이에요</span>
-                </>
-              )}
+              <button
+                className={`quiz-ox-btn x ${selected === 'X' ? 'selected' : ''} ${isAnswered ? 'disabled' : ''}`}
+                onClick={() => handleAnswer('X')}
+                disabled={isAnswered}
+              >
+                X
+              </button>
             </div>
-            <button className="btn-next-quiz" onClick={handleNext}>
-              {currentQuiz < quizData.length - 1 ? '다음 문제' : '결과 보기'}
+
+            {isAnswered && (
+              <div className={`quiz-feedback ${isCorrect ? 'correct' : 'wrong'}`}>
+                {isCorrect ? 'O' : 'X'}
+              </div>
+            )}
+
+            {isAnswered && (
+              <button className="quiz-next-btn" onClick={handleNext}>
+                {current < quizData.length - 1 ? '다음 문제 >' : '결과 보기 >'}
+              </button>
+            )}
+          </div>
+
+          <div className="quiz-ad-banner">[수익화 배너 영역]</div>
+        </div>
+      )}
+
+      {/* 결과 모달 */}
+      {showModal && (
+        <div className="quiz-modal-overlay" onClick={(e) => e.target === e.currentTarget && handleSkip()}>
+          <div className="quiz-modal-card">
+            <div className="quiz-modal-emoji">💵</div>
+            <h2 className="quiz-modal-title">3단계 완주 성공!</h2>
+            <p className="quiz-modal-desc">
+              퀴즈 보상 {totalEarned}P 확보 완료.<br />
+              이제 <b>보너스 돈다발</b>을 주워볼까요?
+            </p>
+            <button className="quiz-bonus-btn" onClick={handleBonusAd}>
+              💰 광고 보고 돈다발 줍기
+            </button>
+            <button className="quiz-skip-btn" onClick={handleSkip}>
+              괜찮아요, {totalEarned}P만 받을게요
             </button>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

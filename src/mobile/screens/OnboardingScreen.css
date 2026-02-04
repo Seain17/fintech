@@ -1,53 +1,181 @@
 .onboarding-screen {
-  background: var(--bg-main);
+  background: linear-gradient(180deg, #F0F4FF 0%, var(--bg-main) 50%);
   padding-bottom: 0;
+  overflow: hidden;
 }
 
+/* 배경 장식 원 */
+.onboarding-bg-circle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+.onboarding-bg-circle-1 {
+  width: 260px;
+  height: 260px;
+  background: var(--bg-gradient);
+  top: -60px;
+  right: -80px;
+  animation: float 6s ease-in-out infinite;
+}
+
+.onboarding-bg-circle-2 {
+  width: 180px;
+  height: 180px;
+  background: var(--bg-gradient-warm);
+  bottom: 180px;
+  left: -60px;
+  animation: float 5s ease-in-out infinite 1.5s;
+}
+
+/* 레이아웃 */
 .onboarding-content {
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 60px 24px 40px;
+  padding: 56px 24px 36px;
+  position: relative;
+  z-index: 1;
 }
 
-.onboarding-visual {
+/* 상단 로고 */
+.onboarding-logo-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 32px;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.onboarding-logo-box {
+  width: 40px;
+  height: 40px;
+  background: var(--bg-gradient);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.onboarding-logo {
+  font-family: 'Outfit', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.onboarding-logo-text {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* 슬라이드 영역 */
+.onboarding-slide-area {
   flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.onboarding-slide {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  width: 100%;
 }
 
-.onboarding-points-card {
+.onboarding-slide-next {
+  animation: slideInNext 0.5s ease-out;
+}
+
+.onboarding-slide-prev {
+  animation: slideInPrev 0.5s ease-out;
+}
+
+@keyframes slideInNext {
+  from {
+    opacity: 0;
+    transform: translateX(60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInPrev {
+  from {
+    opacity: 0;
+    transform: translateX(-60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 카드 */
+.onboarding-card {
   width: 100%;
   background: var(--bg-card);
-  padding: 32px 24px;
-  border-radius: 32px;
-  box-shadow: var(--shadow-lg);
+  padding: 36px 24px 32px;
+  border-radius: 28px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
   text-align: center;
-  margin-bottom: 40px;
-  border: 1px solid var(--primary-50);
+  margin-bottom: 36px;
+  border: 1px solid rgba(102, 126, 234, 0.08);
+  position: relative;
+  overflow: hidden;
 }
 
-.onboarding-points-label {
-  font-size: 15px;
-  color: var(--text-secondary);
-  margin-bottom: 12px;
+.onboarding-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--bg-gradient);
 }
 
-.onboarding-points-value {
-  font-family: 'Outfit';
-  font-size: 42px;
+.onboarding-card-emoji {
+  font-size: 48px;
+  margin-bottom: 16px;
+  animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.onboarding-card-badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary);
+  background: var(--primary-50);
+  padding: 5px 14px;
+  border-radius: var(--radius-full);
+  margin-bottom: 16px;
+}
+
+.onboarding-card-points {
+  font-family: 'Outfit', sans-serif;
+  font-size: 38px;
   font-weight: 800;
   color: var(--primary);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
+  line-height: 1.1;
 }
 
-.onboarding-points-sub {
+.onboarding-card-sub {
   font-size: 13px;
   color: var(--text-tertiary);
 }
 
+/* 타이틀 / 설명 */
 .onboarding-title {
   font-size: 24px;
   font-weight: 800;
@@ -64,7 +192,52 @@
   line-height: 1.6;
 }
 
+/* 인디케이터 점 */
+.onboarding-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.onboarding-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: var(--border);
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+.onboarding-dot.active {
+  width: 28px;
+  border-radius: 4px;
+  background: var(--bg-gradient);
+  box-shadow: 0 0 8px rgba(102, 126, 234, 0.4);
+}
+
+/* 하단 버튼 */
 .onboarding-actions {
-  padding-top: 24px;
   width: 100%;
+}
+
+.btn-guest {
+  width: 100%;
+  padding: 12px;
+  background: none;
+  border: none;
+  color: var(--text-tertiary);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s;
+}
+
+.btn-guest:active {
+  color: var(--text-secondary);
 }

@@ -91,11 +91,6 @@ const BenefitsScreen = ({ showToast, updatePoints }) => {
     }
   };
 
-  const handleAttendance = () => {
-    showToast('출석체크 완료! +50P');
-    updatePoints(50);
-  };
-
   const handlePedometer = () => {
     showToast('만보기 포인트 적립! +100P');
     updatePoints(100);
@@ -173,7 +168,7 @@ const BenefitsScreen = ({ showToast, updatePoints }) => {
             <div className="section-header">
               <h2 className="section-title">📅 데일리 미션</h2>
             </div>
-            <div className="attendance-banner" onClick={handleAttendance}>
+            <div className="attendance-banner" onClick={() => navigate('/attendance')}>
               <div className="attendance-icon">📅</div>
               <div className="attendance-info">
                 <div className="attendance-title">오늘의 출석체크</div>

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './WithdrawDetailScreen.css';
 
-const WithdrawDetailScreen = ({ userPoints, showToast }) => {
+const WithdrawDetailScreen = ({ userPoints, showToast, isGuest }) => {
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     bank: '',
     accountNumber: '',
@@ -13,6 +14,12 @@ const WithdrawDetailScreen = ({ userPoints, showToast }) => {
     ssn2: ''
   });
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    if (isGuest) {
+      navigate('/signup', { replace: true });
+    }
+  }, [isGuest, navigate]);
 
   const banks = [
     '은행 선택',

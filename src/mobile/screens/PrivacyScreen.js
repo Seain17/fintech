@@ -19,7 +19,7 @@ const PrivacyScreen = () => {
       <div className="detail-content">
         <div className="legal-content">
           <p className="legal-intro">
-            에이닉(이하 "회사")은 이용자의 개인정보를 중요시하며,
+            에이핀(이하 "회사")은 이용자의 개인정보를 중요시하며,
             「개인정보 보호법」을 준수하고 있습니다.
           </p>
 

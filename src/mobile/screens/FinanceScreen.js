@@ -178,7 +178,7 @@ const FinanceScreen = ({ showToast }) => {
                   <div style={{ width: '40px', height: '26px', background: '#3182F6', borderRadius: '4px' }}></div>
                   <div style={{ flex: 1 }}>
                     <div style={{ fontSize: '12px', fontWeight: '700', color: '#3182F6' }}>추천 1위</div>
-                    <div style={{ fontSize: '14px', fontWeight: '700', color: '#191F28' }}>에이닉 제휴 신한카드</div>
+                    <div style={{ fontSize: '14px', fontWeight: '700', color: '#191F28' }}>에이핀 제휴 신한카드</div>
                   </div>
                   <button style={{ background: '#3182F6', color: '#fff', border: 'none', padding: '6px 12px', borderRadius: '8px', fontSize: '12px', fontWeight: '700', cursor: 'pointer' }} onClick={() => showToast('신청 페이지로 이동합니다')}>신청</button>
                 </div>

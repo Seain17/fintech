@@ -15,7 +15,7 @@ const LoginScreen = ({ onLogin }) => {
           <div className="login-logo-wrap">
             <span className="login-logo">A</span>
           </div>
-          <h1 className="login-title">에이닉 시작하기</h1>
+          <h1 className="login-title">에이핀 시작하기</h1>
           <p className="login-subtitle">로그인 후 포인트를 통합 관리하세요</p>
         </div>
 
@@ -55,7 +55,7 @@ const LoginScreen = ({ onLogin }) => {
         <div className="login-divider">또는</div>
 
         <div className="login-terms">
-          계속 진행하시면 에이닉의 <a href="#">서비스 이용약관</a> 및<br />
+          계속 진행하시면 에이핀의 <a href="#">서비스 이용약관</a> 및<br />
           <a href="#">개인정보 처리방침</a>에 동의하는 것으로 간주됩니다.
         </div>
       </div>

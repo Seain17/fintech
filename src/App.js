@@ -30,6 +30,7 @@ import PrivacyScreen from './mobile/screens/PrivacyScreen';
 import ShoppingHistoryScreen from './mobile/screens/ShoppingHistoryScreen';
 import ShoppingDetailScreen from './mobile/screens/ShoppingDetailScreen';
 import QuizScreen from './mobile/screens/QuizScreen';
+import AttendanceScreen from './mobile/screens/AttendanceScreen';
 
 // Mobile Components
 import BottomNav from './mobile/components/BottomNav';
@@ -41,12 +42,12 @@ import AdminApp from './AdminApp';
 // 네비게이션바를 숨길 상세 페이지 경로
 const hideNavPaths = [
   '/withdraw', '/withdraw-history', '/point-history',
-  '/raffle-history', '/shopping-history', '/quiz',
+  '/raffle-history', '/shopping-history', '/quiz', '/attendance',
   '/settings', '/inquiry', '/faq', '/notice'
 ];
 const hideNavPrefixes = ['/raffle/', '/shopping/'];
 
-function MobileApp({ isLoggedIn, handleLogin, handleSignup, showToast, userPoints, updatePoints, toast }) {
+function MobileApp({ isLoggedIn, isGuest, handleLogin, handleSignup, handleGuest, showToast, userPoints, updatePoints, toast }) {
   const location = useLocation();
   const shouldHideNav = hideNavPaths.includes(location.pathname)
     || hideNavPrefixes.some(p => location.pathname.startsWith(p));
@@ -56,20 +57,20 @@ function MobileApp({ isLoggedIn, handleLogin, handleSignup, showToast, userPoint
       <Routes>
         {!isLoggedIn ? (
           <>
-            <Route path="/" element={<OnboardingScreen />} />
+            <Route path="/" element={<OnboardingScreen onGuest={handleGuest} />} />
             <Route path="/login" element={<LoginScreen onLogin={handleLogin} />} />
             <Route path="/signup" element={<SignupScreen onSignup={handleSignup} />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </>
         ) : (
           <>
-            <Route path="/" element={<HomeScreen userPoints={userPoints} showToast={showToast} updatePoints={updatePoints} />} />
+            <Route path="/" element={<HomeScreen userPoints={userPoints} showToast={showToast} updatePoints={updatePoints} isGuest={isGuest} />} />
             <Route path="/benefits" element={<BenefitsScreen showToast={showToast} updatePoints={updatePoints} />} />
             <Route path="/finance" element={<FinanceScreen showToast={showToast} />} />
             <Route path="/mypage" element={<MypageScreen userPoints={userPoints} showToast={showToast} />} />
 
             {/* Detail Pages */}
-            <Route path="/withdraw" element={<WithdrawDetailScreen userPoints={userPoints} showToast={showToast} />} />
+            <Route path="/withdraw" element={<WithdrawDetailScreen userPoints={userPoints} showToast={showToast} isGuest={isGuest} />} />
             <Route path="/withdraw-history" element={<WithdrawHistoryScreen />} />
             <Route path="/point-history" element={<PointHistoryScreen />} />
             <Route path="/raffle/:id" element={<RaffleDetailScreen userPoints={userPoints} updatePoints={updatePoints} showToast={showToast} />} />
@@ -78,6 +79,7 @@ function MobileApp({ isLoggedIn, handleLogin, handleSignup, showToast, userPoint
             <Route path="/shopping/:mallId" element={<ShoppingDetailScreen />} />
             <Route path="/shopping/bridge/:shopId" element={<ShoppingBridgeScreen />} />
             <Route path="/quiz" element={<QuizScreen showToast={showToast} updatePoints={updatePoints} />} />
+            <Route path="/attendance" element={<AttendanceScreen showToast={showToast} updatePoints={updatePoints} />} />
             <Route path="/settings" element={<SettingsScreen showToast={showToast} />} />
             <Route path="/game/:gameType" element={<GamePlayScreen updatePoints={updatePoints} showToast={showToast} />} />
             <Route path="/inquiry" element={<InquiryScreen showToast={showToast} />} />
@@ -101,6 +103,7 @@ function MobileApp({ isLoggedIn, handleLogin, handleSignup, showToast, userPoint
 function AppContent() {
   const location = useLocation();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isGuest, setIsGuest] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
   const [toast, setToast] = useState({ show: false, message: '' });
   const [userPoints, setUserPoints] = useState(26350);
@@ -132,13 +135,21 @@ function AppContent() {
 
   const handleLogin = () => {
     setIsLoggedIn(true);
+    setIsGuest(false);
     showToastMessage('환영합니다! 🎉');
   };
 
   const handleSignup = () => {
     setIsLoggedIn(true);
+    setIsGuest(false);
     updatePoints(1000);
     showToastMessage('회원가입 완료! 웰컴포인트 1,000P 지급 🎉');
+  };
+
+  const handleGuest = () => {
+    setIsLoggedIn(true);
+    setIsGuest(true);
+    showToastMessage('둘러보기 모드로 이용 중입니다');
   };
 
   const showToastMessage = (message) => {
@@ -173,8 +184,10 @@ function AppContent() {
   return (
     <MobileApp
       isLoggedIn={isLoggedIn}
+      isGuest={isGuest}
       handleLogin={handleLogin}
       handleSignup={handleSignup}
+      handleGuest={handleGuest}
       showToast={showToastMessage}
       userPoints={userPoints}
       updatePoints={updatePoints}

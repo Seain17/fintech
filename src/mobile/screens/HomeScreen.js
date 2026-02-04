@@ -3,8 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import './HomeScreen.css';
 import exchangeRateData from '../../shared/data/exchangeRate.json';
 
-const HomeScreen = ({ userPoints, showToast }) => {
+const HomeScreen = ({ userPoints, showToast, isGuest }) => {
   const navigate = useNavigate();
+
+  const handleGuestBlock = () => {
+    navigate('/signup');
+  };
 
   // JSON 파일에서 환율 데이터 직접 사용
   const exchangeRate = {
@@ -16,7 +20,7 @@ const HomeScreen = ({ userPoints, showToast }) => {
     <div className="screen home-screen">
       <div className="home-header">
         <div className="home-header-top">
-          <div className="home-logo">에이닉</div>
+          <div className="home-logo">에이핀</div>
           <div className="home-header-icons">
             <button className="home-icon-btn" onClick={() => showToast('알림')}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -27,16 +31,16 @@ const HomeScreen = ({ userPoints, showToast }) => {
         </div>
 
         <div className="point-card">
-          <div className="point-card-label">내 에이닉 포인트</div>
+          <div className="point-card-label">내 에이핀 포인트</div>
           <div className="point-card-value">{userPoints.toLocaleString()} <span>P</span></div>
           <div className="point-actions">
-            <button className="point-action-btn withdraw" onClick={() => navigate('/withdraw')}>
+            <button className="point-action-btn withdraw" onClick={() => isGuest ? handleGuestBlock() : navigate('/withdraw')}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
               </svg>
               출금하기
             </button>
-            <button className="point-action-btn exchange" onClick={() => showToast('기프티콘 교환')}>
+            <button className="point-action-btn exchange" onClick={() => isGuest ? handleGuestBlock() : showToast('기프티콘 교환')}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M20 12V8H6M4 12v4h14M4 8l3-3 3 3M20 16l-3 3-3-3" />
               </svg>
@@ -102,8 +106,8 @@ const HomeScreen = ({ userPoints, showToast }) => {
           <div className="partner-total-label">전체 제휴포인트</div>
           <div className="partner-total-value">2,450 P</div>
         </div>
-        <button className="btn-convert-all" onClick={() => showToast('2,450P가 에이닉 포인트로 전환되었습니다!')}>
-          에이닉 포인트로 전환하기
+        <button className="btn-convert-all" onClick={() => isGuest ? handleGuestBlock() : showToast('2,450P가 에이핀 포인트로 전환되었습니다!')}>
+          에이핀 포인트로 전환하기
         </button>
 
         <div className="partner-list-card">

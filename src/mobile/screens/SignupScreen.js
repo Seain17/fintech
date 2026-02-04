@@ -266,7 +266,7 @@ const SignupScreen = ({ onSignup }) => {
             </div>
             <h2 className="signup-complete-title">가입을 축하합니다!</h2>
             <p className="signup-complete-desc">
-              에이닉의 모든 혜택을 누려보세요
+              에이핀의 모든 혜택을 누려보세요
             </p>
             <div className="signup-points-badge">
               <div className="signup-points-label">웰컴포인트 지급!</div>
