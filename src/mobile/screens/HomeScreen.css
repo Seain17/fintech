@@ -678,3 +678,32 @@
   content: '📰';
   font-size: 10px;
 }
+
+/* Notification Badge */
+.noti-btn {
+  position: relative;
+}
+
+.noti-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #FF5252;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(255, 82, 82, 0.4);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}

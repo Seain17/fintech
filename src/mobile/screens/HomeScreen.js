@@ -6,6 +6,9 @@ import exchangeRateData from '../../shared/data/exchangeRate.json';
 const HomeScreen = ({ userPoints, showToast, isGuest }) => {
   const navigate = useNavigate();
 
+  // 읽지 않은 알림 개수 (임시)
+  const unreadCount = 3;
+
   const handleGuestBlock = () => {
     navigate('/signup');
   };
@@ -22,10 +25,13 @@ const HomeScreen = ({ userPoints, showToast, isGuest }) => {
         <div className="home-header-top">
           <div className="home-logo">에이핀</div>
           <div className="home-header-icons">
-            <button className="home-icon-btn" onClick={() => showToast('알림')}>
+            <button className="home-icon-btn noti-btn" onClick={() => navigate('/notifications')}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" />
               </svg>
+              {unreadCount > 0 && (
+                <span className="noti-badge">{unreadCount > 9 ? '9+' : unreadCount}</span>
+              )}
             </button>
           </div>
         </div>
