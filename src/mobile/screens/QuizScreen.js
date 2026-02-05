@@ -147,10 +147,18 @@ const QuizScreen = ({ showToast, updatePoints }) => {
 
             {isAnswered && (
               <button className="quiz-next-btn" onClick={handleNext}>
-                {current < quizData.length - 1 ? '다음 문제 >' : '결과 보기 >'}
+                <span className="quiz-next-ad-icon">📺</span>
+                {current < quizData.length - 1 ? '광고보고 다음 >' : '광고보고 결과보기 >'}
               </button>
             )}
           </div>
+
+          {isAnswered && (
+            <div className="quiz-ad-notice">
+              <span className="quiz-ad-notice-icon">📢</span>
+              <span>짧은 광고 시청 후 다음 문제를 풀 수 있어요</span>
+            </div>
+          )}
 
           <div className="quiz-ad-banner">[수익화 배너 영역]</div>
         </div>
