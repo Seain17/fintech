@@ -162,47 +162,47 @@
 }
 
 .mypin-detail-btn {
-  background: #e8def8;
+  background: #f0f0f0;
   border: none;
   padding: 8px 16px;
   border-radius: 8px;
   font-size: 14px;
   font-weight: 500;
-  color: #4a4459;
+  color: #666;
   cursor: pointer;
   font-family: inherit;
 }
 
 .mypin-detail-btn:active {
-  background: #d9cce9;
+  background: #e5e5e5;
 }
 
 .mypin-convert-btn {
   width: 100%;
-  background: #e8def8;
+  background: #1a2e71;
   border: none;
-  padding: 16px 20px;
-  border-radius: 10px;
+  padding: 14px 20px;
+  border-radius: 25px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
   font-size: 15px;
   font-weight: 500;
-  color: #4a4459;
+  color: #fff;
   cursor: pointer;
   margin-bottom: 24px;
   font-family: inherit;
 }
 
 .mypin-convert-btn .arrow-icon {
-  width: 18px;
-  height: 18px;
-  color: #4a4459;
+  width: 16px;
+  height: 16px;
+  color: #fff;
 }
 
 .mypin-convert-btn:active {
-  background: #d9cce9;
+  background: #152555;
 }
 
 /* 포인트 파트너 아이콘 */
