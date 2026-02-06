@@ -30,17 +30,12 @@ const HomeScreen = ({ userPoints, showToast, isGuest }) => {
           </svg>
         </button>
         <div className="home-logo">에이핀</div>
-        <div className="home-appbar-right">
-          <button className="home-noti-btn" onClick={() => navigate('/notifications')}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" />
-            </svg>
-            {unreadCount > 0 && <span className="home-noti-badge">{unreadCount}</span>}
-          </button>
-          <div className="home-profile-avatar">
-            <span>U</span>
-          </div>
-        </div>
+        <button className="home-noti-btn" onClick={() => navigate('/notifications')}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" />
+          </svg>
+          {unreadCount > 0 && <span className="home-noti-badge">{unreadCount}</span>}
+        </button>
       </div>
 
       {/* 스크롤 콘텐츠 */}
@@ -147,7 +142,7 @@ const HomeScreen = ({ userPoints, showToast, isGuest }) => {
             <button className="info-banner-btn">다양한 경품 응모하기 &gt;</button>
           </div>
           <div className="info-banner-character">
-            <img src="/images/icons/character.png" alt="" />
+            <img src="/images/icons/banner-character.png" alt="" />
           </div>
         </div>
 
