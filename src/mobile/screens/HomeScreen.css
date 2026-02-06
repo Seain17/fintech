@@ -191,14 +191,20 @@
   font-weight: 500;
   color: #fff;
   cursor: pointer;
-  margin-bottom: 24px;
+  margin-bottom: 0;
   font-family: inherit;
+  transition: margin-bottom 0.3s ease;
+}
+
+.mypin-convert-btn.open {
+  margin-bottom: 20px;
 }
 
 .mypin-convert-btn .arrow-icon {
   width: 16px;
   height: 16px;
   color: #fff;
+  transition: transform 0.3s ease;
 }
 
 .mypin-convert-btn:active {
@@ -210,6 +216,17 @@
   display: flex;
   justify-content: space-between;
   gap: 8px;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.3s ease, opacity 0.3s ease, margin-top 0.3s ease;
+  margin-top: 0;
+}
+
+.point-partners.open {
+  max-height: 200px;
+  opacity: 1;
+  margin-top: 0;
 }
 
 .point-partner-item {

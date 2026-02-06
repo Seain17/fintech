@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './HomeScreen.css';
 import exchangeRateData from '../../shared/data/exchangeRate.json';
 
 const HomeScreen = ({ userPoints, showToast, isGuest }) => {
   const navigate = useNavigate();
+  const [isPartnerOpen, setIsPartnerOpen] = useState(false);
 
   const unreadCount = 3;
 
@@ -60,15 +61,18 @@ const HomeScreen = ({ userPoints, showToast, isGuest }) => {
               </button>
             </div>
 
-            <button className="mypin-convert-btn" onClick={() => isGuest ? handleGuestBlock() : showToast('숨어있는 마이핀 전환 중...')}>
+            <button
+              className={`mypin-convert-btn ${isPartnerOpen ? 'open' : ''}`}
+              onClick={() => isGuest ? handleGuestBlock() : setIsPartnerOpen(!isPartnerOpen)}
+            >
               <svg className="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <path d="M6 9l6 6 6-6" />
+                <path d={isPartnerOpen ? "M6 15l6-6 6 6" : "M6 9l6 6 6-6"} />
               </svg>
-              <span>숨어있는 마이핀 전환하기</span>
+              <span>{isPartnerOpen ? '접기' : '숨어있는 마이핀 전환하기'}</span>
             </button>
 
             {/* 포인트 적립 아이콘들 */}
-            <div className="point-partners">
+            <div className={`point-partners ${isPartnerOpen ? 'open' : ''}`}>
               <div className="point-partner-item">
                 <div className="partner-icon-img" onClick={() => showToast('네이버페이 연동')}>
                   <img src="/images/icons/naver-pay.png" alt="네이버페이" />
