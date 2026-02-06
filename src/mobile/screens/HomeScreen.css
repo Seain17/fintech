@@ -46,11 +46,11 @@
 }
 
 .home-logo {
-  font-size: 20px;
-  font-weight: 700;
-  color: #1a2e71;
+  font-size: 18px;
+  font-weight: 500;
+  color: #333;
+  letter-spacing: 1px;
 }
-
 
 .home-noti-btn {
   position: relative;
@@ -91,7 +91,6 @@
   justify-content: center;
 }
 
-
 /* 스크롤 콘텐츠 */
 .home-content {
   flex: 1;
@@ -108,19 +107,19 @@
 .mypin-header {
   background: #1a2e71;
   border-radius: 20px 20px 0 0;
-  padding: 18px 24px;
+  padding: 16px 20px;
 }
 
 .mypin-title {
   color: #fff;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 600;
 }
 
 .mypin-card {
   background: #fff;
   border-radius: 0 0 20px 20px;
-  padding: 20px 24px 24px;
+  padding: 20px;
   box-shadow: 0 4px 10px rgba(217, 217, 217, 0.5);
 }
 
@@ -134,7 +133,7 @@
 .mypin-info {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
 }
 
 .mypin-label {
@@ -146,7 +145,7 @@
 .mypin-value {
   display: flex;
   align-items: baseline;
-  gap: 10px;
+  gap: 12px;
 }
 
 .mypin-amount {
@@ -158,7 +157,6 @@
 }
 
 .mypin-unit {
-  font-family: 'Pretendard Variable', sans-serif;
   font-size: 20px;
   font-weight: 400;
   color: #6c6a6a;
@@ -167,7 +165,7 @@
 .mypin-detail-btn {
   background: #e8def8;
   border: none;
-  padding: 12px 24px;
+  padding: 10px 20px;
   border-radius: 8px;
   font-size: 16px;
   font-weight: 500;
@@ -184,7 +182,7 @@
   width: 100%;
   background: #e8def8;
   border: none;
-  padding: 16px 24px;
+  padding: 14px 20px;
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -194,19 +192,14 @@
   font-weight: 500;
   color: #4a4459;
   cursor: pointer;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   font-family: inherit;
-}
-
-.mypin-convert-btn svg {
-  width: 20px;
-  height: 20px;
-  color: #4a4459;
 }
 
 .mypin-convert-btn .arrow-icon {
   width: 20px;
   height: 20px;
+  color: #4a4459;
 }
 
 .mypin-convert-btn:active {
@@ -217,26 +210,25 @@
 .point-partners {
   display: flex;
   justify-content: space-between;
-  gap: 12px;
+  gap: 8px;
 }
 
 .point-partner-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  cursor: pointer;
+  gap: 8px;
   flex: 1;
 }
 
 .partner-icon-img {
-  width: 56px;
-  height: 56px;
+  width: 52px;
+  height: 52px;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
   transition: transform 0.2s;
-  overflow: hidden;
 }
 
 .partner-icon-img:active {
@@ -244,32 +236,37 @@
 }
 
 .partner-icon-img img {
-  width: 56px;
-  height: 56px;
+  width: 52px;
+  height: 52px;
   object-fit: contain;
 }
 
 .partner-points {
-  font-size: 16px;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: 600;
   color: #000;
-  font-family: 'Pretendard Variable', sans-serif;
 }
 
-.partner-connect-btn {
+.partner-action-btn {
   background: #e8def8;
   border: none;
-  padding: 10px 16px;
-  border-radius: 8px;
-  font-size: 14px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 13px;
   font-weight: 500;
   color: #4a4459;
   cursor: pointer;
-  white-space: nowrap;
+  font-family: inherit;
 }
 
-.partner-connect-btn:active {
-  background: #d9cce9;
+.partner-action-btn.connect {
+  background: transparent;
+  border: 1px solid #ddd;
+  color: #666;
+}
+
+.partner-action-btn:active {
+  opacity: 0.8;
 }
 
 /* 마이핀 PICK 섹션 */
@@ -280,14 +277,16 @@
 
 .pick-title {
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 600;
   color: #000;
-  margin: 0 0 16px 8px;
+  margin: 0 0 16px 4px;
 }
 
 .pick-title span {
   font-family: 'Righteous', 'Outfit', sans-serif;
   color: #1a2e71;
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 .pick-cards {
@@ -304,7 +303,7 @@
 }
 
 .pick-card {
-  min-width: 130px;
+  min-width: 120px;
   height: 130px;
   border-radius: 20px;
   padding: 16px;
@@ -328,8 +327,12 @@
   background: rgba(151, 210, 253, 0.3);
 }
 
+.pick-card.pink {
+  background: #ffe8e8;
+}
+
 .pick-card-text {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   color: #000;
   line-height: 1.3;
@@ -339,18 +342,13 @@
   margin: 0;
 }
 
-.pick-card-icon {
-  font-size: 36px;
-  align-self: flex-end;
-}
-
 .pick-card-icon-img {
   align-self: flex-end;
 }
 
 .pick-card-icon-img img {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   object-fit: contain;
 }
 
@@ -362,8 +360,8 @@
   padding: 24px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 4px 20px rgba(217, 217, 217, 0.5);
+  align-items: flex-start;
+  box-shadow: 0 4px 10px rgba(217, 217, 217, 0.5);
   cursor: pointer;
   transition: transform 0.2s;
   min-height: 180px;
@@ -379,30 +377,37 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  flex: 1;
   z-index: 1;
 }
 
 .info-banner-title {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   color: #000;
   margin: 0;
-  line-height: 1.4;
-  letter-spacing: -1px;
+  line-height: 1.35;
+  letter-spacing: -0.5px;
 }
 
 .info-banner-btn {
   background: #1a2e71;
   border: none;
-  padding: 14px 20px;
-  border-radius: 8px;
+  padding: 14px 18px;
+  border-radius: 10px;
   color: #fff;
   font-size: 16px;
   font-weight: 600;
-  margin-top: 20px;
+  margin-top: 24px;
   cursor: pointer;
-  width: fit-content;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: inherit;
+}
+
+.info-banner-btn svg {
+  width: 18px;
+  height: 18px;
 }
 
 .info-banner-btn:active {
@@ -413,8 +418,8 @@
   position: absolute;
   right: 10px;
   bottom: 0;
-  width: 150px;
-  height: 150px;
+  width: 140px;
+  height: 140px;
 }
 
 .info-banner-character img {
@@ -428,7 +433,7 @@
 .quick-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px 8px;
+  gap: 20px 8px;
   padding: 0 16px;
   margin-bottom: 24px;
 }
@@ -441,20 +446,8 @@
   cursor: pointer;
 }
 
-.quick-grid-item:active .quick-grid-icon {
+.quick-grid-item:active .quick-grid-icon-img {
   transform: scale(0.9);
-}
-
-.quick-grid-icon {
-  width: 56px;
-  height: 56px;
-  background: #f5f5f5;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  transition: transform 0.2s;
 }
 
 .quick-grid-icon-img {
@@ -473,10 +466,6 @@
   width: 28px;
   height: 28px;
   object-fit: contain;
-}
-
-.quick-grid-item:active .quick-grid-icon-img {
-  transform: scale(0.9);
 }
 
 .quick-grid-item span {
@@ -499,7 +488,7 @@
 
 .news-title {
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 600;
   color: #000;
   margin: 0;
 }
@@ -511,7 +500,7 @@
 .market-card {
   background: #fff;
   border-radius: 16px;
-  padding: 20px;
+  padding: 16px 20px;
   margin-bottom: 16px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
 }
@@ -549,7 +538,7 @@
 .market-value .change {
   font-size: 12px;
   font-weight: 600;
-  margin-left: 4px;
+  margin-left: 6px;
 }
 
 .market-value .change.up {
@@ -566,14 +555,14 @@
   border-radius: 16px;
   padding: 16px 20px;
   margin-bottom: 12px;
-  box-shadow: 0 4px 15px rgba(217, 217, 217, 0.5);
+  box-shadow: 0 4px 10px rgba(217, 217, 217, 0.5);
 }
 
 .news-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 0;
+  gap: 14px;
+  padding: 14px 0;
   border-bottom: 1px solid #f0f0f0;
   cursor: pointer;
 }
@@ -591,15 +580,51 @@
   opacity: 0.7;
 }
 
-.news-item-badge {
+.news-item-left {
+  flex-shrink: 0;
+}
+
+.news-date-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: #1a2e71;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: center;
+}
+
+.news-emoji {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
   background: #f5f5f5;
-  padding: 4px 10px;
-  border-radius: 6px;
+  border-radius: 10px;
+  font-size: 22px;
+}
+
+.news-item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.news-item-badge {
+  display: inline-block;
+  background: #f5f5f5;
+  padding: 4px 8px;
+  border-radius: 4px;
   font-size: 11px;
   font-weight: 600;
   color: #666;
-  white-space: nowrap;
-  flex-shrink: 0;
+  margin-bottom: 6px;
 }
 
 .news-item-title {

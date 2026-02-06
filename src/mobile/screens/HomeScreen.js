@@ -29,7 +29,7 @@ const HomeScreen = ({ userPoints, showToast, isGuest }) => {
             <path d="M3 12h18M3 6h18M3 18h18" />
           </svg>
         </button>
-        <div className="home-logo">에이핀</div>
+        <div className="home-logo">LOGO</div>
         <button className="home-noti-btn" onClick={() => navigate('/notifications')}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" />
@@ -61,10 +61,7 @@ const HomeScreen = ({ userPoints, showToast, isGuest }) => {
             </div>
 
             <button className="mypin-convert-btn" onClick={() => isGuest ? handleGuestBlock() : showToast('숨어있는 마이핀 전환 중...')}>
-              <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-                <path d="M12 2L9 9l-7 1 5 5-1 7 6-3 6 3-1-7 5-5-7-1-3-7z" />
-              </svg>
-              <svg className="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg className="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <path d="M6 9l6 6 6-6" />
               </svg>
               <span>숨어있는 마이핀 전환하기</span>
@@ -72,29 +69,33 @@ const HomeScreen = ({ userPoints, showToast, isGuest }) => {
 
             {/* 포인트 적립 아이콘들 */}
             <div className="point-partners">
-              <div className="point-partner-item" onClick={() => showToast('네이버페이 연동')}>
-                <div className="partner-icon-img">
+              <div className="point-partner-item">
+                <div className="partner-icon-img" onClick={() => showToast('네이버페이 연동')}>
                   <img src="/images/icons/naver-pay.png" alt="네이버페이" />
                 </div>
                 <span className="partner-points">100 P</span>
+                <button className="partner-action-btn" onClick={() => showToast('전환 완료')}>전환</button>
               </div>
-              <div className="point-partner-item" onClick={() => showToast('토스페이 연동')}>
-                <div className="partner-icon-img">
-                  <img src="/images/icons/toss-pay.png" alt="토스페이" />
+              <div className="point-partner-item">
+                <div className="partner-icon-img" onClick={() => showToast('페이북 연동')}>
+                  <img src="/images/icons/toss-pay.png" alt="페이북" />
                 </div>
                 <span className="partner-points">100 P</span>
+                <button className="partner-action-btn" onClick={() => showToast('전환 완료')}>전환</button>
               </div>
-              <div className="point-partner-item" onClick={() => showToast('신한SOL 연동')}>
-                <div className="partner-icon-img">
+              <div className="point-partner-item">
+                <div className="partner-icon-img" onClick={() => showToast('신한SOL 연동')}>
                   <img src="/images/icons/shinhan-sol.png" alt="신한SOL" />
                 </div>
                 <span className="partner-points">100 P</span>
+                <button className="partner-action-btn" onClick={() => showToast('전환 완료')}>전환</button>
               </div>
-              <div className="point-partner-item" onClick={() => showToast('카카오페이 연동')}>
-                <div className="partner-icon-img">
+              <div className="point-partner-item">
+                <div className="partner-icon-img" onClick={() => showToast('카카오페이 연동')}>
                   <img src="/images/icons/kakao-pay.png" alt="카카오페이" />
                 </div>
-                <button className="partner-connect-btn">연결하기</button>
+                <span className="partner-points">-</span>
+                <button className="partner-action-btn connect" onClick={() => showToast('연결하기')}>연결하기</button>
               </div>
             </div>
           </div>
@@ -122,7 +123,7 @@ const HomeScreen = ({ userPoints, showToast, isGuest }) => {
                 <img src="/images/icons/card.png" alt="" />
               </div>
             </div>
-            <div className="pick-card yellow" onClick={() => showToast('보험 추천 페이지')}>
+            <div className="pick-card pink" onClick={() => showToast('보험 추천 페이지')}>
               <div className="pick-card-text">
                 <p>보험</p>
                 <p>추천</p>
@@ -139,7 +140,12 @@ const HomeScreen = ({ userPoints, showToast, isGuest }) => {
           <div className="info-banner-content">
             <p className="info-banner-title">이미소 대리가</p>
             <p className="info-banner-title">알려주는 꿀정보!</p>
-            <button className="info-banner-btn">다양한 경품 응모하기 &gt;</button>
+            <button className="info-banner-btn">
+              <span>다양한 경품 응모하기</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+            </button>
           </div>
           <div className="info-banner-character">
             <img src="/images/icons/banner-character.png" alt="" />
@@ -207,19 +213,19 @@ const HomeScreen = ({ userPoints, showToast, isGuest }) => {
 
           <div className="market-card">
             <div className="market-row">
-              <span className="market-name">🇺🇸 나스닥</span>
+              <span className="market-name">US 나스닥</span>
               <span className="market-value">15,620.40 <span className="change up">▲0.3%</span></span>
             </div>
             <div className="market-row">
-              <span className="market-name">🇰🇷 코스피</span>
+              <span className="market-name">KR 코스피</span>
               <span className="market-value">4,949.67 <span className="change down">▼5.26%</span></span>
             </div>
             <div className="market-row">
-              <span className="market-name">🇰🇷 코스닥</span>
+              <span className="market-name">KR 코스닥</span>
               <span className="market-value">1,098.36 <span className="change down">▼4.44%</span></span>
             </div>
             <div className="market-row">
-              <span className="market-name">🇺🇸 달러 환율</span>
+              <span className="market-name">US 달러 환율</span>
               <span className="market-value">
                 {exchangeRate.rate}원{' '}
                 <span className={`change ${parseFloat(exchangeRate.change) >= 0 ? 'up' : 'down'}`}>
@@ -229,22 +235,37 @@ const HomeScreen = ({ userPoints, showToast, isGuest }) => {
             </div>
             <div className="market-row">
               <span className="market-name">🟡 금 시세</span>
-              <span className="market-value">96,500원 <span className="change up">▲1.25%</span></span>
+              <span className="market-value">96,500원 <span className="change up">▲1.2%</span></span>
             </div>
           </div>
 
           <div className="news-card-list">
             <div className="news-item" onClick={() => showToast('뉴스 상세')}>
-              <div className="news-item-badge">뉴스레터</div>
-              <p className="news-item-title">코스피, 7% 가까이 급등하며 사상 최고치...</p>
+              <div className="news-item-left">
+                <span className="news-date-badge">WED<br/>04</span>
+              </div>
+              <div className="news-item-content">
+                <span className="news-item-badge">뉴스레터</span>
+                <p className="news-item-title">코스피, 7% 가까이 급등하며 사상 최고치...</p>
+              </div>
             </div>
             <div className="news-item" onClick={() => showToast('뉴스 상세')}>
-              <div className="news-item-badge">모닝 브리핑</div>
-              <p className="news-item-title">S/W 기업 주가 약세 부각된 미국 증시...</p>
+              <div className="news-item-left">
+                <span className="news-emoji">📊</span>
+              </div>
+              <div className="news-item-content">
+                <span className="news-item-badge">모닝 브리핑</span>
+                <p className="news-item-title">S/W 기업 주가 약세 부각된 미국 증시</p>
+              </div>
             </div>
             <div className="news-item" onClick={() => showToast('뉴스 상세')}>
-              <div className="news-item-badge">선택지수</div>
-              <p className="news-item-title">오늘의 산책 지수를 알아볼까요?</p>
+              <div className="news-item-left">
+                <span className="news-emoji">🌤️</span>
+              </div>
+              <div className="news-item-content">
+                <span className="news-item-badge">산책지수</span>
+                <p className="news-item-title">오늘의 산책 지수를 알아볼까요?</p>
+              </div>
             </div>
           </div>
 
