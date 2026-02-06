@@ -106,21 +106,24 @@
 
 .mypin-header {
   background: #1a2e71;
-  border-radius: 20px 20px 0 0;
-  padding: 18px 24px;
+  border-radius: 20px;
+  padding: 14px 24px 40px;
 }
 
 .mypin-title {
   color: #fff;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 500;
 }
 
 .mypin-card {
   background: #fff;
-  border-radius: 0 0 20px 20px;
+  border-radius: 20px;
   padding: 20px 24px 24px;
-  box-shadow: 0 4px 10px rgba(217, 217, 217, 0.5);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  margin-top: -28px;
+  position: relative;
+  z-index: 1;
 }
 
 .mypin-card-top {
