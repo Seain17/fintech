@@ -6,14 +6,12 @@ import exchangeRateData from '../../shared/data/exchangeRate.json';
 const HomeScreen = ({ userPoints, showToast, isGuest }) => {
   const navigate = useNavigate();
 
-  // 읽지 않은 알림 개수 (임시)
   const unreadCount = 3;
 
   const handleGuestBlock = () => {
     navigate('/signup');
   };
 
-  // JSON 파일에서 환율 데이터 직접 사용
   const exchangeRate = {
     rate: exchangeRateData.USD.rate,
     change: exchangeRateData.USD.change
@@ -21,199 +19,241 @@ const HomeScreen = ({ userPoints, showToast, isGuest }) => {
 
   return (
     <div className="screen home-screen">
-      <div className="home-header">
-        <div className="home-header-top">
-          <div className="home-logo">에이핀</div>
-          <div className="home-header-icons">
-            <button className="home-icon-btn noti-btn" onClick={() => navigate('/notifications')}>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" />
-              </svg>
-              {unreadCount > 0 && (
-                <span className="noti-badge">{unreadCount > 9 ? '9+' : unreadCount}</span>
-              )}
-            </button>
-          </div>
-        </div>
+      {/* 스테이터스바 */}
+      <div className="home-statusbar" />
 
-        <div className="point-card">
-          <div className="point-card-label">내 에이핀 포인트</div>
-          <div className="point-card-value">{userPoints.toLocaleString()} <span>P</span></div>
-          <div className="point-actions">
-            <button className="point-action-btn withdraw" onClick={() => isGuest ? handleGuestBlock() : navigate('/withdraw')}>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
-              </svg>
-              출금하기
-            </button>
-            <button className="point-action-btn exchange" onClick={() => isGuest ? handleGuestBlock() : showToast('기프티콘 교환')}>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M20 12V8H6M4 12v4h14M4 8l3-3 3 3M20 16l-3 3-3-3" />
-              </svg>
-              교환하기
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div className="quick-menu">
-        <button className="quick-item" onClick={() => showToast('하나 트래블로그 페이지로 이동')}>
-          <div className="quick-icon" style={{ background: 'rgba(0, 148, 144, 0.1)' }}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="#009490" strokeWidth="2">
-              <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
-            </svg>
-          </div>
-          <div className="quick-text-group">
-            <span className="quick-label">환전 100% 우대</span>
-            <span className="quick-sub">여행 필수템</span>
-          </div>
+      {/* 앱바 */}
+      <div className="home-appbar">
+        <button className="home-menu-btn" onClick={() => showToast('메뉴')}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M3 12h18M3 6h18M3 18h18" />
+          </svg>
         </button>
-
-        <button className="quick-item" onClick={() => showToast('신한 암보험 페이지로 이동')}>
-          <div className="quick-icon" style={{ background: 'rgba(49, 130, 246, 0.1)' }}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="#0046FF" strokeWidth="2">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-            </svg>
-          </div>
-          <div className="quick-text-group">
-            <span className="quick-label">내 보험료 확인</span>
-            <span className="quick-sub">병원비 걱정 끝</span>
-          </div>
-        </button>
-
-        <button className="quick-item" onClick={() => navigate('/benefits')}>
-          <div className="quick-icon green">
+        <div className="home-logo">에이핀</div>
+        <div className="home-appbar-right">
+          <button className="home-noti-btn" onClick={() => navigate('/notifications')}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="12" cy="8" r="7" />
-              <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" />
             </svg>
-          </div>
-          <div className="quick-text-group">
-            <span className="quick-label">래플</span>
-            <span className="quick-sub">매주 경품</span>
-          </div>
-        </button>
-
-        <button className="quick-item" onClick={() => navigate('/withdraw')}>
-          <div className="quick-icon orange">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M20 12V8H6M4 12v4h14M4 8l3-3 3 3M20 16l-3 3-3-3" />
-            </svg>
-          </div>
-          <div className="quick-text-group">
-            <span className="quick-label">포인트 교환</span>
-            <span className="quick-sub">기프티콘 구매</span>
-          </div>
-        </button>
-      </div>
-
-      <div className="partner-section">
-        <div className="partner-total-card">
-          <div className="partner-total-label">전체 제휴포인트</div>
-          <div className="partner-total-value">2,450 P</div>
-        </div>
-        <button className="btn-convert-all" onClick={() => isGuest ? handleGuestBlock() : showToast('2,450P가 에이핀 포인트로 전환되었습니다!')}>
-          에이핀 포인트로 전환하기
-        </button>
-
-        <div className="partner-list-card">
-          <div className="partner-item">
-            <div className="partner-info">
-              <div className="partner-logo hana">H</div>
-              <div className="partner-name">하나페이</div>
-            </div>
-            <div className="partner-action">
-              <div className="partner-amount">1,200 P</div>
-              <button className="btn-convert-sm" onClick={() => showToast('하나머니가 전환되었습니다')}>전환</button>
-            </div>
-          </div>
-
-          <div className="partner-item">
-            <div className="partner-info">
-              <div className="partner-logo shinhan">S</div>
-              <div className="partner-name">신한카드</div>
-            </div>
-            <div className="partner-action">
-              <div className="partner-amount">850 P</div>
-              <button className="btn-convert-sm" onClick={() => showToast('신한포인트가 전환되었습니다')}>전환</button>
-            </div>
-          </div>
-
-          <div className="partner-item">
-            <div className="partner-info">
-              <div className="partner-logo paybooc">P</div>
-              <div className="partner-name">페이북</div>
-            </div>
-            <div className="partner-action">
-              <div className="partner-amount">400 P</div>
-              <button className="btn-convert-sm" onClick={() => showToast('페이북 머니가 전환되었습니다')}>전환</button>
-            </div>
-          </div>
-
-          <div className="partner-item">
-            <div className="partner-info">
-              <div className="partner-logo kakao">K</div>
-              <div className="partner-name">카카오페이</div>
-            </div>
-            <div className="partner-action">
-              <button className="btn-connect-sm" onClick={() => showToast('연동 화면으로 이동합니다')}>연결하기</button>
-            </div>
+            {unreadCount > 0 && <span className="home-noti-badge">{unreadCount}</span>}
+          </button>
+          <div className="home-profile-avatar">
+            <span>U</span>
           </div>
         </div>
       </div>
 
-      <div className="asset-ticker">
-        <div className="asset-row">
-          <div className="asset-name">🇺🇸 나스닥</div>
-          <div className="asset-val">15,620.40 <span className="asset-change up">▲0.3%</span></div>
-        </div>
-        <div className="asset-row">
-          <div className="asset-name">🇰🇷 코스피</div>
-          <div className="asset-val">4,949.67 <span className="asset-change down">▼5.26%</span></div>
-        </div>
-        <div className="asset-row">
-          <div className="asset-name">🇰🇷 코스닥</div>
-          <div className="asset-val">1,098.36 <span className="asset-change down">▼4.44%</span></div>
-        </div>
-        <div className="asset-row">
-          <div className="asset-name">🇺🇸 달러 환율</div>
-          <div className="asset-val">
-            {exchangeRate.rate}원{' '}
-            <span className={`asset-change ${parseFloat(exchangeRate.change) >= 0 ? 'up' : 'down'}`}>
-              {parseFloat(exchangeRate.change) >= 0 ? '▲' : '▼'}{Math.abs(parseFloat(exchangeRate.change))}%
-            </span>
+      {/* 스크롤 콘텐츠 */}
+      <div className="home-content">
+        {/* 마이핀 모으기 섹션 */}
+        <div className="mypin-section">
+          <div className="mypin-header">
+            <span className="mypin-title">마이핀 모으기</span>
           </div>
-        </div>
-        <div className="asset-row">
-          <div className="asset-name">🟡 금 시세</div>
-          <div className="asset-val">96,500원 <span className="asset-change up">▲1.2%</span></div>
-        </div>
-      </div>
 
-      <div className="section">
-        <div className="section-header">
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-            <h2 className="section-title">📰 생활 금융 뉴스</h2>
-            <span style={{ fontSize: '11px', color: '#8B95A1', fontWeight: '500' }}>
-              네이버 뉴스 제공 · 매일 오전 10시 업데이트
-            </span>
+          <div className="mypin-card">
+            <div className="mypin-card-top">
+              <div className="mypin-info">
+                <span className="mypin-label">나의 에이핀</span>
+                <div className="mypin-value">
+                  <span className="mypin-amount">{userPoints.toLocaleString()}</span>
+                  <span className="mypin-unit">핀</span>
+                </div>
+              </div>
+              <button className="mypin-detail-btn" onClick={() => isGuest ? handleGuestBlock() : navigate('/point-history')}>
+                상세
+              </button>
+            </div>
+
+            <button className="mypin-convert-btn" onClick={() => isGuest ? handleGuestBlock() : showToast('숨어있는 마이핀 전환 중...')}>
+              <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                <path d="M12 2L9 9l-7 1 5 5-1 7 6-3 6 3-1-7 5-5-7-1-3-7z" />
+              </svg>
+              <svg className="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+              <span>숨어있는 마이핀 전환하기</span>
+            </button>
+
+            {/* 포인트 적립 아이콘들 */}
+            <div className="point-partners">
+              <div className="point-partner-item" onClick={() => showToast('네이버페이 연동')}>
+                <div className="partner-icon-img">
+                  <img src="/images/icons/naver-pay.png" alt="네이버페이" />
+                </div>
+                <span className="partner-points">100 P</span>
+              </div>
+              <div className="point-partner-item" onClick={() => showToast('토스페이 연동')}>
+                <div className="partner-icon-img">
+                  <img src="/images/icons/toss-pay.png" alt="토스페이" />
+                </div>
+                <span className="partner-points">100 P</span>
+              </div>
+              <div className="point-partner-item" onClick={() => showToast('신한SOL 연동')}>
+                <div className="partner-icon-img">
+                  <img src="/images/icons/shinhan-sol.png" alt="신한SOL" />
+                </div>
+                <span className="partner-points">100 P</span>
+              </div>
+              <div className="point-partner-item" onClick={() => showToast('카카오페이 연동')}>
+                <div className="partner-icon-img">
+                  <img src="/images/icons/kakao-pay.png" alt="카카오페이" />
+                </div>
+                <button className="partner-connect-btn">연결하기</button>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="news-list-vertical">
-          <div className="news-card" onClick={() => showToast('뉴스 상세 보기')}>
-            <div className="news-thumb">🚌</div>
-            <div className="news-content">
-              <div className="news-headline">서울시 버스 요금 인상안 확정, 다음 달부터 적용</div>
-              <div className="news-date">2시간 전 · 생활경제</div>
+
+        {/* 마이핀 PICK 섹션 */}
+        <div className="pick-section">
+          <h2 className="pick-title">마이핀 <span>PICK</span></h2>
+          <div className="pick-cards">
+            <div className="pick-card yellow" onClick={() => navigate('/benefits')}>
+              <div className="pick-card-text">
+                <p>포인트</p>
+                <p>모으기</p>
+              </div>
+              <div className="pick-card-icon-img">
+                <img src="/images/icons/recommend.png" alt="" />
+              </div>
+            </div>
+            <div className="pick-card blue" onClick={() => showToast('카드 추천 페이지')}>
+              <div className="pick-card-text">
+                <p>가장 혜택</p>
+                <p>좋은카드는?</p>
+              </div>
+              <div className="pick-card-icon-img">
+                <img src="/images/icons/card.png" alt="" />
+              </div>
+            </div>
+            <div className="pick-card yellow" onClick={() => showToast('보험 추천 페이지')}>
+              <div className="pick-card-text">
+                <p>보험</p>
+                <p>추천</p>
+              </div>
+              <div className="pick-card-icon-img">
+                <img src="/images/icons/insurance.png" alt="" />
+              </div>
             </div>
           </div>
-          <div className="news-card" onClick={() => showToast('뉴스 상세 보기')}>
-            <div className="news-thumb">🥚</div>
-            <div className="news-content">
-              <div className="news-headline">계란 한 판 가격 7천원대 진입... 장바구니 비상</div>
-              <div className="news-date">4시간 전 · 물가</div>
+        </div>
+
+        {/* 꿀정보 배너 */}
+        <div className="info-banner" onClick={() => navigate('/benefits')}>
+          <div className="info-banner-content">
+            <p className="info-banner-title">이미소 대리가</p>
+            <p className="info-banner-title">알려주는 꿀정보!</p>
+            <button className="info-banner-btn">다양한 경품 응모하기 &gt;</button>
+          </div>
+          <div className="info-banner-character">
+            <img src="/images/icons/character.png" alt="" />
+          </div>
+        </div>
+
+        {/* 퀵메뉴 */}
+        <div className="quick-grid">
+          <div className="quick-grid-item" onClick={() => showToast('카드 페이지')}>
+            <div className="quick-grid-icon-img">
+              <img src="/images/icons/card.png" alt="카드" />
+            </div>
+            <span>카드</span>
+          </div>
+          <div className="quick-grid-item" onClick={() => showToast('보험 페이지')}>
+            <div className="quick-grid-icon-img">
+              <img src="/images/icons/insurance.png" alt="보험" />
+            </div>
+            <span>보험</span>
+          </div>
+          <div className="quick-grid-item" onClick={() => showToast('대출 페이지')}>
+            <div className="quick-grid-icon-img">
+              <img src="/images/icons/loan.png" alt="대출" />
+            </div>
+            <span>대출</span>
+          </div>
+          <div className="quick-grid-item" onClick={() => showToast('추천 페이지')}>
+            <div className="quick-grid-icon-img">
+              <img src="/images/icons/recommend.png" alt="추천" />
+            </div>
+            <span>추천</span>
+          </div>
+          <div className="quick-grid-item" onClick={() => navigate('/attendance')}>
+            <div className="quick-grid-icon-img">
+              <img src="/images/icons/attendance.png" alt="출석체크" />
+            </div>
+            <span>출석체크</span>
+          </div>
+          <div className="quick-grid-item" onClick={() => navigate('/benefits')}>
+            <div className="quick-grid-icon-img">
+              <img src="/images/icons/raffle.png" alt="래플" />
+            </div>
+            <span>래플</span>
+          </div>
+          <div className="quick-grid-item" onClick={() => showToast('만보걷기 페이지')}>
+            <div className="quick-grid-icon-img">
+              <img src="/images/icons/walking.png" alt="만보걷기" />
+            </div>
+            <span>만보걷기</span>
+          </div>
+          <div className="quick-grid-item" onClick={() => navigate('/quiz')}>
+            <div className="quick-grid-icon-img">
+              <img src="/images/icons/quiz.png" alt="오늘의 퀴즈" />
+            </div>
+            <span>오늘의 퀴즈</span>
+          </div>
+        </div>
+
+        {/* 오늘의 소식 */}
+        <div className="news-section">
+          <div className="news-header">
+            <h2 className="news-title">오늘의 소식</h2>
+            <span className="news-icon">📈</span>
+          </div>
+
+          <div className="market-card">
+            <div className="market-row">
+              <span className="market-name">🇺🇸 나스닥</span>
+              <span className="market-value">15,620.40 <span className="change up">▲0.3%</span></span>
+            </div>
+            <div className="market-row">
+              <span className="market-name">🇰🇷 코스피</span>
+              <span className="market-value">4,949.67 <span className="change down">▼5.26%</span></span>
+            </div>
+            <div className="market-row">
+              <span className="market-name">🇰🇷 코스닥</span>
+              <span className="market-value">1,098.36 <span className="change down">▼4.44%</span></span>
+            </div>
+            <div className="market-row">
+              <span className="market-name">🇺🇸 달러 환율</span>
+              <span className="market-value">
+                {exchangeRate.rate}원{' '}
+                <span className={`change ${parseFloat(exchangeRate.change) >= 0 ? 'up' : 'down'}`}>
+                  {parseFloat(exchangeRate.change) >= 0 ? '▲' : '▼'}{Math.abs(parseFloat(exchangeRate.change))}%
+                </span>
+              </span>
+            </div>
+            <div className="market-row">
+              <span className="market-name">🟡 금 시세</span>
+              <span className="market-value">96,500원 <span className="change up">▲1.25%</span></span>
             </div>
           </div>
+
+          <div className="news-card-list">
+            <div className="news-item" onClick={() => showToast('뉴스 상세')}>
+              <div className="news-item-badge">뉴스레터</div>
+              <p className="news-item-title">코스피, 7% 가까이 급등하며 사상 최고치...</p>
+            </div>
+            <div className="news-item" onClick={() => showToast('뉴스 상세')}>
+              <div className="news-item-badge">모닝 브리핑</div>
+              <p className="news-item-title">S/W 기업 주가 약세 부각된 미국 증시...</p>
+            </div>
+            <div className="news-item" onClick={() => showToast('뉴스 상세')}>
+              <div className="news-item-badge">선택지수</div>
+              <p className="news-item-title">오늘의 산책 지수를 알아볼까요?</p>
+            </div>
+          </div>
+
+          <p className="news-footer">네이버 뉴스 제공 · 매일 오전 10시 업데이트</p>
         </div>
       </div>
     </div>

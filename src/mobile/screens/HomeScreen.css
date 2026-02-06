@@ -1,709 +1,657 @@
 .home-screen {
-  background: var(--bg-main);
-}
-
-.home-header {
-  background: var(--bg-gradient);
-  padding: 60px 20px 24px;
-  position: relative;
-  overflow: hidden;
-}
-
-.home-header::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  right: -30%;
-  width: 300px;
-  height: 300px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
-  animation: float 6s ease-in-out infinite;
-}
-
-.home-header::after {
-  content: '';
-  position: absolute;
-  bottom: -30%;
-  left: -20%;
-  width: 200px;
-  height: 200px;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 50%;
-  animation: float 8s ease-in-out infinite reverse;
-}
-
-.home-header-top {
+  background: #f7f8fa;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  height: 100%;
+  font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+}
+
+/* 스테이터스바 */
+.home-statusbar {
+  height: 44px;
+  background: #f7f8fa;
+  flex-shrink: 0;
+}
+
+/* 앱바 */
+.home-appbar {
+  display: flex;
   align-items: center;
-  margin-bottom: 24px;
-  position: relative;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #f7f8fa;
+  flex-shrink: 0;
+}
+
+.home-menu-btn {
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.home-menu-btn:active {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.home-menu-btn svg {
+  width: 24px;
+  height: 24px;
+  color: #333;
 }
 
 .home-logo {
-  font-family: 'Outfit';
-  font-size: 24px;
-  font-weight: 800;
-  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a2e71;
 }
 
-.home-header-icons {
+.home-appbar-right {
   display: flex;
+  align-items: center;
   gap: 12px;
 }
 
-.home-icon-btn {
+.home-noti-btn {
+  position: relative;
   width: 40px;
   height: 40px;
-  background: rgba(255, 255, 255, 0.15);
+  background: none;
   border: none;
-  border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  border-radius: 8px;
 }
 
-.home-icon-btn svg {
-  width: 22px;
-  height: 22px;
-  color: #fff;
+.home-noti-btn:active {
+  background: rgba(0, 0, 0, 0.05);
 }
 
-.point-card {
-  background: rgba(255, 255, 255, 0.98);
-  border-radius: var(--radius-xl);
-  padding: 28px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-  animation: fadeInUp 0.6s ease-out;
-  position: relative;
-  overflow: hidden;
+.home-noti-btn svg {
+  width: 24px;
+  height: 24px;
+  color: #333;
 }
 
-.point-card::before {
-  content: '💰';
+.home-noti-badge {
   position: absolute;
-  top: 20px;
-  right: 20px;
-  font-size: 40px;
-  opacity: 0.15;
-  animation: float 4s ease-in-out infinite;
-}
-
-.point-card-label {
-  font-size: 13px;
-  color: var(--text-tertiary);
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.point-card-label::before {
-  content: '✨';
-  font-size: 12px;
-}
-
-.point-card-value {
-  font-family: 'Outfit';
-  font-size: 40px;
-  font-weight: 800;
-  background: linear-gradient(135deg, #191F28 0%, #4E5968 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 24px;
-  animation: fadeInUp 0.8s ease-out;
-}
-
-.point-card-value span {
-  font-size: 20px;
-  font-weight: 600;
-  -webkit-text-fill-color: var(--text-secondary);
-}
-
-.point-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.point-action-btn {
-  padding: 16px;
-  border: none;
-  border-radius: var(--radius-md);
-  font-size: 15px;
-  font-weight: 700;
-  font-family: inherit;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.point-action-btn.withdraw {
-  background: var(--bg-gradient);
-  color: #fff;
-  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
-}
-
-.point-action-btn.withdraw:active {
-  transform: scale(0.96);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-}
-
-.point-action-btn.exchange {
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-  color: #667eea;
-  border: 2px solid rgba(102, 126, 234, 0.2);
-}
-
-.point-action-btn.exchange:active {
-  transform: scale(0.96);
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
-}
-
-.point-action-btn svg {
+  top: 4px;
+  right: 4px;
   width: 18px;
   height: 18px;
-}
-
-/* Quick Menu: 가로 스크롤 & 1줄 */
-.quick-menu {
-  display: flex;
-  overflow-x: auto;
-  gap: 12px;
-  padding: 20px;
-  background: var(--bg-card);
-  margin: -20px 16px 20px;
-  border-radius: var(--radius-xl);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-  position: relative;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  animation: fadeInUp 0.7s ease-out;
-}
-
-.quick-menu::-webkit-scrollbar {
-  display: none;
-}
-
-.quick-item {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 16px;
-  border: none;
-  background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
-  cursor: pointer;
-  border-radius: var(--radius-lg);
-  min-width: 140px;
-  flex-shrink: 0;
-  transition: all 0.3s ease;
-  border: 1px solid rgba(0, 0, 0, 0.03);
-}
-
-.quick-item:active {
-  transform: scale(0.96);
-  background: linear-gradient(135deg, #f0f1f3 0%, #f8f9fa 100%);
-}
-
-.quick-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-md);
+  background: #ff5252;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg-gradient);
-  margin-bottom: 4px;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-  transition: all 0.3s ease;
 }
 
-.quick-item:active .quick-icon {
-  transform: scale(1.1);
-}
-
-.quick-icon svg {
-  width: 22px;
-  height: 22px;
-  color: #fff;
-}
-
-.quick-icon.orange {
-  background: var(--accent-gradient);
-  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
-}
-
-.quick-icon.orange svg {
-  color: #fff;
-}
-
-.quick-icon.green {
-  background: var(--success-gradient);
-  box-shadow: 0 4px 12px rgba(32, 201, 151, 0.3);
-}
-
-.quick-icon.green svg {
-  color: #fff;
-}
-
-.quick-text-group {
+.home-profile-avatar {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 100%;
-}
-
-.quick-label {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text-secondary);
-  white-space: nowrap;
-  width: 100%;
-  text-align: left;
-}
-
-.quick-sub {
-  font-size: 11px;
-  color: var(--text-tertiary);
-  margin-top: 2px;
-  white-space: nowrap;
-}
-
-.point-summary-card {
-  background: var(--bg-card);
-  border-radius: var(--radius-md);
-  padding: 20px;
-  display: flex;
-  justify-content: space-around;
-  box-shadow: var(--shadow-sm);
-}
-
-.summary-item {
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
 }
 
-.summary-label {
-  font-size: 13px;
-  color: var(--text-tertiary);
+.home-profile-avatar span {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
 }
 
-.summary-value {
-  font-family: 'Outfit';
+/* 스크롤 콘텐츠 */
+.home-content {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 20px;
+}
+
+/* 마이핀 모으기 섹션 */
+.mypin-section {
+  padding: 0 16px;
+  margin-bottom: 24px;
+}
+
+.mypin-header {
+  background: #1a2e71;
+  border-radius: 20px 20px 0 0;
+  padding: 20px 24px;
+}
+
+.mypin-title {
+  color: #fff;
   font-size: 18px;
   font-weight: 700;
 }
 
-.summary-value.earn {
-  color: var(--success);
+.mypin-card {
+  background: #fff;
+  border-radius: 0 0 20px 20px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
-.summary-value.use {
-  color: var(--text-secondary);
+.mypin-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
 }
 
-.raffle-banner {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  border-radius: var(--radius-lg);
-  padding: 20px;
+.mypin-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mypin-label {
+  font-size: 14px;
+  color: #817e7e;
+}
+
+.mypin-value {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.mypin-amount {
+  font-family: 'Outfit', sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: #000;
+}
+
+.mypin-unit {
+  font-size: 18px;
+  color: #6c6a6a;
+}
+
+.mypin-detail-btn {
+  background: #e8def8;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #4a4459;
+  cursor: pointer;
+}
+
+.mypin-detail-btn:active {
+  background: #d9cce9;
+}
+
+.mypin-convert-btn {
+  width: 100%;
+  background: #e8def8;
+  border: none;
+  padding: 14px 20px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #4a4459;
   cursor: pointer;
-  position: relative;
-  overflow: hidden;
+  margin-bottom: 20px;
 }
 
-.raffle-banner::after {
-  content: '🎁';
-  position: absolute;
-  right: -10px;
-  bottom: -10px;
-  font-size: 80px;
-  opacity: 0.2;
+.mypin-convert-btn svg {
+  width: 20px;
+  height: 20px;
+  color: #4a4459;
 }
 
-.raffle-icon-wrap {
+.mypin-convert-btn .arrow-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.mypin-convert-btn:active {
+  background: #d9cce9;
+}
+
+/* 포인트 파트너 아이콘 */
+.point-partners {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.point-partner-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  flex: 1;
+}
+
+.partner-icon-img {
   width: 56px;
   height: 56px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: var(--radius-md);
+  border-radius: 15px;
+  background: #f5f5f5;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 28px;
+  transition: transform 0.2s;
+  overflow: hidden;
 }
 
-.raffle-info {
-  flex: 1;
-  position: relative;
-  z-index: 1;
+.partner-icon-img:active {
+  transform: scale(0.95);
 }
 
-.raffle-badge {
-  display: inline-flex;
-  background: rgba(255, 255, 255, 0.25);
-  padding: 4px 8px;
-  border-radius: var(--radius-full);
-  font-size: 11px;
+.partner-icon-img img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+}
+
+.partner-points {
+  font-size: 14px;
   font-weight: 600;
-  color: #fff;
-  margin-bottom: 6px;
+  color: #000;
 }
 
-.raffle-title {
-  font-size: 16px;
-  font-weight: 700;
-  color: #fff;
-  margin-bottom: 2px;
-}
-
-.raffle-desc {
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.85);
-}
-
-/* Partner Points Section */
-.partner-section {
-  margin: 0 16px 24px;
-  animation: fadeInUp 0.8s ease-out;
-}
-
-.partner-total-card {
-  background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-  padding: 24px;
-  text-align: center;
-  border-bottom: 1px solid var(--border-light);
-  position: relative;
-  overflow: hidden;
-}
-
-.partner-total-card::before {
-  content: '🎁';
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 30px;
-  opacity: 0.15;
-  animation: wiggle 2s ease-in-out infinite;
-}
-
-.partner-total-label {
-  font-size: 13px;
-  color: var(--text-secondary);
-  margin-bottom: 6px;
-}
-
-.partner-total-value {
-  font-family: 'Outfit';
-  font-size: 28px;
-  font-weight: 800;
-  background: linear-gradient(135deg, #00C73C 0%, #00A832 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.btn-convert-all {
-  width: 100%;
-  background: linear-gradient(135deg, #00C73C 0%, #00A832 100%);
-  color: white;
+.partner-connect-btn {
+  background: #e8def8;
   border: none;
-  padding: 16px;
-  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-  font-size: 16px;
-  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #4a4459;
   cursor: pointer;
+  white-space: nowrap;
+}
+
+.partner-connect-btn:active {
+  background: #d9cce9;
+}
+
+/* 마이핀 PICK 섹션 */
+.pick-section {
+  padding: 0 16px;
+  margin-bottom: 24px;
+}
+
+.pick-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #000;
+  margin: 0 0 16px 8px;
+}
+
+.pick-title span {
+  font-family: 'Righteous', 'Outfit', sans-serif;
+  color: #1a2e71;
+}
+
+.pick-cards {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 12px;
-  box-shadow: 0 8px 25px rgba(0, 199, 60, 0.3);
-  font-family: inherit;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
 
-.btn-convert-all::before {
-  content: '✨';
-  animation: sparkle 1.5s ease-in-out infinite;
+.pick-cards::-webkit-scrollbar {
+  display: none;
 }
 
-.btn-convert-all:active {
-  transform: scale(0.97);
-  box-shadow: 0 4px 15px rgba(0, 199, 60, 0.4);
-}
-
-.partner-list-card {
-  background: var(--bg-card);
-  border-radius: var(--radius-xl);
-  padding: 8px 20px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
-}
-
-.partner-item {
+.pick-card {
+  min-width: 130px;
+  height: 130px;
+  border-radius: 20px;
+  padding: 16px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: space-between;
-  padding: 18px 0;
-  border-bottom: 1px solid var(--border-light);
-  transition: all 0.3s ease;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: transform 0.2s;
 }
 
-.partner-item:last-child {
-  border-bottom: none;
+.pick-card:active {
+  transform: scale(0.96);
 }
 
-.partner-info {
+.pick-card.yellow {
+  background: #fff7e2;
+}
+
+.pick-card.blue {
+  background: rgba(151, 210, 253, 0.3);
+}
+
+.pick-card-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: #000;
+  line-height: 1.3;
+}
+
+.pick-card-text p {
+  margin: 0;
+}
+
+.pick-card-icon {
+  font-size: 36px;
+  align-self: flex-end;
+}
+
+.pick-card-icon-img {
+  align-self: flex-end;
+}
+
+.pick-card-icon-img img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+/* 꿀정보 배너 */
+.info-banner {
+  margin: 0 16px 24px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 24px;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 14px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  transition: transform 0.2s;
 }
 
-.partner-logo {
-  width: 40px;
-  height: 40px;
+.info-banner:active {
+  transform: scale(0.98);
+}
+
+.info-banner-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.info-banner-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #000;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.info-banner-btn {
+  background: #1a2e71;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 16px;
+  cursor: pointer;
+}
+
+.info-banner-btn:active {
+  background: #152555;
+}
+
+.info-banner-character {
+  width: 120px;
+  height: 120px;
+  flex-shrink: 0;
+}
+
+.info-banner-character img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* 퀵메뉴 그리드 */
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px 8px;
+  padding: 0 16px;
+  margin-bottom: 24px;
+}
+
+.quick-grid-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.quick-grid-item:active .quick-grid-icon {
+  transform: scale(0.9);
+}
+
+.quick-grid-icon {
+  width: 56px;
+  height: 56px;
+  background: #f5f5f5;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 15px;
-  font-weight: 700;
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s ease;
+  font-size: 24px;
+  transition: transform 0.2s;
 }
 
-.partner-item:active .partner-logo {
-  transform: scale(1.1);
-}
-
-.partner-logo.hana {
-  background: #009490;
-}
-
-.partner-logo.shinhan {
-  background: #0046FF;
-}
-
-.partner-logo.paybooc {
-  background: #FF2E4D;
-}
-
-.partner-logo.kakao {
-  background: #FEE500;
-  color: #191919;
-}
-
-.partner-name {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.partner-action {
+.quick-grid-icon-img {
+  width: 56px;
+  height: 56px;
+  background: #f5f5f5;
+  border-radius: 50%;
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  transition: transform 0.2s;
+  overflow: hidden;
 }
 
-.partner-amount {
-  font-family: 'Outfit';
-  font-weight: 700;
-  font-size: 15px;
-  color: var(--text-primary);
+.quick-grid-icon-img img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
 }
 
-.btn-convert-sm {
-  padding: 6px 12px;
-  background: var(--primary-50);
-  color: var(--primary);
-  border-radius: var(--radius-full);
-  font-size: 12px;
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
+.quick-grid-item:active .quick-grid-icon-img {
+  transform: scale(0.9);
 }
 
-.btn-connect-sm {
-  padding: 6px 12px;
-  background: transparent;
-  color: var(--text-tertiary);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-full);
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-family: inherit;
+.quick-grid-item span {
+  font-size: 13px;
+  font-weight: 500;
+  color: #102a43;
 }
 
-/* Asset Ticker */
-.asset-ticker {
-  margin: 0 16px 20px;
-  background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
-  padding: 20px;
-  border-radius: var(--radius-xl);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
-  animation: fadeInUp 0.9s ease-out;
+/* 오늘의 소식 */
+.news-section {
+  padding: 0 16px;
 }
 
-.asset-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 14px;
-  font-size: 14px;
-  padding: 8px 0;
-  transition: all 0.3s ease;
-}
-
-.asset-row:last-child {
-  margin-bottom: 0;
-}
-
-.asset-row:hover {
-  background: rgba(49, 130, 246, 0.03);
-  border-radius: var(--radius-sm);
-  padding: 8px;
-  margin: 0 -8px 14px;
-}
-
-.asset-name {
-  font-weight: 600;
-  color: var(--text-secondary);
+.news-header {
   display: flex;
   align-items: center;
   gap: 8px;
+  margin-bottom: 16px;
 }
 
-.asset-val {
-  font-family: 'Outfit';
+.news-title {
+  font-size: 20px;
   font-weight: 700;
-  color: var(--text-primary);
+  color: #000;
+  margin: 0;
 }
 
-.asset-change {
-  font-size: 12px;
-  font-weight: 700;
-  padding: 3px 8px;
-  border-radius: var(--radius-full);
-}
-
-.asset-change.up {
-  color: #FF5252;
-  background: rgba(255, 82, 82, 0.1);
-}
-
-.asset-change.down {
-  color: #3182F6;
-  background: rgba(49, 130, 246, 0.1);
-}
-
-/* News Section */
-.news-list-vertical {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.news-card {
-  background: var(--bg-card);
-  border-radius: var(--radius-lg);
-  padding: 18px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  cursor: pointer;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
-  transition: all 0.3s ease;
-  border: 1px solid rgba(0, 0, 0, 0.02);
-}
-
-.news-card:active {
-  transform: scale(0.98);
-  background: var(--bg-main);
-}
-
-.news-thumb {
-  width: 48px;
-  height: 48px;
-  border-radius: var(--radius-md);
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.news-icon {
   font-size: 24px;
+}
+
+.market-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+.market-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.market-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.market-row:first-child {
+  padding-top: 0;
+}
+
+.market-name {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+.market-value {
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #000;
+}
+
+.market-value .change {
+  font-size: 12px;
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+.market-value .change.up {
+  color: #ff5252;
+}
+
+.market-value .change.down {
+  color: #3182f6;
+}
+
+/* 뉴스 카드 리스트 */
+.news-card-list {
+  background: #fff;
+  border-radius: 16px;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 15px rgba(217, 217, 217, 0.5);
+}
+
+.news-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+}
+
+.news-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.news-item:first-child {
+  padding-top: 0;
+}
+
+.news-item:active {
+  opacity: 0.7;
+}
+
+.news-item-badge {
+  background: #f5f5f5;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #666;
+  white-space: nowrap;
   flex-shrink: 0;
 }
 
-.news-content {
-  flex: 1;
-}
-
-.news-headline {
+.news-item-title {
   font-size: 14px;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 4px;
-  line-height: 1.5;
+  color: #333;
+  margin: 0;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.news-date {
-  font-size: 12px;
-  color: var(--text-tertiary);
-  display: flex;
-  align-items: center;
-  gap: 4px;
+.news-footer {
+  text-align: center;
+  font-size: 11px;
+  color: #817e7e;
+  margin: 0;
+  padding-bottom: 20px;
 }
 
-.news-date::before {
-  content: '📰';
-  font-size: 10px;
+/* 애니메이션 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Notification Badge */
-.noti-btn {
-  position: relative;
+.mypin-section {
+  animation: fadeInUp 0.5s ease-out;
 }
 
-.noti-badge {
-  position: absolute;
-  top: -4px;
-  right: -4px;
-  background: #FF5252;
-  color: #fff;
-  font-size: 10px;
-  font-weight: 700;
-  min-width: 18px;
-  height: 18px;
-  padding: 0 5px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 6px rgba(255, 82, 82, 0.4);
-  animation: pulse 2s ease-in-out infinite;
+.pick-section {
+  animation: fadeInUp 0.6s ease-out;
 }
 
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
+.info-banner {
+  animation: fadeInUp 0.7s ease-out;
+}
+
+.quick-grid {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.news-section {
+  animation: fadeInUp 0.9s ease-out;
 }
