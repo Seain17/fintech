@@ -107,37 +107,37 @@
 .mypin-header {
   background: #1a2e71;
   border-radius: 20px 20px 0 0;
-  padding: 16px 20px;
+  padding: 18px 24px;
 }
 
 .mypin-title {
   color: #fff;
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 17px;
+  font-weight: 500;
 }
 
 .mypin-card {
   background: #fff;
   border-radius: 0 0 20px 20px;
-  padding: 20px;
+  padding: 20px 24px 24px;
   box-shadow: 0 4px 10px rgba(217, 217, 217, 0.5);
 }
 
 .mypin-card-top {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 12px;
+  align-items: center;
+  margin-bottom: 16px;
 }
 
 .mypin-info {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
 }
 
 .mypin-label {
-  font-size: 15px;
+  font-size: 14px;
   color: #817e7e;
   font-weight: 400;
 }
@@ -145,19 +145,18 @@
 .mypin-value {
   display: flex;
   align-items: baseline;
-  gap: 12px;
+  gap: 10px;
 }
 
 .mypin-amount {
   font-family: 'Outfit', sans-serif;
-  font-size: 36px;
+  font-size: 32px;
   font-weight: 700;
   color: #000;
-  letter-spacing: -1px;
 }
 
 .mypin-unit {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 400;
   color: #6c6a6a;
 }
@@ -165,9 +164,9 @@
 .mypin-detail-btn {
   background: #e8def8;
   border: none;
-  padding: 10px 20px;
+  padding: 8px 16px;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
   color: #4a4459;
   cursor: pointer;
@@ -182,23 +181,23 @@
   width: 100%;
   background: #e8def8;
   border: none;
-  padding: 14px 20px;
-  border-radius: 8px;
+  padding: 16px 20px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  font-size: 16px;
+  gap: 6px;
+  font-size: 15px;
   font-weight: 500;
   color: #4a4459;
   cursor: pointer;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   font-family: inherit;
 }
 
 .mypin-convert-btn .arrow-icon {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   color: #4a4459;
 }
 
@@ -250,23 +249,24 @@
 .partner-action-btn {
   background: #e8def8;
   border: none;
-  padding: 6px 14px;
-  border-radius: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
   font-size: 13px;
   font-weight: 500;
   color: #4a4459;
   cursor: pointer;
   font-family: inherit;
+  white-space: nowrap;
 }
 
 .partner-action-btn.connect {
-  background: transparent;
-  border: 1px solid #ddd;
-  color: #666;
+  background: #e8def8;
+  border: none;
+  color: #4a4459;
 }
 
 .partner-action-btn:active {
-  opacity: 0.8;
+  background: #d9cce9;
 }
 
 /* 마이핀 PICK 섹션 */
@@ -392,12 +392,12 @@
 .info-banner-btn {
   background: #1a2e71;
   border: none;
-  padding: 14px 18px;
-  border-radius: 10px;
+  padding: 16px 24px;
+  border-radius: 25px;
   color: #fff;
-  font-size: 16px;
-  font-weight: 600;
-  margin-top: 24px;
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: 28px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -406,8 +406,8 @@
 }
 
 .info-banner-btn svg {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
 }
 
 .info-banner-btn:active {
