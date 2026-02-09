@@ -194,7 +194,7 @@ const HomeScreen = ({ userPoints, showToast, isGuest }) => {
             </div>
             <span>래플</span>
           </div>
-          <div className="quick-grid-item" onClick={() => showToast('만보걷기 페이지')}>
+          <div className="quick-grid-item" onClick={() => navigate('/walking')}>
             <div className="quick-grid-icon-img">
               <img src="/images/icons/walking.png" alt="만보걷기" />
             </div>

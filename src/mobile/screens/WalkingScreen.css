@@ -1,0 +1,381 @@
+.walking-screen {
+  background: #f5f6fa;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 헤더 */
+.walking-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.walking-back-btn {
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.walking-back-btn svg {
+  width: 24px;
+  height: 24px;
+  color: #333;
+}
+
+.walking-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.walking-header-space {
+  width: 40px;
+}
+
+/* 자산 섹션 */
+.walking-asset-section {
+  padding: 20px;
+  background: #fff;
+}
+
+.walking-asset-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #2c3e50;
+  margin: 0 0 15px 0;
+}
+
+.walking-asset-box {
+  background: #2c3e50;
+  border-radius: 20px;
+  padding: 25px;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 10px 20px rgba(44, 62, 80, 0.2);
+  position: relative;
+}
+
+.walking-asset-label {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  margin-bottom: 5px;
+}
+
+.walking-asset-value {
+  font-size: 2rem;
+  font-weight: 800;
+  font-family: 'Outfit', sans-serif;
+}
+
+.walking-asset-unit {
+  font-size: 1rem;
+  font-weight: normal;
+  margin-left: 2px;
+}
+
+.walking-asset-right {
+  text-align: right;
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  padding-left: 20px;
+  position: relative;
+}
+
+.walking-stat-val {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #2ecc71;
+}
+
+.walking-tooltip-icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  text-align: center;
+  font-size: 0.7rem;
+  cursor: pointer;
+  margin-left: 4px;
+}
+
+.walking-tooltip-box {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  top: 70px;
+  right: 0;
+  width: 220px;
+  background: rgba(0, 0, 0, 0.9);
+  color: #fff;
+  text-align: left;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  z-index: 100;
+  transition: 0.2s;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.walking-asset-right:hover .walking-tooltip-box {
+  visibility: visible;
+  opacity: 1;
+  top: 60px;
+}
+
+/* 워커 스테이지 */
+.walking-stage {
+  height: 160px;
+  background: linear-gradient(to bottom, #fff 0%, #f0f9f4 100%);
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid #eee;
+}
+
+.walking-speech-bubble {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  padding: 8px 15px;
+  border-radius: 15px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  font-size: 0.85rem;
+  color: #2c3e50;
+  font-weight: bold;
+  white-space: nowrap;
+  z-index: 10;
+  animation: floatBubble 2s ease-in-out infinite alternate;
+}
+
+.walking-speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px 6px 0;
+  border-style: solid;
+  border-color: #fff transparent;
+}
+
+@keyframes floatBubble {
+  0% { transform: translateX(-50%) translateY(0); }
+  100% { transform: translateX(-50%) translateY(-5px); }
+}
+
+.walking-walker {
+  position: absolute;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 70px;
+}
+
+.walking-head {
+  width: 25px;
+  height: 25px;
+  background: #333;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 8px;
+  z-index: 2;
+  animation: bob 0.6s infinite alternate;
+}
+
+.walking-body {
+  width: 28px;
+  height: 30px;
+  background: #2ecc71;
+  border-radius: 8px;
+  position: absolute;
+  top: 22px;
+  left: 6px;
+  z-index: 1;
+}
+
+.walking-leg {
+  width: 6px;
+  height: 25px;
+  background: #333;
+  border-radius: 3px;
+  position: absolute;
+  top: 48px;
+}
+
+.walking-leg.left {
+  left: 10px;
+  animation: walk 0.6s infinite;
+}
+
+.walking-leg.right {
+  right: 10px;
+  animation: walk 0.6s infinite reverse;
+}
+
+@keyframes walk {
+  0% { transform: rotate(-25deg); }
+  100% { transform: rotate(25deg); }
+}
+
+@keyframes bob {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-3px); }
+}
+
+.walking-step-info {
+  text-align: center;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  font-size: 0.8rem;
+  color: #888;
+}
+
+/* 미션 리스트 */
+.walking-mission-list {
+  padding: 20px;
+  flex: 1;
+}
+
+.walking-mission-card {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.walking-mission-info h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: #333;
+  font-weight: bold;
+}
+
+.walking-mission-info p {
+  margin: 5px 0 0;
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.walking-reward-btn {
+  background: #3498db;
+  color: #fff;
+  border: none;
+  padding: 0;
+  width: 80px;
+  height: 40px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-family: inherit;
+}
+
+.walking-reward-btn.done {
+  background: #2c3e50;
+  cursor: default;
+}
+
+.walking-reward-btn.locked {
+  background: #e0e0e0;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.walking-reward-btn:active:not(.done):not(.locked) {
+  transform: scale(0.95);
+}
+
+/* 하단 설명 */
+.walking-logic-footer {
+  margin-top: 10px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  color: #666;
+  line-height: 1.5;
+  border: 1px solid #eee;
+}
+
+.walking-logic-title {
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+  display: block;
+}
+
+/* 광고 오버레이 */
+.walking-ad-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  text-align: center;
+}
+
+.walking-ad-content {
+  width: 80%;
+  max-width: 300px;
+  background: #1a1a1a;
+  padding: 40px 20px;
+  border-radius: 20px;
+}
+
+.walking-ad-title {
+  color: #fff;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.walking-ad-desc {
+  font-size: 0.9rem;
+  color: #ccc;
+  line-height: 1.5;
+}
+
+.walking-ad-timer {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #3498db;
+  margin-top: 20px;
+  font-family: 'Outfit', sans-serif;
+}

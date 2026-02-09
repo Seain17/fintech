@@ -33,6 +33,7 @@ import QuizScreen from './mobile/screens/QuizScreen';
 import AttendanceScreen from './mobile/screens/AttendanceScreen';
 import NotificationScreen from './mobile/screens/NotificationScreen';
 import NotificationDetailScreen from './mobile/screens/NotificationDetailScreen';
+import WalkingScreen from './mobile/screens/WalkingScreen';
 
 // Mobile Components
 import BottomNav from './mobile/components/BottomNav';
@@ -45,7 +46,7 @@ import AdminApp from './AdminApp';
 const hideNavPaths = [
   '/withdraw', '/withdraw-history', '/point-history',
   '/raffle-history', '/shopping-history', '/quiz', '/attendance',
-  '/settings', '/inquiry', '/faq', '/notice', '/notifications'
+  '/settings', '/inquiry', '/faq', '/notice', '/notifications', '/walking'
 ];
 const hideNavPrefixes = ['/raffle/', '/shopping/', '/notification/'];
 
@@ -82,6 +83,7 @@ function MobileApp({ isLoggedIn, isGuest, handleLogin, handleSignup, handleGuest
             <Route path="/shopping/bridge/:shopId" element={<ShoppingBridgeScreen />} />
             <Route path="/quiz" element={<QuizScreen showToast={showToast} updatePoints={updatePoints} />} />
             <Route path="/attendance" element={<AttendanceScreen showToast={showToast} updatePoints={updatePoints} />} />
+            <Route path="/walking" element={<WalkingScreen userPoints={userPoints} updatePoints={updatePoints} showToast={showToast} />} />
             <Route path="/notifications" element={<NotificationScreen showToast={showToast} />} />
             <Route path="/notification/:id" element={<NotificationDetailScreen showToast={showToast} />} />
             <Route path="/settings" element={<SettingsScreen showToast={showToast} />} />
