@@ -4,6 +4,7 @@ import './RaffleDetailScreen.css';
 
 const RaffleDetailScreen = ({ userTickets = 5, updateTickets, showToast }) => {
   const navigate = useNavigate();
+  // eslint-disable-next-line no-unused-vars
   const { id } = useParams();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [ticketCount, setTicketCount] = useState(1);

@@ -55,8 +55,8 @@ const LoginScreen = ({ onLogin }) => {
         <div className="login-divider">또는</div>
 
         <div className="login-terms">
-          계속 진행하시면 에이핀의 <a href="#">서비스 이용약관</a> 및<br />
-          <a href="#">개인정보 처리방침</a>에 동의하는 것으로 간주됩니다.
+          계속 진행하시면 에이핀의 <button type="button" className="login-link-btn">서비스 이용약관</button> 및<br />
+          <button type="button" className="login-link-btn">개인정보 처리방침</button>에 동의하는 것으로 간주됩니다.
         </div>
       </div>
     </div>

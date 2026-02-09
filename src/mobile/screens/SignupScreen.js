@@ -7,6 +7,7 @@ const SignupScreen = ({ onSignup }) => {
   const [step, setStep] = useState(1);
 
   // Step 1 state
+  // eslint-disable-next-line no-unused-vars
   const [selectedProvider, setSelectedProvider] = useState('');
 
   // Step 2 state (약관동의)
