@@ -92,8 +92,7 @@ const BenefitsScreen = ({ showToast, updatePoints }) => {
   };
 
   const handlePedometer = () => {
-    showToast('만보기 포인트 적립! +100P');
-    updatePoints(100);
+    navigate('/walking');
   };
 
   return (
