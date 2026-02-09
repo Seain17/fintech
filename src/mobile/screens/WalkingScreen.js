@@ -7,6 +7,7 @@ const WalkingScreen = ({ userPoints = 26350, updatePoints, showToast }) => {
   const [currentFin, setCurrentFin] = useState(userPoints);
   const [showAdModal, setShowAdModal] = useState(false);
   const [adTimer, setAdTimer] = useState(3);
+  // eslint-disable-next-line no-unused-vars
   const [pendingReward, setPendingReward] = useState({ index: null, amount: 0 });
 
   const currentSteps = 7240;
