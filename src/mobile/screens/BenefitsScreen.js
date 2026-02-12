@@ -175,16 +175,16 @@ const BenefitsScreen = ({ showToast, updatePoints }) => {
               </div>
               <div className="attendance-arrow">›</div>
             </div>
-            <div className="mission-card pedometer-card" onClick={handlePedometer}>
-              <div className="mission-icon">👟</div>
+            <div className="mission-card pedometer-card eco" onClick={handlePedometer}>
+              <div className="mission-icon">🌿</div>
               <div className="mission-content">
-                <div className="mission-title">만보 걷기</div>
-                <div className="mission-desc">10,000보 달성 시 100P</div>
+                <div className="mission-title">에코 만보기</div>
+                <div className="mission-desc">걸으면서 탄소도 줄이고 핀도 모으기!</div>
                 <div className="mission-progress">
                   <div className="progress-bar">
-                    <div className="progress-fill" style={{ width: '65%' }}></div>
+                    <div className="progress-fill" style={{ width: '72%' }}></div>
                   </div>
-                  <div className="progress-text">6,500 / 10,000보</div>
+                  <div className="progress-text">7,240보 · 탄소 1.4kg 절감 중</div>
                 </div>
               </div>
             </div>

@@ -1,372 +1,588 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import './FinanceScreen.css';
 
+/**
+ * 금융 탭: 3단 구조 화면
+ *
+ * [계산기] - Search & Algorithm (법규 준수)
+ *   → 금리 낮은 순 → 한도 높은 순 (자가평가서 기준)
+ *
+ * [카드] / [대출] - Curation (전략적 추천)
+ *   → 에이핀 포인트 높은 순
+ */
+
+// ============================================
+// 카드 상품 데이터
+// ============================================
+const cardProducts = [
+  {
+    id: 1,
+    name: '신한 Deep Dream 카드',
+    company: '신한카드',
+    logo: '신한',
+    benefits: '모든 가맹점 0.7% 적립',
+    benefitPoints: 5000,
+    color: '#0046ff',
+    category: 'all',
+  },
+  {
+    id: 2,
+    name: '삼성 taptap O 카드',
+    company: '삼성카드',
+    logo: '삼성',
+    benefits: '편의점/카페 10% 적립',
+    benefitPoints: 15000,
+    color: '#1428a0',
+    category: 'food',
+  },
+  {
+    id: 3,
+    name: '현대 M BOOST 카드',
+    company: '현대카드',
+    logo: '현대',
+    benefits: 'M포인트 최대 3% 적립',
+    benefitPoints: 12000,
+    color: '#000000',
+    category: 'shopping',
+  },
+  {
+    id: 4,
+    name: 'KB국민 My WE:SH 카드',
+    company: 'KB국민카드',
+    logo: 'KB',
+    benefits: '쇼핑/배달 5% 할인',
+    benefitPoints: 8000,
+    color: '#ffb300',
+    category: 'shopping',
+  },
+  {
+    id: 5,
+    name: '하나 원큐 카드',
+    company: '하나카드',
+    logo: '하나',
+    benefits: '대중교통/통신 10% 할인',
+    benefitPoints: 10000,
+    color: '#009688',
+    category: 'transport',
+  },
+];
+
+// ============================================
+// 대출 상품 데이터
+// ============================================
+const loanProducts = [
+  {
+    id: 1,
+    name: '토스 마이너스통장',
+    company: '토스뱅크',
+    logo: '토스',
+    category: 'credit',
+    interestRate: 3.5,
+    maxInterestRate: 14.9,
+    maxLimit: 10000,
+    benefitPoints: 12000,
+    color: '#0064ff',
+  },
+  {
+    id: 2,
+    name: 'KB국민 직장인신용대출',
+    company: 'KB국민은행',
+    logo: 'KB',
+    category: 'credit',
+    interestRate: 3.5,
+    maxInterestRate: 12.5,
+    maxLimit: 15000,
+    benefitPoints: 18000,
+    color: '#ffb300',
+  },
+  {
+    id: 3,
+    name: '카카오뱅크 비상금대출',
+    company: '카카오뱅크',
+    logo: '카카오',
+    category: 'credit',
+    interestRate: 3.69,
+    maxInterestRate: 19.9,
+    maxLimit: 5000,
+    benefitPoints: 8000,
+    color: '#fee500',
+  },
+  {
+    id: 4,
+    name: '하나 원큐신용대출',
+    company: '하나은행',
+    logo: '하나',
+    category: 'credit',
+    interestRate: 4.2,
+    maxInterestRate: 15.0,
+    maxLimit: 20000,
+    benefitPoints: 25000,
+    color: '#009688',
+  },
+  {
+    id: 5,
+    name: 'KB국민 주택담보대출',
+    company: 'KB국민은행',
+    logo: 'KB',
+    category: 'mortgage',
+    interestRate: 3.2,
+    maxInterestRate: 5.5,
+    maxLimit: 100000,
+    benefitPoints: 30000,
+    color: '#ffb300',
+  },
+  {
+    id: 6,
+    name: '신한 주담대 플러스',
+    company: '신한은행',
+    logo: '신한',
+    category: 'mortgage',
+    interestRate: 3.4,
+    maxInterestRate: 5.8,
+    maxLimit: 80000,
+    benefitPoints: 22000,
+    color: '#0046ff',
+  },
+  {
+    id: 7,
+    name: '신한 자동차대출',
+    company: '신한은행',
+    logo: '신한',
+    category: 'car',
+    interestRate: 4.5,
+    maxInterestRate: 9.9,
+    maxLimit: 8000,
+    benefitPoints: 15000,
+    color: '#0046ff',
+  },
+];
+
+// 대출 카테고리
+const loanCategories = [
+  { id: 'credit', label: '신용대출', icon: '💳' },
+  { id: 'mortgage', label: '주택담보', icon: '🏠' },
+  { id: 'car', label: '자동차', icon: '🚗' },
+];
+
 const FinanceScreen = ({ showToast }) => {
-  const [activeCalcTab, setActiveCalcTab] = useState('card');
-  const [showResult, setShowResult] = useState(false);
-  const [activeProductTab, setActiveProductTab] = useState('card');
+  // 메인 탭 상태
+  const [mainTab, setMainTab] = useState('calculator');
 
-  // Refs for scroll sections
-  const cardSectionRef = useRef(null);
-  const insuranceSectionRef = useRef(null);
-  const loanSectionRef = useRef(null);
+  // ============================================
+  // 계산기 탭 상태
+  // ============================================
+  const [calcCategory, setCalcCategory] = useState('credit');
+  const [calcFilters, setCalcFilters] = useState({
+    minRate: 0,
+    maxRate: 20,
+    minLimit: 0,
+    maxLimit: 200000,
+  });
+  const [showCalcFilter, setShowCalcFilter] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showCalcResult, setShowCalcResult] = useState(false);
+  const [calcResults, setCalcResults] = useState([]);
 
-  const handleProductTabClick = (tabId) => {
-    setActiveProductTab(tabId);
+  // ============================================
+  // 카드 탭 상태
+  // ============================================
+  const [cardFilter, setCardFilter] = useState('all');
 
-    const sectionRef = {
-      card: cardSectionRef,
-      insurance: insuranceSectionRef,
-      loan: loanSectionRef
-    }[tabId];
+  // ============================================
+  // 대출 탭 상태
+  // ============================================
+  const [loanCategory, setLoanCategory] = useState('credit');
+  const [loanSortBy, setLoanSortBy] = useState('points');
 
-    if (sectionRef.current) {
-      sectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  // ============================================
+  // 계산기 검색 실행
+  // ============================================
+  const runCalculation = () => {
+    setIsLoading(true);
+    setShowCalcResult(false);
+
+    setTimeout(() => {
+      // 자가평가서 기준 정렬: 금리 낮은 순 → 한도 높은 순
+      const sorted = [...loanProducts]
+        .filter(loan => loan.category === calcCategory)
+        .filter(loan => {
+          if (loan.interestRate < calcFilters.minRate) return false;
+          if (loan.interestRate > calcFilters.maxRate) return false;
+          if (loan.maxLimit < calcFilters.minLimit) return false;
+          if (loan.maxLimit > calcFilters.maxLimit) return false;
+          return true;
+        })
+        .sort((a, b) => {
+          if (a.interestRate !== b.interestRate) {
+            return a.interestRate - b.interestRate;
+          }
+          return b.maxLimit - a.maxLimit;
+        });
+
+      setCalcResults(sorted);
+      setIsLoading(false);
+      setShowCalcResult(true);
+    }, 1500);
+  };
+
+  // ============================================
+  // 카드 정렬: 에이핀 포인트 높은 순
+  // ============================================
+  const getSortedCards = () => {
+    return [...cardProducts]
+      .filter(card => cardFilter === 'all' || card.category === cardFilter || card.category === 'all')
+      .sort((a, b) => b.benefitPoints - a.benefitPoints);
+  };
+
+  // ============================================
+  // 대출 정렬: 포인트순 또는 금리순
+  // ============================================
+  const getSortedLoans = () => {
+    const filtered = [...loanProducts].filter(loan => loan.category === loanCategory);
+    if (loanSortBy === 'rate') {
+      return filtered.sort((a, b) => a.interestRate - b.interestRate);
     }
+    return filtered.sort((a, b) => b.benefitPoints - a.benefitPoints);
   };
 
-  // Card inputs
-  const [cardCompany, setCardCompany] = useState('');
-  const [monthlyUsage, setMonthlyUsage] = useState('');
-
-  // Loan inputs
-  const [loanPurpose, setLoanPurpose] = useState('');
-  const [loanAmount, setLoanAmount] = useState('');
-
-  // Insurance inputs
-  const [insuranceType, setInsuranceType] = useState('');
-  const [age, setAge] = useState('');
-
-  const handleCalculate = () => {
-    setShowResult(true);
-    showToast('혜택 계산이 완료되었습니다!');
+  // ============================================
+  // 상품 클릭 핸들러
+  // ============================================
+  const handleProductClick = (product) => {
+    showToast(`${product.name} 상세 페이지로 이동`);
   };
 
+  // ============================================
+  // 렌더링
+  // ============================================
   return (
-    <div className="screen finance-screen">
-      <div className="finance-header">
-        <h1 className="page-title">금융</h1>
+    <div className="screen finance-screen-v3">
+      {/* 헤더 */}
+      <div className="finance-header-v3">
+        <div className="finance-logo">LOGO</div>
+        <button className="finance-noti-btn" onClick={() => showToast('알림')}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" />
+          </svg>
+        </button>
       </div>
 
-      <div className="finance-content">
-        <div className="finance-scroll-content">
-          {/* 혜택 계산기 섹션 */}
-          <div className="finance-calculator-card">
-            <div style={{ marginBottom: '20px' }}>
-              <h2 style={{ fontSize: '20px', fontWeight: '800', color: '#191F28', marginBottom: '8px', lineHeight: '1.4' }}>
-                맞춤 금융 진단 🧐<br />
-                <span style={{ color: '#3182F6' }}>혜택 계산기</span>
-              </h2>
-              <p style={{ fontSize: '13px', color: '#8B95A1' }}>10초 만에 혜택을 확인해보세요</p>
-            </div>
+      {/* 메인 탭 */}
+      <div className="main-tabs-v3">
+        <button
+          className={`main-tab-v3 ${mainTab === 'calculator' ? 'active' : ''}`}
+          onClick={() => setMainTab('calculator')}
+        >
+          계산기
+        </button>
+        <button
+          className={`main-tab-v3 ${mainTab === 'card' ? 'active' : ''}`}
+          onClick={() => setMainTab('card')}
+        >
+          카드
+        </button>
+        <button
+          className={`main-tab-v3 ${mainTab === 'loan' ? 'active' : ''}`}
+          onClick={() => setMainTab('loan')}
+        >
+          대출
+        </button>
+      </div>
 
-            <div className="calc-tabs">
-              <button
-                className={`calc-tab ${activeCalcTab === 'card' ? 'active' : ''}`}
-                onClick={() => { setActiveCalcTab('card'); setShowResult(false); }}
-              >
-                카드
-              </button>
-              <button
-                className={`calc-tab ${activeCalcTab === 'loan' ? 'active' : ''}`}
-                onClick={() => { setActiveCalcTab('loan'); setShowResult(false); }}
-              >
-                대출
-              </button>
-              <button
-                className={`calc-tab ${activeCalcTab === 'insurance' ? 'active' : ''}`}
-                onClick={() => { setActiveCalcTab('insurance'); setShowResult(false); }}
-              >
-                보험
-              </button>
-            </div>
+      {/* 콘텐츠 영역 */}
+      <div className="finance-content-v3">
+        {/* ========== 계산기 탭 ========== */}
+        {mainTab === 'calculator' && (
+          <div className="calc-section">
+            <div className="calc-card-v3">
+              <div className="calc-header-v3">
+                <h2 className="calc-title-v3">
+                  나에게 유리한<br />
+                  <span className="accent">대출 찾기</span>
+                </h2>
+                <p className="calc-subtitle-v3">
+                  금융소비자보호법에 따라<br />
+                  금리가 낮은 순으로 추천해드려요
+                </p>
+              </div>
 
-            {activeCalcTab === 'card' && (
-              <div className="calc-content-area active">
-                <div className="input-group" style={{ marginBottom: '16px' }}>
-                  <label>사용 중인 카드사</label>
-                  <select className="input-select" value={cardCompany} onChange={(e) => setCardCompany(e.target.value)}>
-                    <option value="">카드사를 선택해주세요</option>
-                    <option value="shinhan">신한카드</option>
-                    <option value="hyundai">현대카드</option>
-                    <option value="samsung">삼성카드</option>
-                    <option value="kb">KB국민카드</option>
-                  </select>
+              {/* 대출 카테고리 선택 */}
+              <div className="calc-category-select">
+                <label className="category-label">어떤 대출이 필요하세요?</label>
+                <div className="loan-category-buttons">
+                  {loanCategories.map((cat) => (
+                    <button
+                      key={cat.id}
+                      className={`loan-cat-btn ${calcCategory === cat.id ? 'active' : ''}`}
+                      onClick={() => {
+                        setCalcCategory(cat.id);
+                        setShowCalcResult(false);
+                      }}
+                    >
+                      <span className="cat-icon">{cat.icon}</span>
+                      <span className="cat-label">{cat.label}</span>
+                    </button>
+                  ))}
                 </div>
-                <div className="input-group" style={{ marginBottom: '24px' }}>
-                  <label>월 평균 이용 금액</label>
-                  <div style={{ position: 'relative' }}>
-                    <input
-                      type="number"
-                      className="input-text"
-                      placeholder="예: 100"
-                      style={{ paddingRight: '40px' }}
-                      value={monthlyUsage}
-                      onChange={(e) => setMonthlyUsage(e.target.value)}
-                    />
-                    <span style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', fontSize: '14px', color: '#8B95A1' }}>만원</span>
+              </div>
+
+              {/* 조건 필터 */}
+              <div className="calc-filter-panel">
+                <button
+                  className={`filter-toggle ${showCalcFilter ? 'active' : ''}`}
+                  onClick={() => setShowCalcFilter(!showCalcFilter)}
+                >
+                  <span>🎚️ 조건 설정</span>
+                  <span className="toggle-arrow">{showCalcFilter ? '▲' : '▼'}</span>
+                </button>
+
+                {showCalcFilter && (
+                  <div className="filter-body">
+                    <div className="filter-item">
+                      <label>
+                        금리 범위
+                        <span className="filter-value">{calcFilters.minRate}% ~ {calcFilters.maxRate}%</span>
+                      </label>
+                      <div className="dual-slider">
+                        <input
+                          type="range"
+                          min="0"
+                          max="20"
+                          step="0.5"
+                          value={calcFilters.minRate}
+                          onChange={(e) => setCalcFilters(prev => ({
+                            ...prev,
+                            minRate: Math.min(parseFloat(e.target.value), prev.maxRate - 0.5)
+                          }))}
+                        />
+                        <input
+                          type="range"
+                          min="0"
+                          max="20"
+                          step="0.5"
+                          value={calcFilters.maxRate}
+                          onChange={(e) => setCalcFilters(prev => ({
+                            ...prev,
+                            maxRate: Math.max(parseFloat(e.target.value), prev.minRate + 0.5)
+                          }))}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="filter-item">
+                      <label>
+                        대출 한도
+                        <span className="filter-value">
+                          {(calcFilters.minLimit / 10000).toFixed(0)}억 ~ {(calcFilters.maxLimit / 10000).toFixed(0)}억
+                        </span>
+                      </label>
+                      <div className="dual-slider">
+                        <input
+                          type="range"
+                          min="0"
+                          max="200000"
+                          step="5000"
+                          value={calcFilters.minLimit}
+                          onChange={(e) => setCalcFilters(prev => ({
+                            ...prev,
+                            minLimit: Math.min(parseInt(e.target.value), prev.maxLimit - 5000)
+                          }))}
+                        />
+                        <input
+                          type="range"
+                          min="0"
+                          max="200000"
+                          step="5000"
+                          value={calcFilters.maxLimit}
+                          onChange={(e) => setCalcFilters(prev => ({
+                            ...prev,
+                            maxLimit: Math.max(parseInt(e.target.value), prev.minLimit + 5000)
+                          }))}
+                        />
+                      </div>
+                    </div>
                   </div>
-                </div>
+                )}
+              </div>
+
+              {/* 검색 버튼 */}
+              <button className="calc-btn-v3" onClick={runCalculation}>
+                최적 대출 찾기
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </button>
+            </div>
+
+            {/* 로딩 */}
+            {isLoading && (
+              <div className="loading-section">
+                <div className="loading-spinner"></div>
+                <p className="loading-text">나에게 유리한 대출을<br />찾고 있어요</p>
               </div>
             )}
 
-            {activeCalcTab === 'loan' && (
-              <div className="calc-content-area active">
-                <div className="input-group" style={{ marginBottom: '16px' }}>
-                  <label>대출 목적</label>
-                  <select className="input-select" value={loanPurpose} onChange={(e) => setLoanPurpose(e.target.value)}>
-                    <option value="">목적을 선택해주세요</option>
-                    <option value="credit">신용대출</option>
-                    <option value="house">주택담보대출</option>
-                    <option value="car">자동차대출</option>
-                  </select>
+            {/* 검색 결과 */}
+            {showCalcResult && !isLoading && (
+              <div className="calc-result-section">
+                <div className="legal-sort-notice">
+                  <span className="legal-icon">⚖️</span>
+                  <span>금융소비자보호법에 따라 금리가 낮은 순으로 정렬되었습니다</span>
                 </div>
-                <div className="input-group" style={{ marginBottom: '24px' }}>
-                  <label>필요한 금액</label>
-                  <div style={{ position: 'relative' }}>
-                    <input
-                      type="number"
-                      className="input-text"
-                      placeholder="예: 5000"
-                      style={{ paddingRight: '40px' }}
-                      value={loanAmount}
-                      onChange={(e) => setLoanAmount(e.target.value)}
-                    />
-                    <span style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', fontSize: '14px', color: '#8B95A1' }}>만원</span>
-                  </div>
-                </div>
-              </div>
-            )}
 
-            {activeCalcTab === 'insurance' && (
-              <div className="calc-content-area active">
-                <div className="input-group" style={{ marginBottom: '16px' }}>
-                  <label>관심 보험 분야</label>
-                  <select className="input-select" value={insuranceType} onChange={(e) => setInsuranceType(e.target.value)}>
-                    <option value="">분야를 선택해주세요</option>
-                    <option value="car">자동차보험</option>
-                    <option value="health">실손의료비</option>
-                    <option value="cancer">암보험</option>
-                  </select>
-                </div>
-                <div className="input-group" style={{ marginBottom: '24px' }}>
-                  <label>만 나이</label>
-                  <div style={{ position: 'relative' }}>
-                    <input
-                      type="number"
-                      className="input-text"
-                      placeholder="예: 30"
-                      style={{ paddingRight: '40px' }}
-                      value={age}
-                      onChange={(e) => setAge(e.target.value)}
-                    />
-                    <span style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', fontSize: '14px', color: '#8B95A1' }}>세</span>
+                {calcResults.length === 0 ? (
+                  <div className="no-result-v3">
+                    <div className="no-result-icon">🔍</div>
+                    <p>조건에 맞는 상품이 없어요</p>
+                    <p className="no-result-hint">필터 조건을 조정해보세요</p>
                   </div>
-                </div>
-              </div>
-            )}
+                ) : (
+                  <>
+                    <div className="top-recommend-card rate">
+                      <div className="top-recommend-badge">🏆 최저금리 1위</div>
+                      <div className="top-recommend-hook">
+                        연 {calcResults[0]?.interestRate}% ~
+                      </div>
+                      <div className="top-recommend-sub">
+                        {calcResults[0]?.name}
+                      </div>
+                    </div>
 
-            <button className="btn-calc" onClick={handleCalculate}>혜택 확인하기 &gt;</button>
-
-            {showResult && (
-              <div className="calc-result">
-                <div style={{ background: '#F2F4F6', borderRadius: '12px', padding: '16px', textAlign: 'center', marginBottom: '16px' }}>
-                  <span style={{ fontSize: '13px', color: '#4E5968' }}>지금 바꾸면 월 예상 혜택</span>
-                  <div style={{ fontSize: '24px', fontWeight: '800', color: '#3182F6', marginTop: '4px' }}>+ 15,000 P</div>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px', border: '1px solid #3182F6', borderRadius: '12px', background: '#F0F7FF' }}>
-                  <div style={{ width: '40px', height: '26px', background: '#3182F6', borderRadius: '4px' }}></div>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: '12px', fontWeight: '700', color: '#3182F6' }}>추천 1위</div>
-                    <div style={{ fontSize: '14px', fontWeight: '700', color: '#191F28' }}>에이핀 제휴 신한카드</div>
-                  </div>
-                  <button style={{ background: '#3182F6', color: '#fff', border: 'none', padding: '6px 12px', borderRadius: '8px', fontSize: '12px', fontWeight: '700', cursor: 'pointer' }} onClick={() => showToast('신청 페이지로 이동합니다')}>신청</button>
-                </div>
+                    <div className="product-list-v3">
+                      {calcResults.map((loan, index) => (
+                        <div key={loan.id} className="product-card-v3 calc" onClick={() => handleProductClick(loan)}>
+                          <div className="product-rank-v3 rate">{index + 1}</div>
+                          <div className="product-logo-v3" style={{ background: loan.color }}>
+                            <span>{loan.logo}</span>
+                          </div>
+                          <div className="product-info-v3">
+                            <div className="product-company-v3">{loan.company}</div>
+                            <div className="product-name-v3">{loan.name}</div>
+                            <div className="product-rate-v3">
+                              연 {loan.interestRate}% ~ {loan.maxInterestRate}%
+                            </div>
+                            <div className="product-limit-v3">
+                              최대 {(loan.maxLimit / 10000).toFixed(0)}억원
+                            </div>
+                          </div>
+                          <div className="rate-highlight-box">
+                            <span className="rate-value">{loan.interestRate}%</span>
+                            <span className="rate-label">최저</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
               </div>
             )}
           </div>
+        )}
 
-          {/* 상품 탭 네비게이션 */}
-          <div className="product-tabs-container">
-            <div className="product-tabs">
+        {/* ========== 카드 탭 ========== */}
+        {mainTab === 'card' && (
+          <div className="card-section">
+            <div className="card-filter-bar">
+              {[
+                { id: 'all', label: '전체' },
+                { id: 'shopping', label: '쇼핑' },
+                { id: 'food', label: '외식' },
+                { id: 'transport', label: '교통' },
+              ].map((filter) => (
+                <button
+                  key={filter.id}
+                  className={`card-filter-btn ${cardFilter === filter.id ? 'active' : ''}`}
+                  onClick={() => setCardFilter(filter.id)}
+                >
+                  {filter.label}
+                </button>
+              ))}
+            </div>
+
+            <div className="sort-notice curation">
+              <span className="sort-icon">🎁</span>
+              <span>에이핀 포인트 적립순</span>
+            </div>
+
+            <div className="product-list-v3">
+              {getSortedCards().map((card, index) => (
+                <div key={card.id} className="product-card-v3 curation" onClick={() => handleProductClick(card)}>
+                  <div className="ad-badge">제휴</div>
+                  <div className="point-badge-top">
+                    +{card.benefitPoints.toLocaleString()}P
+                  </div>
+                  <div className="product-rank-v3">{index === 0 ? '👑' : index + 1}</div>
+                  <div className="product-logo-v3" style={{ background: card.color }}>
+                    <span>{card.logo}</span>
+                  </div>
+                  <div className="product-info-v3">
+                    <div className="product-company-v3">{card.company}</div>
+                    <div className="product-name-v3">{card.name}</div>
+                    <div className="product-benefit-v3">{card.benefits}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ========== 대출 탭 ========== */}
+        {mainTab === 'loan' && (
+          <div className="loan-section">
+            <div className="loan-category-bar">
+              {loanCategories.map((cat) => (
+                <button
+                  key={cat.id}
+                  className={`loan-category-btn ${loanCategory === cat.id ? 'active' : ''}`}
+                  onClick={() => setLoanCategory(cat.id)}
+                >
+                  <span className="cat-icon">{cat.icon}</span>
+                  <span className="cat-label">{cat.label}</span>
+                </button>
+              ))}
+            </div>
+
+            <div className="sort-options">
               <button
-                className={`product-tab ${activeProductTab === 'card' ? 'active' : ''}`}
-                onClick={() => handleProductTabClick('card')}
+                className={`sort-chip ${loanSortBy === 'points' ? 'active' : ''}`}
+                onClick={() => setLoanSortBy('points')}
               >
-                <span className="product-tab-icon">💳</span>
-                <span className="product-tab-label">카드</span>
+                🎁 포인트 적립순
               </button>
               <button
-                className={`product-tab ${activeProductTab === 'insurance' ? 'active' : ''}`}
-                onClick={() => handleProductTabClick('insurance')}
+                className={`sort-chip ${loanSortBy === 'rate' ? 'active' : ''}`}
+                onClick={() => setLoanSortBy('rate')}
               >
-                <span className="product-tab-icon">🛡️</span>
-                <span className="product-tab-label">보험</span>
-              </button>
-              <button
-                className={`product-tab ${activeProductTab === 'loan' ? 'active' : ''}`}
-                onClick={() => handleProductTabClick('loan')}
-              >
-                <span className="product-tab-icon">💸</span>
-                <span className="product-tab-label">대출</span>
+                📉 금리 낮은순
               </button>
             </div>
-          </div>
 
-          {/* 추천 카드 섹션 */}
-          <div className="section" ref={cardSectionRef}>
-            <div className="section-header">
-              <h2 className="section-title">💳 추천 카드</h2>
-            </div>
-            <div className="card-list">
-              <div className="finance-card" onClick={() => showToast('신한 Deep Dream 카드 신청 페이지로 이동합니다')}>
-                <div className="finance-card-visual shinhan">
-                  <div className="card-logo">신한</div>
+            <div className="product-list-v3">
+              {getSortedLoans().map((loan, index) => (
+                <div key={loan.id} className="product-card-v3 curation" onClick={() => handleProductClick(loan)}>
+                  <div className="ad-badge">AD</div>
+                  <div className="point-badge-top">
+                    +{loan.benefitPoints.toLocaleString()}P
+                  </div>
+                  <div className="product-rank-v3">{index === 0 ? '👑' : index + 1}</div>
+                  <div className="product-logo-v3" style={{ background: loan.color }}>
+                    <span>{loan.logo}</span>
+                  </div>
+                  <div className="product-info-v3">
+                    <div className="product-company-v3">{loan.company}</div>
+                    <div className="product-name-v3">{loan.name}</div>
+                    <div className="product-rate-v3">
+                      연 {loan.interestRate}% ~ {loan.maxInterestRate}%
+                    </div>
+                    <div className="product-limit-v3">
+                      최대 {(loan.maxLimit / 10000).toFixed(0)}억원
+                    </div>
+                  </div>
                 </div>
-                <div className="finance-card-info">
-                  <div className="finance-card-name">신한 Deep Dream 카드</div>
-                  <div className="finance-card-benefit">모든 가맹점 0.7% 적립</div>
-                  <div className="finance-card-reward">+5,000P 적립</div>
-                </div>
-              </div>
-
-              <div className="finance-card" onClick={() => showToast('삼성 taptap O 카드 신청 페이지로 이동합니다')}>
-                <div className="finance-card-visual samsung">
-                  <div className="card-logo">삼성</div>
-                </div>
-                <div className="finance-card-info">
-                  <div className="finance-card-name">삼성 taptap O 카드</div>
-                  <div className="finance-card-benefit">편의점/카페 10% 할인</div>
-                  <div className="finance-card-reward">+8,000P 적립</div>
-                </div>
-              </div>
-
-              <div className="finance-card" onClick={() => showToast('KB국민 liiv Fit 카드 신청 페이지로 이동합니다')}>
-                <div className="finance-card-visual kb">
-                  <div className="card-logo">KB</div>
-                </div>
-                <div className="finance-card-info">
-                  <div className="finance-card-name">KB국민 liiv Fit 카드</div>
-                  <div className="finance-card-benefit">통신/스트리밍 10% 할인</div>
-                  <div className="finance-card-reward">+6,000P 적립</div>
-                </div>
-              </div>
-
-              <div className="finance-card" onClick={() => showToast('현대 Z Edition2 카드 신청 페이지로 이동합니다')}>
-                <div className="finance-card-visual hyundai">
-                  <div className="card-logo">현대</div>
-                </div>
-                <div className="finance-card-info">
-                  <div className="finance-card-name">현대 Z Edition2 카드</div>
-                  <div className="finance-card-benefit">배달앱/OTT 5% 적립</div>
-                  <div className="finance-card-reward">+7,000P 적립</div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
-
-          {/* 추천 보험 섹션 */}
-          <div className="section" ref={insuranceSectionRef}>
-            <div className="section-header">
-              <h2 className="section-title">🛡️ 추천 보험</h2>
-            </div>
-            <div className="insurance-grid">
-              <div className="insurance-card" onClick={() => showToast('실손보험 상담 신청이 완료되었습니다')}>
-                <div className="insurance-icon">🏥</div>
-                <div className="insurance-name">실손보험</div>
-                <div className="insurance-desc">의료비 보장</div>
-                <div className="insurance-reward">+3,000P</div>
-              </div>
-
-              <div className="insurance-card" onClick={() => showToast('운전자보험 상담 신청이 완료되었습니다')}>
-                <div className="insurance-icon">🚗</div>
-                <div className="insurance-name">운전자보험</div>
-                <div className="insurance-desc">사고 대비</div>
-                <div className="insurance-reward">+4,000P</div>
-              </div>
-
-              <div className="insurance-card" onClick={() => showToast('암보험 상담 신청이 완료되었습니다')}>
-                <div className="insurance-icon">💊</div>
-                <div className="insurance-name">암보험</div>
-                <div className="insurance-desc">암 진단비</div>
-                <div className="insurance-reward">+5,000P</div>
-              </div>
-
-              <div className="insurance-card" onClick={() => showToast('치아보험 상담 신청이 완료되었습니다')}>
-                <div className="insurance-icon">🦷</div>
-                <div className="insurance-name">치아보험</div>
-                <div className="insurance-desc">치료비 보장</div>
-                <div className="insurance-reward">+3,500P</div>
-              </div>
-
-              <div className="insurance-card" onClick={() => showToast('연금보험 상담 신청이 완료되었습니다')}>
-                <div className="insurance-icon">💰</div>
-                <div className="insurance-name">연금보험</div>
-                <div className="insurance-desc">노후 대비</div>
-                <div className="insurance-reward">+6,000P</div>
-              </div>
-
-              <div className="insurance-card" onClick={() => showToast('여행자보험 상담 신청이 완료되었습니다')}>
-                <div className="insurance-icon">✈️</div>
-                <div className="insurance-name">여행자보험</div>
-                <div className="insurance-desc">해외 여행</div>
-                <div className="insurance-reward">+2,000P</div>
-              </div>
-            </div>
-          </div>
-
-          {/* 추천 대출 섹션 */}
-          <div className="section" ref={loanSectionRef}>
-            <div className="section-header">
-              <h2 className="section-title">💸 추천 대출</h2>
-            </div>
-            <div className="card-list">
-              <div className="finance-card" onClick={() => showToast('카카오뱅크 비상금대출 신청 페이지로 이동합니다')}>
-                <div className="finance-card-visual kakao">
-                  <div className="card-logo">카카오</div>
-                </div>
-                <div className="finance-card-info">
-                  <div className="finance-card-name">카카오뱅크 비상금대출</div>
-                  <div className="finance-card-benefit">연 3.69% ~ 19.9%</div>
-                  <div className="finance-card-reward">+10,000P 적립</div>
-                </div>
-              </div>
-
-              <div className="finance-card" onClick={() => showToast('토스 마이너스통장 신청 페이지로 이동합니다')}>
-                <div className="finance-card-visual toss">
-                  <div className="card-logo">toss</div>
-                </div>
-                <div className="finance-card-info">
-                  <div className="finance-card-name">토스 마이너스통장</div>
-                  <div className="finance-card-benefit">연 3.5% ~ 14.9%</div>
-                  <div className="finance-card-reward">+12,000P 적립</div>
-                </div>
-              </div>
-
-              <div className="finance-card" onClick={() => showToast('KB국민은행 햇살론 신청 페이지로 이동합니다')}>
-                <div className="finance-card-visual kb">
-                  <div className="card-logo">KB</div>
-                </div>
-                <div className="finance-card-info">
-                  <div className="finance-card-name">KB국민은행 햇살론</div>
-                  <div className="finance-card-benefit">연 4.5% ~ 9.5%</div>
-                  <div className="finance-card-reward">+8,000P 적립</div>
-                </div>
-              </div>
-
-              <div className="finance-card" onClick={() => showToast('우리은행 직장인신용대출 신청 페이지로 이동합니다')}>
-                <div className="finance-card-visual woori">
-                  <div className="card-logo">우리</div>
-                </div>
-                <div className="finance-card-info">
-                  <div className="finance-card-name">우리은행 직장인신용대출</div>
-                  <div className="finance-card-benefit">연 3.2% ~ 12.5%</div>
-                  <div className="finance-card-reward">+15,000P 적립</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );

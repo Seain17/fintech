@@ -25,11 +25,6 @@ const HomeScreen = ({ userPoints, showToast, isGuest }) => {
 
       {/* 앱바 */}
       <div className="home-appbar">
-        <button className="home-menu-btn" onClick={() => showToast('메뉴')}>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M3 12h18M3 6h18M3 18h18" />
-          </svg>
-        </button>
         <div className="home-logo">LOGO</div>
         <button className="home-noti-btn" onClick={() => navigate('/notifications')}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
