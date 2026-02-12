@@ -13,16 +13,33 @@ const WalkingScreen = ({ userPoints = 26350, updatePoints, showToast }) => {
   const currentSteps = 7240;
 
   const [missions, setMissions] = useState([
-    { id: 1, title: '3,000보 (플러그 뽑기)', desc: '대기전력 대신 걷기 ⚡️', reward: 30, status: 'done', steps: 3000 },
-    { id: 2, title: '7,000보 (텀블러)', desc: '일회용컵 대신 텀블러 🥤', reward: 50, status: 'ready', steps: 7000 },
-    { id: 3, title: '10,000보 (승용차)', desc: '운전 대신 걷기 🚗✖️', reward: 100, status: 'locked', steps: 10000 },
+    { id: 1, title: '1,000보 달성', desc: '탄소 100g 절감 🌱', reward: 10, status: 'done', steps: 1000 },
+    { id: 2, title: '3,000보 달성', desc: '탄소 300g 절감 🍃', reward: 30, status: 'done', steps: 3000 },
+    { id: 3, title: '7,000보 달성', desc: '탄소 700g 절감 🌿', reward: 50, status: 'ready', steps: 7000 },
+    { id: 4, title: '10,000보 달성', desc: '탄소 1kg 절감 🌳', reward: 100, status: 'locked', steps: 10000 },
   ]);
 
   const getWalkerMessage = () => {
-    if (currentSteps >= 10000) return "오늘 하루 차를 안 탔어요! 대단해요 🚗💨";
-    if (currentSteps >= 7000) return "일회용 컵 대신 텀블러! 🥤";
-    if (currentSteps >= 3000) return "TV 보는 대신 산책 중? ⚡️";
-    return "엘리베이터 대신 계단 어때요? 🏃‍♂️";
+    if (currentSteps >= 10000) return "승용차 7km 주행을 대체했어요! 1kg 절감! 🚗💨";
+    if (currentSteps >= 7000) return "승용차 약 5km 분량, 700g 절감 중! 🌿";
+    if (currentSteps >= 3000) return "승용차 약 2km 분량, 300g 절감 중! 🍃";
+    if (currentSteps >= 1000) return "승용차 700m 분량, 100g 절감했어요! 🌱";
+    return "가까운 거리는 대중교통 대신 걸어보는 게 어떨까요? 🚶";
+  };
+
+  // 현재 걸음 수에 따른 탄소 절감량 계산 (g 단위)
+  // 환경부 기준: 승용차 약 150g CO₂/km, 1,000보 ≈ 0.7km → 1,000보당 약 100g
+  const getCarbonSaved = () => {
+    const carbonPerStep = 0.1; // g per step (환경부 기준)
+    return Math.round(currentSteps * carbonPerStep);
+  };
+
+  const formatCarbonSaved = () => {
+    const carbon = getCarbonSaved();
+    if (carbon >= 1000) {
+      return `${(carbon / 1000).toFixed(1)} kg`;
+    }
+    return `${carbon} g`;
   };
 
   const handleRewardClick = (index, amount) => {
@@ -82,12 +99,12 @@ const WalkingScreen = ({ userPoints = 26350, updatePoints, showToast }) => {
               오늘 아낀 탄소
               <span className="walking-tooltip-icon">?</span>
             </div>
-            <div className="walking-stat-val">1.4 kg</div>
+            <div className="walking-stat-val">{formatCarbonSaved()}</div>
             <div className="walking-tooltip-box">
               <strong>💡 탄소 절감량이란?</strong><br />
-              걷기를 통해 승용차나 엘리베이터 이용을
-              <strong> '대체'했을 때</strong> 발생하는 효과를 계산한 수치입니다.
-              (출처: 한국환경산업기술원)
+              걷기로 승용차 이용을 <strong>'대체'했을 때</strong>의 효과입니다.<br /><br />
+              • 승용차 CO₂ 배출량: 약 150g/km<br />
+              (출처: 환경부)
             </div>
           </div>
         </div>
