@@ -171,16 +171,17 @@ const FinanceScreen = ({ showToast }) => {
   // ============================================
   // 계산기 탭 상태
   // ============================================
-  const [calcCategory, setCalcCategory] = useState('credit');
+  const [calcStep, setCalcStep] = useState('select'); // 'select' | 'option' | 'result'
+  const [calcType, setCalcType] = useState(null); // 'card' | 'loan'
+  const [calcCardBenefit, setCalcCardBenefit] = useState('all'); // 카드 혜택 선택
+  const [calcLoanType, setCalcLoanType] = useState('credit'); // 대출 종류 선택
   const [calcFilters, setCalcFilters] = useState({
     minRate: 0,
     maxRate: 20,
     minLimit: 0,
     maxLimit: 200000,
   });
-  const [showCalcFilter, setShowCalcFilter] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [showCalcResult, setShowCalcResult] = useState(false);
   const [calcResults, setCalcResults] = useState([]);
 
   // ============================================
@@ -199,30 +200,53 @@ const FinanceScreen = ({ showToast }) => {
   // ============================================
   const runCalculation = () => {
     setIsLoading(true);
-    setShowCalcResult(false);
 
     setTimeout(() => {
-      // 자가평가서 기준 정렬: 금리 낮은 순 → 한도 높은 순
-      const sorted = [...loanProducts]
-        .filter(loan => loan.category === calcCategory)
-        .filter(loan => {
-          if (loan.interestRate < calcFilters.minRate) return false;
-          if (loan.interestRate > calcFilters.maxRate) return false;
-          if (loan.maxLimit < calcFilters.minLimit) return false;
-          if (loan.maxLimit > calcFilters.maxLimit) return false;
-          return true;
-        })
-        .sort((a, b) => {
-          if (a.interestRate !== b.interestRate) {
-            return a.interestRate - b.interestRate;
-          }
-          return b.maxLimit - a.maxLimit;
-        });
-
-      setCalcResults(sorted);
+      if (calcType === 'card') {
+        // 카드: 혜택별 필터 후 포인트 높은 순
+        const sorted = [...cardProducts]
+          .filter(card => calcCardBenefit === 'all' || card.category === calcCardBenefit || card.category === 'all')
+          .sort((a, b) => b.benefitPoints - a.benefitPoints);
+        setCalcResults(sorted);
+      } else {
+        // 대출: 자가평가서 기준 정렬 (금리 낮은 순 → 한도 높은 순)
+        const sorted = [...loanProducts]
+          .filter(loan => loan.category === calcLoanType)
+          .sort((a, b) => {
+            if (a.interestRate !== b.interestRate) {
+              return a.interestRate - b.interestRate;
+            }
+            return b.maxLimit - a.maxLimit;
+          });
+        setCalcResults(sorted);
+      }
       setIsLoading(false);
-      setShowCalcResult(true);
+      setCalcStep('result');
     }, 1500);
+  };
+
+  // 대출 결과에서 필터 적용
+  const getFilteredLoanResults = () => {
+    return calcResults.filter(loan => {
+      if (loan.interestRate < calcFilters.minRate) return false;
+      if (loan.interestRate > calcFilters.maxRate) return false;
+      if (loan.maxLimit < calcFilters.minLimit) return false;
+      if (loan.maxLimit > calcFilters.maxLimit) return false;
+      return true;
+    });
+  };
+
+  // 계산기 초기화
+  const resetCalculator = () => {
+    setCalcStep('select');
+    setCalcType(null);
+    setCalcResults([]);
+    setCalcFilters({
+      minRate: 0,
+      maxRate: 20,
+      minLimit: 0,
+      maxLimit: 200000,
+    });
   };
 
   // ============================================
@@ -294,184 +318,316 @@ const FinanceScreen = ({ showToast }) => {
         {/* ========== 계산기 탭 ========== */}
         {mainTab === 'calculator' && (
           <div className="calc-section">
-            <div className="calc-card-v3">
-              <div className="calc-header-v3">
-                <h2 className="calc-title-v3">
-                  나에게 유리한<br />
-                  <span className="accent">대출 찾기</span>
-                </h2>
-                <p className="calc-subtitle-v3">
-                  금융소비자보호법에 따라<br />
-                  금리가 낮은 순으로 추천해드려요
-                </p>
-              </div>
+            {/* Step 1: 카드/대출 선택 */}
+            {calcStep === 'select' && (
+              <div className="calc-card-v3">
+                <div className="calc-header-v3">
+                  <h2 className="calc-title-v3">
+                    나에게 맞는<br />
+                    <span className="accent">최적 상품 찾기</span>
+                  </h2>
+                  <p className="calc-subtitle-v3">
+                    금융소비자보호법에 따라<br />
+                    유리한 조건 순으로 추천해드려요
+                  </p>
+                </div>
 
-              {/* 대출 카테고리 선택 */}
-              <div className="calc-category-select">
-                <label className="category-label">어떤 대출이 필요하세요?</label>
-                <div className="loan-category-buttons">
-                  {loanCategories.map((cat) => (
+                <div className="calc-type-select">
+                  <label className="category-label">어떤 상품을 찾으세요?</label>
+                  <div className="calc-type-buttons">
                     <button
-                      key={cat.id}
-                      className={`loan-cat-btn ${calcCategory === cat.id ? 'active' : ''}`}
+                      className="calc-type-btn"
                       onClick={() => {
-                        setCalcCategory(cat.id);
-                        setShowCalcResult(false);
+                        setCalcType('card');
+                        setCalcStep('option');
                       }}
                     >
-                      <span className="cat-icon">{cat.icon}</span>
-                      <span className="cat-label">{cat.label}</span>
+                      <span className="type-icon">💳</span>
+                      <span className="type-label">카드</span>
+                      <span className="type-desc">혜택 맞춤 추천</span>
                     </button>
-                  ))}
+                    <button
+                      className="calc-type-btn"
+                      onClick={() => {
+                        setCalcType('loan');
+                        setCalcStep('option');
+                      }}
+                    >
+                      <span className="type-icon">💰</span>
+                      <span className="type-label">대출</span>
+                      <span className="type-desc">금리 비교 추천</span>
+                    </button>
+                  </div>
                 </div>
               </div>
+            )}
 
-              {/* 조건 필터 */}
-              <div className="calc-filter-panel">
-                <button
-                  className={`filter-toggle ${showCalcFilter ? 'active' : ''}`}
-                  onClick={() => setShowCalcFilter(!showCalcFilter)}
-                >
-                  <span>🎚️ 조건 설정</span>
-                  <span className="toggle-arrow">{showCalcFilter ? '▲' : '▼'}</span>
+            {/* Step 2: 옵션 선택 */}
+            {calcStep === 'option' && (
+              <div className="calc-card-v3">
+                <button className="calc-back-btn" onClick={resetCalculator}>
+                  ← 다시 선택
                 </button>
 
-                {showCalcFilter && (
-                  <div className="filter-body">
-                    <div className="filter-item">
-                      <label>
-                        금리 범위
-                        <span className="filter-value">{calcFilters.minRate}% ~ {calcFilters.maxRate}%</span>
-                      </label>
-                      <div className="dual-slider">
-                        <input
-                          type="range"
-                          min="0"
-                          max="20"
-                          step="0.5"
-                          value={calcFilters.minRate}
-                          onChange={(e) => setCalcFilters(prev => ({
-                            ...prev,
-                            minRate: Math.min(parseFloat(e.target.value), prev.maxRate - 0.5)
-                          }))}
-                        />
-                        <input
-                          type="range"
-                          min="0"
-                          max="20"
-                          step="0.5"
-                          value={calcFilters.maxRate}
-                          onChange={(e) => setCalcFilters(prev => ({
-                            ...prev,
-                            maxRate: Math.max(parseFloat(e.target.value), prev.minRate + 0.5)
-                          }))}
-                        />
-                      </div>
-                    </div>
+                <div className="calc-header-v3">
+                  <h2 className="calc-title-v3">
+                    {calcType === 'card' ? '카드 혜택' : '대출 종류'}<br />
+                    <span className="accent">선택하기</span>
+                  </h2>
+                </div>
 
-                    <div className="filter-item">
-                      <label>
-                        대출 한도
-                        <span className="filter-value">
-                          {(calcFilters.minLimit / 10000).toFixed(0)}억 ~ {(calcFilters.maxLimit / 10000).toFixed(0)}억
-                        </span>
-                      </label>
-                      <div className="dual-slider">
-                        <input
-                          type="range"
-                          min="0"
-                          max="200000"
-                          step="5000"
-                          value={calcFilters.minLimit}
-                          onChange={(e) => setCalcFilters(prev => ({
-                            ...prev,
-                            minLimit: Math.min(parseInt(e.target.value), prev.maxLimit - 5000)
-                          }))}
-                        />
-                        <input
-                          type="range"
-                          min="0"
-                          max="200000"
-                          step="5000"
-                          value={calcFilters.maxLimit}
-                          onChange={(e) => setCalcFilters(prev => ({
-                            ...prev,
-                            maxLimit: Math.max(parseInt(e.target.value), prev.minLimit + 5000)
-                          }))}
-                        />
-                      </div>
+                {calcType === 'card' ? (
+                  <div className="calc-option-select">
+                    <label className="category-label">어떤 혜택이 필요하세요?</label>
+                    <div className="select-wrapper">
+                      <select
+                        className="category-dropdown"
+                        value={calcCardBenefit}
+                        onChange={(e) => setCalcCardBenefit(e.target.value)}
+                      >
+                        <option value="all">전체 혜택</option>
+                        <option value="shopping">쇼핑 할인</option>
+                        <option value="food">외식/카페</option>
+                        <option value="transport">교통/통신</option>
+                      </select>
+                      <span className="select-arrow">▼</span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="calc-option-select">
+                    <label className="category-label">어떤 대출이 필요하세요?</label>
+                    <div className="select-wrapper">
+                      <select
+                        className="category-dropdown"
+                        value={calcLoanType}
+                        onChange={(e) => setCalcLoanType(e.target.value)}
+                      >
+                        <option value="credit">신용대출</option>
+                        <option value="mortgage">주택담보대출</option>
+                        <option value="car">자동차대출</option>
+                      </select>
+                      <span className="select-arrow">▼</span>
                     </div>
                   </div>
                 )}
-              </div>
 
-              {/* 검색 버튼 */}
-              <button className="calc-btn-v3" onClick={runCalculation}>
-                최적 대출 찾기
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </button>
-            </div>
+                <button className="calc-btn-v3" onClick={runCalculation}>
+                  최적 상품 찾기
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </button>
+              </div>
+            )}
 
             {/* 로딩 */}
             {isLoading && (
               <div className="loading-section">
                 <div className="loading-spinner"></div>
-                <p className="loading-text">나에게 유리한 대출을<br />찾고 있어요</p>
+                <p className="loading-text">
+                  나에게 유리한 {calcType === 'card' ? '카드를' : '대출을'}<br />찾고 있어요
+                </p>
               </div>
             )}
 
-            {/* 검색 결과 */}
-            {showCalcResult && !isLoading && (
+            {/* Step 3: 결과 */}
+            {calcStep === 'result' && !isLoading && (
               <div className="calc-result-section">
-                <div className="legal-sort-notice">
-                  <span className="legal-icon">⚖️</span>
-                  <span>금융소비자보호법에 따라 금리가 낮은 순으로 정렬되었습니다</span>
-                </div>
+                <button className="calc-back-btn" onClick={resetCalculator}>
+                  ← 다시 검색
+                </button>
 
-                {calcResults.length === 0 ? (
-                  <div className="no-result-v3">
-                    <div className="no-result-icon">🔍</div>
-                    <p>조건에 맞는 상품이 없어요</p>
-                    <p className="no-result-hint">필터 조건을 조정해보세요</p>
-                  </div>
-                ) : (
+                {calcType === 'card' ? (
                   <>
-                    <div className="top-recommend-card rate">
-                      <div className="top-recommend-badge">🏆 최저금리 1위</div>
-                      <div className="top-recommend-hook">
-                        연 {calcResults[0]?.interestRate}% ~
-                      </div>
-                      <div className="top-recommend-sub">
-                        {calcResults[0]?.name}
-                      </div>
+                    {/* 카드 결과 */}
+                    <div className="legal-sort-notice">
+                      <span className="legal-icon">🎁</span>
+                      <span>혜택이 좋은 순으로 정렬되었습니다</span>
                     </div>
 
-                    <div className="product-list-v3">
-                      {calcResults.map((loan, index) => (
-                        <div key={loan.id} className="product-card-v3 calc" onClick={() => handleProductClick(loan)}>
-                          <div className="product-rank-v3 rate">{index + 1}</div>
-                          <div className="product-logo-v3" style={{ background: loan.color }}>
-                            <span>{loan.logo}</span>
+                    {calcResults.length === 0 ? (
+                      <div className="no-result-v3">
+                        <div className="no-result-icon">🔍</div>
+                        <p>조건에 맞는 카드가 없어요</p>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="top-recommend-card">
+                          <div className="top-recommend-badge">🏆 추천 1위</div>
+                          <div className="top-recommend-hook">
+                            +{calcResults[0]?.benefitPoints.toLocaleString()}P
                           </div>
-                          <div className="product-info-v3">
-                            <div className="product-company-v3">{loan.company}</div>
-                            <div className="product-name-v3">{loan.name}</div>
-                            <div className="product-rate-v3">
-                              연 {loan.interestRate}% ~ {loan.maxInterestRate}%
-                            </div>
-                            <div className="product-limit-v3">
-                              최대 {(loan.maxLimit / 10000).toFixed(0)}억원
-                            </div>
-                          </div>
-                          <div className="rate-highlight-box">
-                            <span className="rate-value">{loan.interestRate}%</span>
-                            <span className="rate-label">최저</span>
+                          <div className="top-recommend-sub">
+                            {calcResults[0]?.name}
                           </div>
                         </div>
-                      ))}
+
+                        <div className="product-list-v3">
+                          {calcResults.map((card, index) => (
+                            <div key={card.id} className="product-card-v3 calc" onClick={() => handleProductClick(card)}>
+                              <div className="product-rank-v3">{index + 1}</div>
+                              <div className="product-logo-v3" style={{ background: card.color }}>
+                                <span>{card.logo}</span>
+                              </div>
+                              <div className="product-info-v3">
+                                <div className="product-company-v3">{card.company}</div>
+                                <div className="product-name-v3">{card.name}</div>
+                                <div className="product-benefit-v3">{card.benefits}</div>
+                              </div>
+                              <div className="point-highlight">
+                                <span className="point-value">+{card.benefitPoints.toLocaleString()}P</span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    {/* 대출 결과 */}
+                    <div className="legal-sort-notice">
+                      <span className="legal-icon">⚖️</span>
+                      <span>금융소비자보호법에 따라 금리가 낮은 순으로 정렬되었습니다</span>
                     </div>
+
+                    {/* 대출 결과에서 조건 설정 슬라이더 */}
+                    <div className="result-filter-panel">
+                      <div className="filter-item">
+                        <label>
+                          금리 범위
+                          <span className="filter-value">{calcFilters.minRate}% ~ {calcFilters.maxRate}%</span>
+                        </label>
+                        <div className="range-slider-container">
+                          <div
+                            className="range-slider-track"
+                            style={{
+                              '--min-percent': `${(calcFilters.minRate / 20) * 100}%`,
+                              '--max-percent': `${(calcFilters.maxRate / 20) * 100}%`
+                            }}
+                          />
+                          <input
+                            type="range"
+                            className="range-slider-input"
+                            min="0"
+                            max="20"
+                            step="0.5"
+                            value={calcFilters.minRate}
+                            onChange={(e) => setCalcFilters(prev => ({
+                              ...prev,
+                              minRate: Math.min(parseFloat(e.target.value), prev.maxRate - 0.5)
+                            }))}
+                          />
+                          <input
+                            type="range"
+                            className="range-slider-input"
+                            min="0"
+                            max="20"
+                            step="0.5"
+                            value={calcFilters.maxRate}
+                            onChange={(e) => setCalcFilters(prev => ({
+                              ...prev,
+                              maxRate: Math.max(parseFloat(e.target.value), prev.minRate + 0.5)
+                            }))}
+                          />
+                        </div>
+                        <div className="range-slider-labels">
+                          <span>0%</span>
+                          <span>20%</span>
+                        </div>
+                      </div>
+
+                      <div className="filter-item">
+                        <label>
+                          대출 한도
+                          <span className="filter-value">
+                            {calcFilters.minLimit === 0 ? '0' : (calcFilters.minLimit / 10000).toFixed(0) + '억'} ~ {(calcFilters.maxLimit / 10000).toFixed(0)}억
+                          </span>
+                        </label>
+                        <div className="range-slider-container">
+                          <div
+                            className="range-slider-track"
+                            style={{
+                              '--min-percent': `${(calcFilters.minLimit / 200000) * 100}%`,
+                              '--max-percent': `${(calcFilters.maxLimit / 200000) * 100}%`
+                            }}
+                          />
+                          <input
+                            type="range"
+                            className="range-slider-input"
+                            min="0"
+                            max="200000"
+                            step="5000"
+                            value={calcFilters.minLimit}
+                            onChange={(e) => setCalcFilters(prev => ({
+                              ...prev,
+                              minLimit: Math.min(parseInt(e.target.value), prev.maxLimit - 5000)
+                            }))}
+                          />
+                          <input
+                            type="range"
+                            className="range-slider-input"
+                            min="0"
+                            max="200000"
+                            step="5000"
+                            value={calcFilters.maxLimit}
+                            onChange={(e) => setCalcFilters(prev => ({
+                              ...prev,
+                              maxLimit: Math.max(parseInt(e.target.value), prev.minLimit + 5000)
+                            }))}
+                          />
+                        </div>
+                        <div className="range-slider-labels">
+                          <span>0</span>
+                          <span>20억</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {getFilteredLoanResults().length === 0 ? (
+                      <div className="no-result-v3">
+                        <div className="no-result-icon">🔍</div>
+                        <p>조건에 맞는 상품이 없어요</p>
+                        <p className="no-result-hint">필터 조건을 조정해보세요</p>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="top-recommend-card rate">
+                          <div className="top-recommend-badge">🏆 최저금리 1위</div>
+                          <div className="top-recommend-hook">
+                            연 {getFilteredLoanResults()[0]?.interestRate}% ~
+                          </div>
+                          <div className="top-recommend-sub">
+                            {getFilteredLoanResults()[0]?.name}
+                          </div>
+                        </div>
+
+                        <div className="product-list-v3">
+                          {getFilteredLoanResults().map((loan, index) => (
+                            <div key={loan.id} className="product-card-v3 calc" onClick={() => handleProductClick(loan)}>
+                              <div className="product-rank-v3 rate">{index + 1}</div>
+                              <div className="product-logo-v3" style={{ background: loan.color }}>
+                                <span>{loan.logo}</span>
+                              </div>
+                              <div className="product-info-v3">
+                                <div className="product-company-v3">{loan.company}</div>
+                                <div className="product-name-v3">{loan.name}</div>
+                                <div className="product-rate-v3">
+                                  연 {loan.interestRate}% ~ {loan.maxInterestRate}%
+                                </div>
+                                <div className="product-limit-v3">
+                                  최대 {(loan.maxLimit / 10000).toFixed(0)}억원
+                                </div>
+                              </div>
+                              <div className="rate-highlight-box">
+                                <span className="rate-value">{loan.interestRate}%</span>
+                                <span className="rate-label">최저</span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </>
+                    )}
                   </>
                 )}
               </div>
