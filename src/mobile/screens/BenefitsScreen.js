@@ -132,7 +132,7 @@ const BenefitsScreen = ({ showToast, updatePoints }) => {
             </div>
             <div className="raffle-list-vertical">
               <div className="raffle-list-item" onClick={() => navigate('/raffle/1')}>
-                <div className="raffle-item-image" style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
+                <div className="raffle-item-image" style={{ background: 'linear-gradient(135deg, #1a2e71 0%, #2d4a8c 100%)' }}>
                   <div className="raffle-item-icon">🎧</div>
                 </div>
                 <div className="raffle-item-content">
@@ -146,7 +146,7 @@ const BenefitsScreen = ({ showToast, updatePoints }) => {
                 </div>
               </div>
               <div className="raffle-list-item" onClick={() => navigate('/raffle/2')}>
-                <div className="raffle-item-image" style={{ background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' }}>
+                <div className="raffle-item-image" style={{ background: 'linear-gradient(135deg, #3d5a9e 0%, #5c7cba 100%)' }}>
                   <div className="raffle-item-icon">📱</div>
                 </div>
                 <div className="raffle-item-content">

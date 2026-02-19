@@ -118,7 +118,7 @@
 .mypage-action-btn.withdraw {
   background: var(--bg-gradient);
   color: #fff;
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.35);
+  box-shadow: 0 6px 20px rgba(26, 46, 113, 0.35);
 }
 
 .mypage-action-btn.withdraw:active {
@@ -126,9 +126,9 @@
 }
 
 .mypage-action-btn.exchange {
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-  color: #667eea;
-  border: 2px solid rgba(102, 126, 234, 0.2);
+  background: linear-gradient(135deg, rgba(26, 46, 113, 0.1) 0%, rgba(45, 74, 140, 0.1) 100%);
+  color: #1a2e71;
+  border: 2px solid rgba(26, 46, 113, 0.2);
 }
 
 .mypage-action-btn.exchange:active {

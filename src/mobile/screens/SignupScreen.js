@@ -38,6 +38,64 @@ const SignupScreen = ({ onSignup }) => {
     age: false,
   });
 
+  // 약관 상세 보기 모달
+  const [termDetail, setTermDetail] = useState(null);
+
+  // 약관 상세 내용
+  const termDetails = {
+    service: {
+      title: '서비스 이용약관',
+      content: `제1조 (목적)
+이 약관은 에이핀(이하 "회사")가 제공하는 포인트 적립 및 금융 서비스(이하 "서비스")의 이용과 관련하여 회사와 회원 간의 권리, 의무 및 책임사항을 규정함을 목적으로 합니다.
+
+제2조 (정의)
+1. "서비스"란 회사가 제공하는 포인트 적립, 출금, 제휴 서비스 등을 말합니다.
+2. "회원"이란 이 약관에 동의하고 서비스를 이용하는 자를 말합니다.
+
+제3조 (서비스 이용)
+1. 회원은 본 약관에 따라 서비스를 이용할 수 있습니다.
+2. 회사는 서비스 개선을 위해 사전 공지 후 서비스를 변경할 수 있습니다.`
+    },
+    privacy: {
+      title: '개인정보 처리방침',
+      content: `1. 수집하는 개인정보 항목
+- 필수항목: 이름, 이메일, 휴대폰 번호
+- 선택항목: 마케팅 수신 동의 여부
+
+2. 개인정보의 수집 및 이용목적
+- 회원 가입 및 관리
+- 서비스 제공 및 포인트 정산
+- 고객 상담 및 불만 처리
+
+3. 개인정보의 보유 및 이용기간
+- 회원 탈퇴 시까지 (단, 관계 법령에 따라 보존이 필요한 경우 해당 기간까지)
+
+4. 개인정보의 파기
+- 보유기간 경과 시 지체 없이 파기합니다.`
+    },
+    age: {
+      title: '만 14세 이상 확인',
+      content: `만 14세 미만의 아동은 법정대리인의 동의 없이 서비스에 가입할 수 없습니다.
+
+본 확인은 정보통신망 이용촉진 및 정보보호 등에 관한 법률에 따른 것으로, 만 14세 미만의 아동이 서비스에 가입하기 위해서는 법정대리인의 동의가 필요합니다.
+
+만 14세 이상임을 확인합니다.`
+    },
+    marketing: {
+      title: '마케팅 수신 동의',
+      content: `에이핀의 다양한 혜택과 이벤트 정보를 받아보실 수 있습니다.
+
+수신 동의 시 받으실 수 있는 정보:
+- 신규 서비스 및 기능 안내
+- 포인트 적립 이벤트 정보
+- 제휴사 할인 혜택 안내
+- 맞춤형 금융 상품 추천
+
+※ 마케팅 수신 동의는 선택 사항이며, 동의하지 않아도 서비스 이용에 제한이 없습니다.
+※ 수신 동의 후에도 마이페이지에서 언제든 변경 가능합니다.`
+    }
+  };
+
   // Step 3 state (본인인증 - 외부 인증사 연동 예정, 현재 mock)
   const [phone, setPhone] = useState('');
   const [verifying, setVerifying] = useState(false);
@@ -177,44 +235,72 @@ const SignupScreen = ({ onSignup }) => {
                   <span className="signup-term-text">전체 동의하기</span>
                 </div>
 
-                <div className="signup-term-item" onClick={() => handleTermToggle('service')}>
-                  <div className={`signup-checkbox ${terms.service ? 'checked' : ''}`}>
-                    <CheckIcon />
+                <div className="signup-term-item">
+                  <div className="signup-term-left" onClick={() => handleTermToggle('service')}>
+                    <div className={`signup-checkbox ${terms.service ? 'checked' : ''}`}>
+                      <CheckIcon />
+                    </div>
+                    <span className="signup-term-text">
+                      서비스 이용약관
+                      <span className="signup-term-required">(필수)</span>
+                    </span>
                   </div>
-                  <span className="signup-term-text">
-                    서비스 이용약관
-                    <span className="signup-term-required">(필수)</span>
-                  </span>
+                  <button className="signup-term-detail-btn" onClick={(e) => { e.stopPropagation(); setTermDetail('service'); }}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                  </button>
                 </div>
 
-                <div className="signup-term-item" onClick={() => handleTermToggle('privacy')}>
-                  <div className={`signup-checkbox ${terms.privacy ? 'checked' : ''}`}>
-                    <CheckIcon />
+                <div className="signup-term-item">
+                  <div className="signup-term-left" onClick={() => handleTermToggle('privacy')}>
+                    <div className={`signup-checkbox ${terms.privacy ? 'checked' : ''}`}>
+                      <CheckIcon />
+                    </div>
+                    <span className="signup-term-text">
+                      개인정보 처리방침
+                      <span className="signup-term-required">(필수)</span>
+                    </span>
                   </div>
-                  <span className="signup-term-text">
-                    개인정보 처리방침
-                    <span className="signup-term-required">(필수)</span>
-                  </span>
+                  <button className="signup-term-detail-btn" onClick={(e) => { e.stopPropagation(); setTermDetail('privacy'); }}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                  </button>
                 </div>
 
-                <div className="signup-term-item" onClick={() => handleTermToggle('age')}>
-                  <div className={`signup-checkbox ${terms.age ? 'checked' : ''}`}>
-                    <CheckIcon />
+                <div className="signup-term-item">
+                  <div className="signup-term-left" onClick={() => handleTermToggle('age')}>
+                    <div className={`signup-checkbox ${terms.age ? 'checked' : ''}`}>
+                      <CheckIcon />
+                    </div>
+                    <span className="signup-term-text">
+                      만 14세 이상입니다
+                      <span className="signup-term-required">(필수)</span>
+                    </span>
                   </div>
-                  <span className="signup-term-text">
-                    만 14세 이상입니다
-                    <span className="signup-term-required">(필수)</span>
-                  </span>
+                  <button className="signup-term-detail-btn" onClick={(e) => { e.stopPropagation(); setTermDetail('age'); }}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                  </button>
                 </div>
 
-                <div className="signup-term-item" onClick={() => handleTermToggle('marketing')}>
-                  <div className={`signup-checkbox ${terms.marketing ? 'checked' : ''}`}>
-                    <CheckIcon />
+                <div className="signup-term-item">
+                  <div className="signup-term-left" onClick={() => handleTermToggle('marketing')}>
+                    <div className={`signup-checkbox ${terms.marketing ? 'checked' : ''}`}>
+                      <CheckIcon />
+                    </div>
+                    <span className="signup-term-text">
+                      마케팅 수신 동의
+                      <span className="signup-term-optional">(선택)</span>
+                    </span>
                   </div>
-                  <span className="signup-term-text">
-                    마케팅 수신 동의
-                    <span className="signup-term-optional">(선택)</span>
-                  </span>
+                  <button className="signup-term-detail-btn" onClick={(e) => { e.stopPropagation(); setTermDetail('marketing'); }}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                  </button>
                 </div>
               </div>
 
@@ -303,6 +389,29 @@ const SignupScreen = ({ onSignup }) => {
           </div>
         )}
       </div>
+
+      {/* 약관 상세 보기 모달 */}
+      {termDetail && (
+        <div className="term-detail-overlay" onClick={() => setTermDetail(null)}>
+          <div className="term-detail-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="term-detail-header">
+              <h3 className="term-detail-title">{termDetails[termDetail].title}</h3>
+              <button className="term-detail-close" onClick={() => setTermDetail(null)}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+            <div className="term-detail-content">
+              {termDetails[termDetail].content}
+            </div>
+            <button className="term-detail-confirm" onClick={() => setTermDetail(null)}>
+              확인
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

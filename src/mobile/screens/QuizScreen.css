@@ -40,7 +40,7 @@
 }
 
 .quiz-nametag {
-  background: rgba(49, 130, 246, 0.9);
+  background: rgba(26, 46, 113, 0.9);
   color: #fff;
   font-size: 10px;
   font-weight: 700;
@@ -108,7 +108,7 @@
   border-color: var(--primary);
   color: var(--primary);
   transform: scale(1.1);
-  box-shadow: 0 0 0 4px rgba(49, 130, 246, 0.1);
+  box-shadow: 0 0 0 4px rgba(26, 46, 113, 0.1);
 }
 
 .roadmap-node.passed {
@@ -182,7 +182,7 @@
 }
 
 .quiz-step-badge {
-  background: rgba(49, 130, 246, 0.08);
+  background: rgba(26, 46, 113, 0.08);
   color: var(--primary);
   font-size: 11px;
   font-weight: 800;
@@ -300,8 +300,8 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  background: rgba(49, 130, 246, 0.06);
-  border: 1px solid rgba(49, 130, 246, 0.15);
+  background: rgba(26, 46, 113, 0.06);
+  border: 1px solid rgba(26, 46, 113, 0.15);
   border-radius: 10px;
   padding: 10px 14px;
   font-size: 12px;

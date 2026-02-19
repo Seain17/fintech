@@ -1,13 +1,17 @@
 .signup-screen {
   background: var(--bg-main);
   padding-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .signup-content {
   padding: 60px 24px 40px;
   display: flex;
   flex-direction: column;
-  min-height: 100%;
+  flex: 1;
+  min-height: 0;
 }
 
 /* Top Bar: Back + Progress */
@@ -56,7 +60,7 @@
 
 .signup-progress-bar.active {
   background: var(--bg-gradient);
-  box-shadow: 0 0 8px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 0 8px rgba(26, 46, 113, 0.3);
 }
 
 .signup-progress-bar.completed {
@@ -310,6 +314,148 @@
   color: var(--text-tertiary);
   font-weight: 500;
   margin-left: 4px;
+}
+
+/* Term Item Layout */
+.signup-term-item {
+  justify-content: space-between;
+}
+
+.signup-term-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+}
+
+.signup-term-detail-btn {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-tertiary);
+  transition: all 0.2s;
+  border-radius: 50%;
+}
+
+.signup-term-detail-btn:hover {
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+}
+
+.signup-term-detail-btn:active {
+  transform: scale(0.9);
+}
+
+.signup-term-detail-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Term Detail Modal */
+.term-detail-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.term-detail-modal {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--bg-card);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  max-height: 70%;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.term-detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.term-detail-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.term-detail-close {
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-tertiary);
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.term-detail-close:hover {
+  background: var(--bg-secondary);
+}
+
+.term-detail-close svg {
+  width: 24px;
+  height: 24px;
+}
+
+.term-detail-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  white-space: pre-line;
+}
+
+.term-detail-confirm {
+  margin: 16px 20px 20px;
+  padding: 16px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--bg-gradient);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: var(--shadow-primary);
+  transition: all 0.3s ease;
+}
+
+.term-detail-confirm:active {
+  transform: scale(0.98);
 }
 
 /* Step 4: Complete */

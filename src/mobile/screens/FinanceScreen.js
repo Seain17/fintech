@@ -20,7 +20,7 @@ const cardProducts = [
     name: '신한 Deep Dream 카드',
     company: '신한카드',
     logo: '신한',
-    benefits: '모든 가맹점 0.7% 적립',
+    benefit: '모든 가맹점 0.7% 적립',
     benefitPoints: 5000,
     color: '#0046ff',
     category: 'all',
@@ -30,7 +30,7 @@ const cardProducts = [
     name: '삼성 taptap O 카드',
     company: '삼성카드',
     logo: '삼성',
-    benefits: '편의점/카페 10% 적립',
+    benefit: '편의점/카페 10% 적립',
     benefitPoints: 15000,
     color: '#1428a0',
     category: 'food',
@@ -40,7 +40,7 @@ const cardProducts = [
     name: '현대 M BOOST 카드',
     company: '현대카드',
     logo: '현대',
-    benefits: 'M포인트 최대 3% 적립',
+    benefit: 'M포인트 최대 3% 적립',
     benefitPoints: 12000,
     color: '#000000',
     category: 'shopping',
@@ -50,7 +50,7 @@ const cardProducts = [
     name: 'KB국민 My WE:SH 카드',
     company: 'KB국민카드',
     logo: 'KB',
-    benefits: '쇼핑/배달 5% 할인',
+    benefit: '쇼핑/배달 5% 할인',
     benefitPoints: 8000,
     color: '#ffb300',
     category: 'shopping',
@@ -60,7 +60,7 @@ const cardProducts = [
     name: '하나 원큐 카드',
     company: '하나카드',
     logo: '하나',
-    benefits: '대중교통/통신 10% 할인',
+    benefit: '대중교통/통신 10% 할인',
     benefitPoints: 10000,
     color: '#009688',
     category: 'transport',
@@ -455,7 +455,7 @@ const FinanceScreen = ({ showToast }) => {
                         <div className="top-recommend-card">
                           <div className="top-recommend-badge">🏆 추천 1위</div>
                           <div className="top-recommend-hook">
-                            +{calcResults[0]?.benefitPoints.toLocaleString()}P
+                            +{calcResults[0]?.benefitPoints.toLocaleString()}핀
                           </div>
                           <div className="top-recommend-sub">
                             {calcResults[0]?.name}
@@ -475,7 +475,7 @@ const FinanceScreen = ({ showToast }) => {
                                 <div className="product-benefit-v3">{card.benefits}</div>
                               </div>
                               <div className="point-highlight">
-                                <span className="point-value">+{card.benefitPoints.toLocaleString()}P</span>
+                                <span className="point-value">+{card.benefitPoints.toLocaleString()}핀</span>
                               </div>
                             </div>
                           ))}
@@ -662,20 +662,22 @@ const FinanceScreen = ({ showToast }) => {
 
             <div className="product-list-v3">
               {getSortedCards().map((card, index) => (
-                <div key={card.id} className="product-card-v3 curation" onClick={() => handleProductClick(card)}>
-                  <div className="ad-badge">제휴</div>
-                  <div className="point-badge-top">
-                    +{card.benefitPoints.toLocaleString()}P
+                <div key={card.id} className="product-card-vertical" onClick={() => handleProductClick(card)}>
+                  <div className="card-main-row">
+                    <div className="card-logo-wrap">
+                      <div className="product-rank-badge">{index === 0 ? '👑' : index + 1}</div>
+                      <div className="product-logo-large" style={{ background: card.color }}>
+                        <span>{card.logo}</span>
+                      </div>
+                    </div>
+                    <div className="card-info-section">
+                      <div className="card-company">{card.company}</div>
+                      <div className="card-name">{card.name}</div>
+                      <div className="card-benefit">{card.benefit}</div>
+                    </div>
+                    <div className="card-point-badge">+{card.benefitPoints.toLocaleString()}핀</div>
                   </div>
-                  <div className="product-rank-v3">{index === 0 ? '👑' : index + 1}</div>
-                  <div className="product-logo-v3" style={{ background: card.color }}>
-                    <span>{card.logo}</span>
-                  </div>
-                  <div className="product-info-v3">
-                    <div className="product-company-v3">{card.company}</div>
-                    <div className="product-name-v3">{card.name}</div>
-                    <div className="product-benefit-v3">{card.benefits}</div>
-                  </div>
+                  <button className="card-apply-btn">신청하기</button>
                 </div>
               ))}
             </div>
@@ -715,25 +717,25 @@ const FinanceScreen = ({ showToast }) => {
 
             <div className="product-list-v3">
               {getSortedLoans().map((loan, index) => (
-                <div key={loan.id} className="product-card-v3 curation" onClick={() => handleProductClick(loan)}>
-                  <div className="ad-badge">AD</div>
-                  <div className="point-badge-top">
-                    +{loan.benefitPoints.toLocaleString()}P
-                  </div>
-                  <div className="product-rank-v3">{index === 0 ? '👑' : index + 1}</div>
-                  <div className="product-logo-v3" style={{ background: loan.color }}>
-                    <span>{loan.logo}</span>
-                  </div>
-                  <div className="product-info-v3">
-                    <div className="product-company-v3">{loan.company}</div>
-                    <div className="product-name-v3">{loan.name}</div>
-                    <div className="product-rate-v3">
-                      연 {loan.interestRate}% ~ {loan.maxInterestRate}%
+                <div key={loan.id} className="product-card-vertical" onClick={() => handleProductClick(loan)}>
+                  <div className="card-main-row">
+                    <div className="card-logo-wrap">
+                      <div className="product-rank-badge">{index === 0 ? '👑' : index + 1}</div>
+                      <div className="product-logo-large" style={{ background: loan.color }}>
+                        <span>{loan.logo}</span>
+                      </div>
                     </div>
-                    <div className="product-limit-v3">
-                      최대 {(loan.maxLimit / 10000).toFixed(0)}억원
+                    <div className="card-info-section">
+                      <div className="card-company">{loan.company}</div>
+                      <div className="card-name">{loan.name}</div>
+                      <div className="loan-details">
+                        <span className="loan-rate">연 {loan.interestRate}%~</span>
+                        <span className="loan-limit">최대 {loan.maxLimit >= 10000 ? (loan.maxLimit / 10000) + '억' : (loan.maxLimit / 1000) + '천만'}원</span>
+                      </div>
                     </div>
+                    <div className="card-point-badge">+{loan.benefitPoints.toLocaleString()}핀</div>
                   </div>
+                  <button className="card-apply-btn">신청하기</button>
                 </div>
               ))}
             </div>

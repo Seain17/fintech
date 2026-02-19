@@ -35,7 +35,7 @@
 .history-tab.active {
   background: var(--bg-gradient);
   color: #fff;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.35);
+  box-shadow: 0 4px 15px rgba(26, 46, 113, 0.35);
 }
 
 .shopping-history-content {

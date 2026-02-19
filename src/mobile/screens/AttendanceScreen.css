@@ -17,7 +17,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: linear-gradient(180deg, #E8F3FF 0%, var(--bg-main) 100%);
+  background: linear-gradient(180deg, #e8f0fe 0%, var(--bg-main) 100%);
   padding: 8px 0 4px;
   flex-shrink: 0;
   z-index: 10;
@@ -150,7 +150,7 @@
 .att-energy-label {
   font-size: 10px;
   font-weight: 800;
-  color: #D84315;
+  color: var(--primary);
   letter-spacing: 1px;
 }
 
@@ -167,7 +167,7 @@
 
 .att-energy-bar {
   width: 100%;
-  background: linear-gradient(0deg, #FF7043, #FF5722, #D84315);
+  background: linear-gradient(0deg, #3d5a9e, #2d4a8c, #1a2e71);
   border-radius: 0 0 7px 7px;
   transition: height 0.15s ease-out;
   position: absolute;
@@ -358,9 +358,9 @@
 .att-ink-mark-inner {
   width: 32px;
   height: 32px;
-  border: 2px solid #D84315;
+  border: 2px solid var(--primary);
   border-radius: 50%;
-  color: #D84315;
+  color: var(--primary);
   font-size: 8px;
   font-weight: 900;
   display: flex;

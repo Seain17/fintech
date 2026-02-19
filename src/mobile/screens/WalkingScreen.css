@@ -1,10 +1,10 @@
 .walking-screen {
-  background: #f5f6fa;
+  background: var(--bg-main);
   height: 100%;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  padding-bottom: 100px;
+  overflow: hidden;
+  padding-bottom: 0;
 }
 
 /* 헤더 */
@@ -12,11 +12,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 16px;
-  background: #fff;
+  padding: 60px 16px 16px;
+  background: var(--bg-card);
   position: sticky;
   top: 0;
   z-index: 10;
+  border-bottom: 1px solid var(--border-light);
 }
 
 .walking-back-btn {
@@ -33,13 +34,13 @@
 .walking-back-btn svg {
   width: 24px;
   height: 24px;
-  color: #333;
+  color: var(--text-primary);
 }
 
 .walking-title {
   font-size: 18px;
-  font-weight: 600;
-  color: #333;
+  font-weight: 700;
+  color: var(--text-primary);
   margin: 0;
 }
 
@@ -50,31 +51,31 @@
 /* 자산 섹션 */
 .walking-asset-section {
   padding: 20px;
-  background: #fff;
+  background: var(--bg-card);
 }
 
 .walking-asset-title {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 800;
-  color: #2c3e50;
+  color: var(--text-primary);
   margin: 0 0 15px 0;
 }
 
 .walking-asset-box {
-  background: #2c3e50;
+  background: linear-gradient(135deg, #1a2e71 0%, #2d4a8c 100%);
   border-radius: 20px;
   padding: 25px;
   color: #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 10px 20px rgba(44, 62, 80, 0.2);
+  box-shadow: 0 10px 30px rgba(26, 46, 113, 0.25);
   position: relative;
 }
 
 .walking-asset-label {
   font-size: 0.85rem;
-  opacity: 0.8;
+  opacity: 0.85;
   margin-bottom: 5px;
 }
 
@@ -100,7 +101,7 @@
 .walking-stat-val {
   font-size: 1.1rem;
   font-weight: bold;
-  color: #2ecc71;
+  color: #7dd3fc;
 }
 
 .walking-tooltip-icon {
@@ -123,16 +124,16 @@
   top: 70px;
   right: -10px;
   width: 240px;
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(26, 46, 113, 0.95);
   color: #fff;
   text-align: left;
   padding: 14px;
-  border-radius: 10px;
+  border-radius: 12px;
   font-size: 0.75rem;
   line-height: 1.5;
   z-index: 100;
   transition: 0.2s;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 20px rgba(26, 46, 113, 0.3);
 }
 
 .walking-asset-right:hover .walking-tooltip-box {
@@ -144,10 +145,10 @@
 /* 워커 스테이지 */
 .walking-stage {
   height: 160px;
-  background: linear-gradient(to bottom, #fff 0%, #f0f9f4 100%);
+  background: linear-gradient(to bottom, var(--bg-card) 0%, #e8f0fe 100%);
   position: relative;
   overflow: hidden;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border-light);
 }
 
 .walking-speech-bubble {
@@ -155,12 +156,12 @@
   top: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background: #fff;
+  background: var(--bg-card);
   padding: 8px 15px;
   border-radius: 15px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 3px 12px rgba(26, 46, 113, 0.1);
   font-size: 0.85rem;
-  color: #2c3e50;
+  color: var(--text-primary);
   font-weight: bold;
   white-space: nowrap;
   z-index: 10;
@@ -175,7 +176,7 @@
   transform: translateX(-50%);
   border-width: 6px 6px 0;
   border-style: solid;
-  border-color: #fff transparent;
+  border-color: var(--bg-card) transparent;
 }
 
 @keyframes floatBubble {
@@ -195,7 +196,7 @@
 .walking-head {
   width: 25px;
   height: 25px;
-  background: #333;
+  background: #1a2e71;
   border-radius: 50%;
   position: absolute;
   top: 0;
@@ -207,7 +208,7 @@
 .walking-body {
   width: 28px;
   height: 30px;
-  background: #2ecc71;
+  background: linear-gradient(135deg, #1a2e71 0%, #2d4a8c 100%);
   border-radius: 8px;
   position: absolute;
   top: 22px;
@@ -218,7 +219,7 @@
 .walking-leg {
   width: 6px;
   height: 25px;
-  background: #333;
+  background: #1a2e71;
   border-radius: 3px;
   position: absolute;
   top: 48px;
@@ -250,68 +251,77 @@
   bottom: 8px;
   width: 100%;
   font-size: 0.8rem;
-  color: #888;
+  color: var(--text-tertiary);
 }
 
 /* 미션 리스트 */
 .walking-mission-list {
   padding: 20px;
   flex: 1;
+  overflow-y: auto;
 }
 
 .walking-mission-card {
-  background: #fff;
-  border: 1px solid #eee;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
   border-radius: 16px;
   padding: 18px;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s;
+}
+
+.walking-mission-card:active {
+  transform: scale(0.98);
 }
 
 .walking-mission-info h3 {
   margin: 0;
   font-size: 1rem;
-  color: #333;
-  font-weight: bold;
+  color: var(--text-primary);
+  font-weight: 700;
 }
 
 .walking-mission-info p {
   margin: 5px 0 0;
   font-size: 0.8rem;
-  color: #888;
+  color: var(--text-tertiary);
 }
 
 .walking-reward-btn {
-  background: #3498db;
+  background: linear-gradient(135deg, #1a2e71 0%, #2d4a8c 100%);
   color: #fff;
   border: none;
   padding: 0;
   width: 80px;
   height: 40px;
-  border-radius: 10px;
-  font-weight: bold;
+  border-radius: 12px;
+  font-weight: 700;
   font-size: 0.85rem;
   cursor: pointer;
-  transition: 0.2s;
+  transition: all 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   font-family: inherit;
+  box-shadow: 0 4px 12px rgba(26, 46, 113, 0.25);
 }
 
 .walking-reward-btn.done {
-  background: #2c3e50;
+  background: linear-gradient(135deg, #1a2e71 0%, #2d4a8c 100%);
+  opacity: 0.7;
   cursor: default;
 }
 
 .walking-reward-btn.locked {
-  background: #e0e0e0;
-  color: #999;
+  background: var(--border);
+  color: var(--text-tertiary);
   cursor: not-allowed;
+  box-shadow: none;
 }
 
 .walking-reward-btn:active:not(.done):not(.locked) {
@@ -322,17 +332,17 @@
 .walking-logic-footer {
   margin-top: 10px;
   padding: 15px;
-  background: #f8f9fa;
+  background: rgba(26, 46, 113, 0.04);
   border-radius: 12px;
   font-size: 0.75rem;
-  color: #666;
+  color: var(--text-secondary);
   line-height: 1.5;
-  border: 1px solid #eee;
+  border: 1px solid rgba(26, 46, 113, 0.08);
 }
 
 .walking-logic-title {
   font-weight: bold;
-  color: #333;
+  color: var(--primary);
   margin-bottom: 5px;
   display: block;
 }
@@ -344,7 +354,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(26, 46, 113, 0.9);
   z-index: 1000;
   display: flex;
   flex-direction: column;
@@ -357,27 +367,29 @@
 .walking-ad-content {
   width: 80%;
   max-width: 300px;
-  background: #1a1a1a;
+  background: linear-gradient(135deg, #1a2e71 0%, #0f1a42 100%);
   padding: 40px 20px;
-  border-radius: 20px;
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
 
 .walking-ad-title {
   color: #fff;
   font-weight: bold;
   margin-bottom: 15px;
+  font-size: 18px;
 }
 
 .walking-ad-desc {
   font-size: 0.9rem;
-  color: #ccc;
+  color: rgba(255, 255, 255, 0.8);
   line-height: 1.5;
 }
 
 .walking-ad-timer {
   font-size: 2.5rem;
   font-weight: bold;
-  color: #3498db;
+  color: #7dd3fc;
   margin-top: 20px;
   font-family: 'Outfit', sans-serif;
 }

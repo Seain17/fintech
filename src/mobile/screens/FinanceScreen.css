@@ -498,125 +498,213 @@
 .product-list-v3 {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
 .product-card-v3 {
   position: relative;
   background: #ffffff;
   border-radius: 20px;
-  padding: 18px;
+  padding: 20px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  gap: 14px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.04);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.25s ease;
+  overflow: hidden;
+}
+
+.product-card-v3::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, #1a2e71 0%, #3d5a9e 100%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.product-card-v3:hover::before,
+.product-card-v3:active::before {
+  opacity: 1;
 }
 
 .product-card-v3:active {
-  transform: scale(0.98);
+  transform: scale(0.985);
+  box-shadow: 0 4px 20px rgba(26, 46, 113, 0.12);
 }
 
 .product-card-v3.calc {
-  padding-right: 16px;
+  padding-right: 18px;
 }
 
 /* 순위 */
 .product-rank-v3 {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: 'Outfit', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 15px;
+  font-weight: 800;
   color: #1a2e71;
-  background: #e8def8;
-  border-radius: 8px;
+  background: linear-gradient(135deg, #f0f4ff 0%, #e8eeff 100%);
+  border-radius: 10px;
   flex-shrink: 0;
+  border: 1px solid rgba(26, 46, 113, 0.1);
 }
 
 .product-rank-v3.rate {
-  background: rgba(26, 46, 113, 0.1);
-  color: #1a2e71;
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  color: #2e7d32;
+  border: 1px solid rgba(46, 125, 50, 0.1);
 }
 
 /* 로고 */
 .product-logo-v3 {
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  position: relative;
+  overflow: hidden;
+}
+
+.product-logo-v3::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%);
 }
 
 .product-logo-v3 span {
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 12px;
+  font-weight: 800;
   color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  z-index: 1;
 }
 
 /* 정보 */
 .product-info-v3 {
   flex: 1;
   min-width: 0;
+  padding: 2px 0;
 }
 
 .product-company-v3 {
   font-size: 11px;
-  color: #817e7e;
-  margin-bottom: 2px;
+  font-weight: 500;
+  color: #999;
+  margin-bottom: 4px;
+  letter-spacing: -0.2px;
 }
 
 .product-name-v3 {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
-  color: #000;
-  margin-bottom: 4px;
+  color: #1a1a1a;
+  margin-bottom: 6px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  letter-spacing: -0.3px;
+}
+
+/* 태그 스타일 */
+.product-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.product-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #eef1f5 100%);
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #555;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.product-tag:first-child {
+  background: linear-gradient(135deg, #e8f0fe 0%, #dbe7fc 100%);
+  color: #1a2e71;
+  border-color: rgba(26, 46, 113, 0.1);
 }
 
 .product-benefit-v3 {
-  font-size: 12px;
+  font-size: 13px;
   color: #666;
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.product-benefit-v3::before {
+  content: '✓';
+  font-size: 11px;
+  color: #1a2e71;
+  font-weight: 700;
 }
 
 .product-rate-v3 {
   font-family: 'Outfit', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 700;
   color: #1a2e71;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
+  letter-spacing: -0.3px;
 }
 
 .product-limit-v3 {
   font-size: 12px;
-  color: #666;
+  color: #888;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.product-limit-v3::before {
+  content: '💰';
+  font-size: 10px;
 }
 
 /* 포인트 강조 */
 .point-highlight {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 10px 14px;
-  background: #e8def8;
-  border-radius: 12px;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #f5f0ff 0%, #ebe4ff 100%);
+  border-radius: 14px;
   flex-shrink: 0;
+  border: 1px solid rgba(26, 46, 113, 0.15);
 }
 
 .point-highlight .point-value {
   font-family: 'Outfit', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  color: #4a4459;
+  font-size: 15px;
+  font-weight: 800;
+  color: #5c4db1;
+  letter-spacing: -0.5px;
 }
 
 /* 금리 강조 박스 */
@@ -625,23 +713,28 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 10px 14px;
-  background: #1a2e71;
-  border-radius: 12px;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #1a2e71 0%, #2d4a8c 100%);
+  border-radius: 14px;
   flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(26, 46, 113, 0.25);
 }
 
 .rate-highlight-box .rate-value {
   font-family: 'Outfit', sans-serif;
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 800;
   color: #ffffff;
+  letter-spacing: -0.5px;
 }
 
 .rate-highlight-box .rate-label {
   font-size: 10px;
-  color: rgba(255, 255, 255, 0.85);
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
   margin-top: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 /* 결과 없음 */
@@ -680,85 +773,105 @@
 
 .card-filter-bar {
   display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
+  gap: 10px;
+  margin-bottom: 16px;
   overflow-x: auto;
   padding-bottom: 4px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.card-filter-bar::-webkit-scrollbar {
+  display: none;
 }
 
 .card-filter-btn {
-  padding: 10px 16px;
-  border: none;
+  padding: 10px 20px;
+  border: 1.5px solid #e5e8eb;
   background: #fff;
-  border-radius: 20px;
+  border-radius: 25px;
   font-size: 14px;
   font-weight: 600;
-  color: #817e7e;
+  color: #666;
   cursor: pointer;
   font-family: inherit;
   white-space: nowrap;
-  transition: all 0.2s;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: all 0.25s ease;
+}
+
+.card-filter-btn:active {
+  transform: scale(0.96);
 }
 
 .card-filter-btn.active {
-  background: #1a2e71;
+  background: linear-gradient(135deg, #1a2e71 0%, #2d4a8c 100%);
+  border-color: transparent;
   color: #ffffff;
+  box-shadow: 0 4px 12px rgba(26, 46, 113, 0.25);
 }
 
 /* 정렬 안내 */
 .sort-notice {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 16px;
-  background: #e8def8;
-  border-radius: 12px;
+  gap: 10px;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, #f8f5ff 0%, #f0ebff 100%);
+  border-radius: 14px;
   margin-bottom: 16px;
   font-size: 13px;
-  color: #4a4459;
+  font-weight: 600;
+  color: #5c4db1;
+  border: 1px solid rgba(26, 46, 113, 0.1);
 }
 
 .sort-notice.curation {
-  background: #e8def8;
+  background: linear-gradient(135deg, #f8f5ff 0%, #f0ebff 100%);
 }
 
 .sort-icon {
-  font-size: 16px;
+  font-size: 18px;
 }
 
 /* AD/제휴 뱃지 */
 .ad-badge {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  padding: 4px 8px;
-  background: #f0f0f0;
-  border-radius: 6px;
+  top: 14px;
+  right: 14px;
+  padding: 4px 10px;
+  background: linear-gradient(135deg, #f5f5f5 0%, #eeeeee 100%);
+  border-radius: 8px;
   font-size: 10px;
   font-weight: 700;
-  color: #817e7e;
+  color: #999;
+  letter-spacing: 0.5px;
 }
 
 /* 포인트 배지 (우측 상단) */
 .point-badge-top {
   position: absolute;
-  top: 10px;
-  right: 50px;
-  padding: 6px 12px;
-  background: #1a2e71;
-  border-radius: 12px;
+  top: -1px;
+  right: 60px;
+  padding: 8px 14px;
+  background: linear-gradient(135deg, #1a2e71 0%, #3d5a9e 100%);
+  border-radius: 0 0 14px 14px;
   font-family: 'Outfit', sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   color: #ffffff;
-  box-shadow: 0 4px 12px rgba(26, 46, 113, 0.3);
+  box-shadow: 0 4px 12px rgba(26, 46, 113, 0.25);
+  letter-spacing: -0.3px;
 }
 
 /* Curation 카드 스타일 */
 .product-card-v3.curation {
-  padding-top: 36px;
-  padding-right: 16px;
+  padding-top: 20px;
+  padding-right: 18px;
+  margin-top: 12px;
+}
+
+.product-card-v3.curation:first-child {
+  margin-top: 16px;
 }
 
 /* ============================================
@@ -771,7 +884,7 @@
 .loan-category-bar {
   display: flex;
   gap: 10px;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 .loan-category-btn {
@@ -779,59 +892,71 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  padding: 14px 8px;
-  border: 2px solid #e5e8eb;
+  gap: 8px;
+  padding: 18px 8px;
+  border: 1.5px solid #e5e8eb;
   background: #ffffff;
-  border-radius: 14px;
+  border-radius: 18px;
   cursor: pointer;
   font-family: inherit;
-  transition: all 0.2s;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.loan-category-btn:active {
+  transform: scale(0.97);
 }
 
 .loan-category-btn.active {
   border-color: #1a2e71;
-  background: rgba(26, 46, 113, 0.04);
+  background: linear-gradient(135deg, #f8faff 0%, #f0f4ff 100%);
+  box-shadow: 0 4px 16px rgba(26, 46, 113, 0.12);
 }
 
 .cat-icon {
-  font-size: 24px;
+  font-size: 28px;
 }
 
 .cat-label {
   font-size: 13px;
   font-weight: 600;
-  color: #666;
+  color: #888;
 }
 
 .loan-category-btn.active .cat-label {
   color: #1a2e71;
+  font-weight: 700;
 }
 
 /* 정렬 옵션 칩 */
 .sort-options {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   margin-bottom: 16px;
 }
 
 .sort-chip {
-  padding: 10px 16px;
-  border: 2px solid #e5e8eb;
+  padding: 10px 18px;
+  border: 1.5px solid #e5e8eb;
   background: #ffffff;
-  border-radius: 20px;
+  border-radius: 25px;
   font-size: 13px;
   font-weight: 600;
   color: #666;
   cursor: pointer;
   font-family: inherit;
-  transition: all 0.2s;
+  transition: all 0.25s ease;
+}
+
+.sort-chip:active {
+  transform: scale(0.96);
 }
 
 .sort-chip.active {
-  border-color: #1a2e71;
-  background: rgba(26, 46, 113, 0.04);
-  color: #1a2e71;
+  border-color: transparent;
+  background: linear-gradient(135deg, #1a2e71 0%, #2d4a8c 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(26, 46, 113, 0.25);
 }
 
 /* ============================================
@@ -874,4 +999,211 @@
 
 .loan-cat-btn.active .cat-label {
   color: #1a2e71;
+}
+
+/* ============================================
+   세로형 상품 카드
+============================================ */
+.product-card-vertical {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.product-card-vertical::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, #1a2e71 0%, #2d4a8c 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.product-card-vertical:active::before {
+  opacity: 1;
+}
+
+.product-card-vertical:active {
+  transform: scale(0.98);
+  box-shadow: 0 8px 32px rgba(26, 46, 113, 0.15);
+}
+
+/* 메인 행: 로고 + 정보 + 포인트 */
+.card-main-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+/* 로고 래퍼 (순위 + 로고) */
+.card-logo-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* 순위 배지 - 로고 왼쪽 상단에 위치 */
+.product-rank-badge {
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  color: #fff;
+  background: linear-gradient(135deg, #1a2e71 0%, #3d5a9e 100%);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(26, 46, 113, 0.3);
+  z-index: 1;
+}
+
+/* 큰 로고 */
+.product-logo-large {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  position: relative;
+  overflow: hidden;
+}
+
+.product-logo-large::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.25) 0%, transparent 50%);
+}
+
+.product-logo-large span {
+  font-size: 13px;
+  font-weight: 800;
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* 카드 정보 영역 */
+.card-info-section {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+}
+
+.card-company {
+  font-size: 11px;
+  font-weight: 500;
+  color: #999;
+  margin-bottom: 4px;
+  letter-spacing: -0.2px;
+}
+
+.card-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 6px;
+  line-height: 1.3;
+  letter-spacing: -0.3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-benefit {
+  font-size: 13px;
+  font-weight: 500;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.card-benefit::before {
+  content: '✓';
+  font-size: 11px;
+  color: #1a2e71;
+  font-weight: 700;
+}
+
+/* 포인트 배지 */
+.card-point-badge {
+  padding: 10px 14px;
+  background: linear-gradient(135deg, #1a2e71 0%, #2d4a8c 100%);
+  border-radius: 14px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(26, 46, 113, 0.3);
+  letter-spacing: -0.3px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* 대출 상세 정보 */
+.loan-details {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.loan-rate {
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #1a2e71;
+}
+
+.loan-limit {
+  font-size: 12px;
+  font-weight: 500;
+  color: #888;
+}
+
+.loan-limit::before {
+  content: '·';
+  margin-right: 8px;
+  color: #ccc;
+}
+
+/* 신청 버튼 */
+.card-apply-btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #1a2e71 0%, #2d4a8c 100%);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(26, 46, 113, 0.25);
+  transition: all 0.3s ease;
+}
+
+.card-apply-btn:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 8px rgba(26, 46, 113, 0.3);
 }

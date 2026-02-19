@@ -19,7 +19,7 @@ const RaffleDetailScreen = ({ userTickets = 5, updateTickets, showToast }) => {
     dueDate: '2026-01-30',
     announceDate: '2026-01-31',
     description: '애플 에어팟 프로 2세대 (새 제품)\n노이즈 캔슬링 기능이 탑재된 무선 이어폰입니다.',
-    color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+    color: 'linear-gradient(135deg, #1a2e71 0%, #2d4a8c 100%)'
   };
 
   const handleEnter = () => {
