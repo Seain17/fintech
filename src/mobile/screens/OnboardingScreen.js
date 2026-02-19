@@ -93,9 +93,12 @@ const OnboardingScreen = ({ onGuest }) => {
 
         {/* 하단 버튼 */}
         <div className="onboarding-actions">
-          <button className="btn-primary" onClick={() => navigate('/signup')}>
-            바로 시작하기
-          </button>
+          <div className="btn-primary-wrap">
+            <span className="btn-welcome-badge">지금 가입하면 웰컴 1,000핀!</span>
+            <button className="btn-primary" onClick={() => navigate('/signup')}>
+              바로 시작하기
+            </button>
+          </div>
           <button className="btn-secondary" onClick={() => navigate('/login')}>
             이미 계정이 있어요
           </button>

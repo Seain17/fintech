@@ -397,9 +397,16 @@
 .signup-complete-desc {
   font-size: 15px;
   color: var(--text-secondary);
-  margin-bottom: 36px;
+  margin-bottom: 12px;
   line-height: 1.5;
   animation: fadeInUp 0.5s ease-out 0.4s both;
+}
+
+.signup-nickname-hint {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  margin-bottom: 28px;
+  animation: fadeInUp 0.5s ease-out 0.45s both;
 }
 
 .signup-points-badge {
@@ -458,4 +465,101 @@
 
 .signup-start-btn:active {
   transform: scale(0.96);
+}
+
+/* Step 4: Nickname */
+.signup-nickname-section {
+  animation: fadeInUp 0.4s ease-out 0.2s both;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.signup-nickname-card {
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 32px 24px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.signup-nickname-emoji {
+  font-size: 56px;
+  margin-bottom: 20px;
+  animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.signup-nickname-display {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  transition: background 0.2s;
+}
+
+.signup-nickname-display:hover {
+  background: var(--bg-secondary);
+}
+
+.signup-nickname-edit-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--text-tertiary);
+}
+
+.signup-nickname-input {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: center;
+  border: 2px solid var(--primary);
+  border-radius: var(--radius-sm);
+  padding: 8px 16px;
+  background: var(--bg-main);
+  font-family: inherit;
+  width: 100%;
+  max-width: 280px;
+}
+
+.signup-nickname-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--primary-50);
+}
+
+.signup-regenerate-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 24px;
+}
+
+.signup-regenerate-btn:hover {
+  background: var(--border-light);
+}
+
+.signup-regenerate-btn:active {
+  transform: scale(0.98);
+}
+
+.signup-regenerate-btn svg {
+  width: 18px;
+  height: 18px;
 }

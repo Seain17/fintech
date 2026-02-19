@@ -1,6 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './SignupScreen.css';
+
+// 더미 닉네임 생성용 단어 리스트
+const adjectives = [
+  '행복한', '용감한', '똑똑한', '귀여운', '멋진', '빛나는', '즐거운', '활발한',
+  '따뜻한', '신나는', '달리는', '웃는', '춤추는', '노래하는', '꿈꾸는', '반짝이는',
+  '날아가는', '점프하는', '씩씩한', '당당한', '자유로운', '평화로운', '건강한', '슬기로운'
+];
+
+const nouns = [
+  '고양이', '강아지', '토끼', '펭귄', '판다', '사자', '호랑이', '코끼리',
+  '돌고래', '부엉이', '여우', '다람쥐', '햄스터', '코알라', '기린', '얼룩말',
+  '수달', '해달', '북극곰', '레서판다', '알파카', '미어캣', '카피바라', '쿼카'
+];
+
+const generateNickname = () => {
+  const adj = adjectives[Math.floor(Math.random() * adjectives.length)];
+  const noun = nouns[Math.floor(Math.random() * nouns.length)];
+  const num = Math.floor(Math.random() * 1000);
+  return `${adj}${noun}${num}`;
+};
 
 const SignupScreen = ({ onSignup }) => {
   const navigate = useNavigate();
@@ -21,6 +41,16 @@ const SignupScreen = ({ onSignup }) => {
   // Step 3 state (본인인증 - 외부 인증사 연동 예정, 현재 mock)
   const [phone, setPhone] = useState('');
   const [verifying, setVerifying] = useState(false);
+
+  // Step 4 state (닉네임)
+  const [nickname, setNickname] = useState('');
+
+  // 닉네임 자동 생성 (본인인증 완료 시)
+  useEffect(() => {
+    if (step === 4 && !nickname) {
+      setNickname(generateNickname());
+    }
+  }, [step]);
 
   const handleSocialSelect = (provider) => {
     setSelectedProvider(provider);
@@ -249,7 +279,7 @@ const SignupScreen = ({ onSignup }) => {
           </>
         )}
 
-        {/* Step 4: Complete */}
+        {/* Step 4: Complete with Nickname */}
         {step === 4 && (
           <div className="signup-complete-section">
             <div className="signup-complete-icon">
@@ -258,10 +288,11 @@ const SignupScreen = ({ onSignup }) => {
               <span className="signup-sparkle"></span>
               🎉
             </div>
-            <h2 className="signup-complete-title">가입을 축하합니다!</h2>
+            <h2 className="signup-complete-title">환영합니다!</h2>
             <p className="signup-complete-desc">
-              에이핀의 모든 혜택을 누려보세요
+              <strong>{nickname}</strong>님,<br/>에이핀의 모든 혜택을 누려보세요
             </p>
+            <p className="signup-nickname-hint">닉네임은 마이페이지에서 변경할 수 있어요</p>
             <div className="signup-points-badge">
               <div className="signup-points-label">웰컴포인트 지급!</div>
               <div className="signup-points-value">1,000 P</div>
