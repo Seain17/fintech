@@ -4,28 +4,22 @@ import './OnboardingScreen.css';
 
 const slides = [
   {
-    emoji: '💰',
-    badge: '숨어있는 내 포인트',
-    title: '잠자고 있는 포인트를\n확인해보세요',
-    desc: '카드사·통신사·쇼핑몰에 흩어진\n포인트를 한눈에 모아볼 수 있어요.',
-    points: '3,500 P',
-    pointsSub: '에이핀에서 찾았어요!',
+    emoji: '☕️',
+    badge: '생활 혜택',
+    title: '내 일상에 보탬이 되는\n기분 좋은 금융',
+    desc: '차곡차곡 모은 포인트로\n현금 출금부터 기프티콘 교환까지!',
   },
   {
-    emoji: '🏦',
-    badge: '간편 출금',
-    title: '모은 포인트를\n현금으로 출금하세요',
-    desc: '1,000P부터 내 계좌로\n바로 출금할 수 있어요.',
-    points: '즉시 출금',
-    pointsSub: '수수료 없이 내 계좌로',
+    emoji: '👟',
+    badge: '데일리 루틴',
+    title: '매일매일 성장하는\n자산 관리 습관',
+    desc: '걷기, 퀴즈, 출석체크로 시작하세요.\n건강한 습관이 자산이 됩니다.',
   },
   {
-    emoji: '🎁',
-    badge: '다양한 혜택',
-    title: '매일 포인트를\n더 모을 수 있어요',
-    desc: '출석체크, 퀴즈, 미니게임으로\n매일 포인트가 쌓여요.',
-    points: '매일 최대 500P',
-    pointsSub: '놓치지 마세요!',
+    emoji: '🚀',
+    badge: '간편한 시작',
+    title: '누구나 쉽게 시작하는\n똑똑한 재테크',
+    desc: '복잡한 절차 없이 지금 바로,\n에이핀과 함께 가치를 만들어보세요.',
   },
 ];
 
@@ -71,8 +65,6 @@ const OnboardingScreen = ({ onGuest }) => {
             <div className="onboarding-card">
               <div className="onboarding-card-emoji">{slide.emoji}</div>
               <div className="onboarding-card-badge">{slide.badge}</div>
-              <div className="onboarding-card-points">{slide.points}</div>
-              <div className="onboarding-card-sub">{slide.pointsSub}</div>
             </div>
 
             <h1 className="onboarding-title">
@@ -102,7 +94,7 @@ const OnboardingScreen = ({ onGuest }) => {
         {/* 하단 버튼 */}
         <div className="onboarding-actions">
           <button className="btn-primary" onClick={() => navigate('/signup')}>
-            시작하기
+            바로 시작하기
           </button>
           <button className="btn-secondary" onClick={() => navigate('/login')}>
             이미 계정이 있어요
