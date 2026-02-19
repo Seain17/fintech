@@ -108,6 +108,7 @@ const SignupScreen = ({ onSignup }) => {
     if (step === 4 && !nickname) {
       setNickname(generateNickname());
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [step]);
 
   const handleSocialSelect = (provider) => {
