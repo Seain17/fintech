@@ -113,6 +113,7 @@ function AppContent() {
   const [showSplash, setShowSplash] = useState(true);
   const [toast, setToast] = useState({ show: false, message: '' });
   const [userPoints, setUserPoints] = useState(26350);
+  // eslint-disable-next-line no-unused-vars
   const [unreadCount, setUnreadCount] = useState(3);
 
   const isAdminRoute = location.pathname.startsWith('/admin');
