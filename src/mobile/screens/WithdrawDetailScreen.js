@@ -72,7 +72,7 @@ const WithdrawDetailScreen = ({ userPoints, showToast, isGuest }) => {
     } else if (parseInt(formData.amount) < 5000) {
       newErrors.amount = '최소 출금 금액은 5,000원입니다';
     } else if (parseInt(formData.amount) > userPoints * 0.1) {
-      newErrors.amount = '보유 포인트가 부족합니다';
+      newErrors.amount = '보유 핀이 부족합니다';
     }
 
     // 5만원 초과 시 주민번호 필수
@@ -118,8 +118,8 @@ const WithdrawDetailScreen = ({ userPoints, showToast, isGuest }) => {
       <div className="withdraw-content">
         <div className="withdraw-info-card">
           <div className="info-row">
-            <span className="info-label">보유 포인트</span>
-            <span className="info-value">{userPoints.toLocaleString()} P</span>
+            <span className="info-label">보유 핀</span>
+            <span className="info-value">{userPoints.toLocaleString()}핀</span>
           </div>
           <div className="info-row">
             <span className="info-label">출금 가능 금액</span>
@@ -183,7 +183,7 @@ const WithdrawDetailScreen = ({ userPoints, showToast, isGuest }) => {
               onChange={handleChange}
             />
             {errors.amount && <div className="form-error">{errors.amount}</div>}
-            <div className="form-helper">포인트 10P = 1원 (최소 5,000원)</div>
+            <div className="form-helper">10핀 = 1원 (최소 5,000원)</div>
           </div>
 
           {requiresSSN && (

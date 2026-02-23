@@ -33,8 +33,8 @@ const MypageScreen = ({ userPoints, showToast, unreadCount = 0 }) => {
 
         <div className="mypage-points">
           <div className="mypage-point-row">
-            <span>보유 포인트</span>
-            <span className="mypage-point-value">{userPoints.toLocaleString()} P</span>
+            <span>보유 핀</span>
+            <span className="mypage-point-value">{userPoints.toLocaleString()}핀</span>
           </div>
           <div className="mypage-actions">
             <button className="mypage-action-btn withdraw" onClick={() => navigate('/withdraw')}>출금</button>
@@ -45,7 +45,7 @@ const MypageScreen = ({ userPoints, showToast, unreadCount = 0 }) => {
 
       <div className="mypage-menu">
         <div className="mypage-menu-section">
-          <div className="mypage-menu-section-title">포인트</div>
+          <div className="mypage-menu-section-title">핀</div>
           <button className="mypage-menu-item" onClick={() => navigate('/withdraw-history')}>
             <div className="mypage-menu-icon">📋</div>
             <span>출금 내역</span>
@@ -53,7 +53,7 @@ const MypageScreen = ({ userPoints, showToast, unreadCount = 0 }) => {
           </button>
           <button className="mypage-menu-item" onClick={() => navigate('/point-history')}>
             <div className="mypage-menu-icon">📊</div>
-            <span>포인트 내역</span>
+            <span>핀 적립 내역</span>
             <span>›</span>
           </button>
         </div>
@@ -62,7 +62,7 @@ const MypageScreen = ({ userPoints, showToast, unreadCount = 0 }) => {
           <div className="mypage-menu-section-title">혜택</div>
           <button className="mypage-menu-item" onClick={() => navigate('/raffle-history')}>
             <div className="mypage-menu-icon">🎰</div>
-            <span>래플 내역</span>
+            <span>경품 내역</span>
             <span>›</span>
           </button>
           <button className="mypage-menu-item" onClick={() => navigate('/shopping-history')}>

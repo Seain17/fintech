@@ -48,7 +48,7 @@ const SettingsScreen = ({ showToast }) => {
             <div className="setting-item">
               <div className="setting-info">
                 <div className="setting-label">거래 알림</div>
-                <div className="setting-desc">포인트 적립, 출금 알림</div>
+                <div className="setting-desc">핀 적립, 출금 알림</div>
               </div>
               <label className="toggle-switch">
                 <input
@@ -63,7 +63,7 @@ const SettingsScreen = ({ showToast }) => {
             <div className="setting-item">
               <div className="setting-info">
                 <div className="setting-label">이벤트 알림</div>
-                <div className="setting-desc">래플, 혜택 정보</div>
+                <div className="setting-desc">경품, 혜택 정보</div>
               </div>
               <label className="toggle-switch">
                 <input
@@ -191,7 +191,7 @@ const SettingsScreen = ({ showToast }) => {
             <div className="modal-icon">😢</div>
             <div className="modal-title">회원 탈퇴</div>
             <div className="modal-desc">
-              탈퇴 시 모든 포인트가 소멸되며<br />
+              탈퇴 시 모든 핀이 소멸되며<br />
               복구가 불가능합니다.<br /><br />
               정말 탈퇴하시겠습니까?
             </div>

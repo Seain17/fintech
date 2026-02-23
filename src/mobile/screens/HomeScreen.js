@@ -64,27 +64,27 @@ const HomeScreen = ({ userPoints, showToast, isGuest, unreadCount = 0 }) => {
               <span>{isPartnerOpen ? '접기' : '숨어있는 마이핀 전환하기'}</span>
             </button>
 
-            {/* 포인트 적립 아이콘들 */}
+            {/* 핀 적립 아이콘들 */}
             <div className={`point-partners ${isPartnerOpen ? 'open' : ''}`}>
               <div className="point-partner-item">
                 <div className="partner-icon-img" onClick={() => showToast('네이버페이 연동')}>
                   <img src="/images/icons/naver-pay.png" alt="네이버페이" />
                 </div>
-                <span className="partner-points">100 P</span>
+                <span className="partner-points">100핀</span>
                 <button className="partner-action-btn" onClick={() => showToast('전환 완료')}>전환</button>
               </div>
               <div className="point-partner-item">
                 <div className="partner-icon-img" onClick={() => showToast('페이북 연동')}>
                   <img src="/images/icons/toss-pay.png" alt="페이북" />
                 </div>
-                <span className="partner-points">100 P</span>
+                <span className="partner-points">100핀</span>
                 <button className="partner-action-btn" onClick={() => showToast('전환 완료')}>전환</button>
               </div>
               <div className="point-partner-item">
                 <div className="partner-icon-img" onClick={() => showToast('신한SOL 연동')}>
                   <img src="/images/icons/shinhan-sol.png" alt="신한SOL" />
                 </div>
-                <span className="partner-points">100 P</span>
+                <span className="partner-points">100핀</span>
                 <button className="partner-action-btn" onClick={() => showToast('전환 완료')}>전환</button>
               </div>
               <div className="point-partner-item">
@@ -104,7 +104,7 @@ const HomeScreen = ({ userPoints, showToast, isGuest, unreadCount = 0 }) => {
           <div className="pick-cards">
             <div className="pick-card yellow" onClick={() => navigate('/benefits')}>
               <div className="pick-card-text">
-                <p>포인트</p>
+                <p>핀</p>
                 <p>모으기</p>
               </div>
               <div className="pick-card-icon-img">
@@ -183,9 +183,9 @@ const HomeScreen = ({ userPoints, showToast, isGuest, unreadCount = 0 }) => {
           </div>
           <div className="quick-grid-item" onClick={() => navigate('/benefits')}>
             <div className="quick-grid-icon-img">
-              <img src="/images/icons/raffle.png" alt="래플" />
+              <img src="/images/icons/raffle.png" alt="경품" />
             </div>
-            <span>래플</span>
+            <span>경품</span>
           </div>
           <div className="quick-grid-item" onClick={() => navigate('/walking')}>
             <div className="quick-grid-icon-img">

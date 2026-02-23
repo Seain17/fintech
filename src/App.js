@@ -151,7 +151,7 @@ function AppContent() {
     setIsLoggedIn(true);
     setIsGuest(false);
     updatePoints(1000);
-    showToastMessage('회원가입 완료! 웰컴포인트 1,000P 지급 🎉');
+    showToastMessage('회원가입 완료! 웰컴핀 1,000핀 지급 🎉');
   };
 
   const handleGuest = () => {

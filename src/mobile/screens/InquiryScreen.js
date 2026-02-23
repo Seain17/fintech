@@ -3,15 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import './DetailScreen.css';
 
 const inquiryTypes = [
-  { id: 'point', label: '포인트 관련' },
+  { id: 'point', label: '핀 관련' },
   { id: 'withdraw', label: '출금 문의' },
-  { id: 'raffle', label: '래플/이벤트' },
+  { id: 'raffle', label: '경품/이벤트' },
   { id: 'account', label: '계정/로그인' },
   { id: 'etc', label: '기타 문의' },
 ];
 
 const myInquiries = [
-  { id: 1, type: '포인트 관련', title: '포인트가 적립되지 않았어요', date: '2026-01-20', status: 'answered' },
+  { id: 1, type: '핀 관련', title: '핀이 적립되지 않았어요', date: '2026-01-20', status: 'answered' },
   { id: 2, type: '출금 문의', title: '출금 신청 후 얼마나 걸리나요?', date: '2026-01-15', status: 'answered' },
 ];
 

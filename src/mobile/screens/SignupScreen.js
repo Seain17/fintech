@@ -46,10 +46,10 @@ const SignupScreen = ({ onSignup }) => {
     service: {
       title: '서비스 이용약관',
       content: `제1조 (목적)
-이 약관은 에이핀(이하 "회사")가 제공하는 포인트 적립 및 금융 서비스(이하 "서비스")의 이용과 관련하여 회사와 회원 간의 권리, 의무 및 책임사항을 규정함을 목적으로 합니다.
+이 약관은 에이핀(이하 "회사")가 제공하는 핀 적립 및 금융 서비스(이하 "서비스")의 이용과 관련하여 회사와 회원 간의 권리, 의무 및 책임사항을 규정함을 목적으로 합니다.
 
 제2조 (정의)
-1. "서비스"란 회사가 제공하는 포인트 적립, 출금, 제휴 서비스 등을 말합니다.
+1. "서비스"란 회사가 제공하는 핀 적립, 출금, 제휴 서비스 등을 말합니다.
 2. "회원"이란 이 약관에 동의하고 서비스를 이용하는 자를 말합니다.
 
 제3조 (서비스 이용)
@@ -64,7 +64,7 @@ const SignupScreen = ({ onSignup }) => {
 
 2. 개인정보의 수집 및 이용목적
 - 회원 가입 및 관리
-- 서비스 제공 및 포인트 정산
+- 서비스 제공 및 핀 정산
 - 고객 상담 및 불만 처리
 
 3. 개인정보의 보유 및 이용기간
@@ -87,7 +87,7 @@ const SignupScreen = ({ onSignup }) => {
 
 수신 동의 시 받으실 수 있는 정보:
 - 신규 서비스 및 기능 안내
-- 포인트 적립 이벤트 정보
+- 핀 적립 이벤트 정보
 - 제휴사 할인 혜택 안내
 - 맞춤형 금융 상품 추천
 
@@ -381,8 +381,8 @@ const SignupScreen = ({ onSignup }) => {
             </p>
             <p className="signup-nickname-hint">닉네임은 마이페이지에서 변경할 수 있어요</p>
             <div className="signup-points-badge">
-              <div className="signup-points-label">웰컴포인트 지급!</div>
-              <div className="signup-points-value">1,000 P</div>
+              <div className="signup-points-label">웰컴핀 지급!</div>
+              <div className="signup-points-value">1,000핀</div>
             </div>
             <button className="signup-start-btn" onClick={onSignup}>
               시작하기

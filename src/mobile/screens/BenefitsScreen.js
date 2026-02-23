@@ -3,11 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import './BenefitsScreen.css';
 
 const tabs = [
-  { id: 'raffle', label: '래플', icon: '🎰' },
+  { id: 'raffle', label: '경품', icon: '🎰' },
   { id: 'mission', label: '미션', icon: '📅' },
-  { id: 'game', label: '게임', icon: '🎮' },
   { id: 'shopping', label: '쇼핑', icon: '🛒' },
-  { id: 'offerwall', label: '오퍼월', icon: '🎁' },
+  { id: 'offerwall', label: '보너스', icon: '🎁' },
 ];
 
 const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
@@ -16,7 +15,6 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
   // Refs for each section
   const raffleRef = useRef(null);
   const missionRef = useRef(null);
-  const gameRef = useRef(null);
   const shoppingRef = useRef(null);
   const offerwallRef = useRef(null);
 
@@ -54,7 +52,7 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
   //   }
   // };
 
-  // 오퍼월 바텀시트 (임시 주석처리)
+  // 보너스 바텀시트 (임시 주석처리)
   // const openOfferwallSheet = () => {
   //   setOfferwallSheetOpen(true);
   // };
@@ -63,7 +61,7 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
   //   setOfferwallSheetOpen(false);
   // };
 
-  // 오퍼월 동의 -> 추적 권한 팝업 (임시 주석처리)
+  // 보너스 동의 -> 추적 권한 팝업 (임시 주석처리)
   // const proceedToPermission = () => {
   //   setOfferwallSheetOpen(false);
   //   setTimeout(() => {
@@ -76,7 +74,7 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
   //   setAttPopupOpen(false);
   //   setTimeout(() => {
   //     if (allowed) {
-  //       showToast('오퍼월 진입 성공! 제휴사 페이지로 이동합니다');
+  //       showToast('보너스 진입 성공! 제휴사 페이지로 이동합니다');
   //     } else {
   //       setFallbackAlertOpen(true);
   //     }
@@ -142,7 +140,6 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
     const refMap = {
       raffle: raffleRef,
       mission: missionRef,
-      game: gameRef,
       shopping: shoppingRef,
       offerwall: offerwallRef,
     };
@@ -198,10 +195,10 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
 
       <div className="benefits-content">
         <div className="benefits-scroll-content">
-          {/* 래플 이벤트 */}
+          {/* 경품 이벤트 */}
           <div className="section" ref={raffleRef}>
             <div className="section-header">
-              <h2 className="section-title">🎰 래플 이벤트</h2>
+              <h2 className="section-title">🎰 경품 이벤트</h2>
             </div>
             <div className="raffle-list-vertical">
               <div className="raffle-list-item" onClick={() => navigate('/raffle/1')}>
@@ -244,7 +241,7 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
               <div className="attendance-icon">📅</div>
               <div className="attendance-info">
                 <div className="attendance-title">오늘의 출석체크</div>
-                <div className="attendance-desc">매일 출석하고 50P 받기!</div>
+                <div className="attendance-desc">매일 출석하고 50핀 받기!</div>
               </div>
               <div className="attendance-arrow">›</div>
             </div>
@@ -265,41 +262,8 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
               <div className="mission-icon">💡</div>
               <div className="mission-content">
                 <div className="mission-title">금융 퀴즈 풀기</div>
-                <div className="mission-desc">3문제 풀고 최대 300P 획득!</div>
-                <div className="mission-reward-badge">+100P / 문제당</div>
-              </div>
-            </div>
-          </div>
-
-          {/* 포인트 게임 */}
-          <div className="section" ref={gameRef}>
-            <div className="section-header">
-              <h2 className="section-title">🎮 포인트 게임</h2>
-            </div>
-            <div className="benefit-list-vertical">
-              <div className="benefit-list-item" onClick={() => navigate('/game/roulette')}>
-                <div className="benefit-item-icon">🎡</div>
-                <div className="benefit-item-content">
-                  <div className="benefit-item-title">룰렛 돌리기</div>
-                  <div className="benefit-item-desc">최대 1,000P 획득!</div>
-                </div>
-                <div className="benefit-item-arrow">›</div>
-              </div>
-              <div className="benefit-list-item" onClick={() => navigate('/game/card')}>
-                <div className="benefit-item-icon">🃏</div>
-                <div className="benefit-item-content">
-                  <div className="benefit-item-title">카드 뒤집기</div>
-                  <div className="benefit-item-desc">행운의 카드를 찾아라!</div>
-                </div>
-                <div className="benefit-item-arrow">›</div>
-              </div>
-              <div className="benefit-list-item" onClick={() => showToast('준비중입니다')}>
-                <div className="benefit-item-icon">🎰</div>
-                <div className="benefit-item-content">
-                  <div className="benefit-item-title">슬롯머신</div>
-                  <div className="benefit-item-desc">잭팟 도전!</div>
-                </div>
-                <div className="benefit-item-arrow">›</div>
+                <div className="mission-desc">3문제 풀고 최대 300핀 획득!</div>
+                <div className="mission-reward-badge">+100핀 / 문제당</div>
               </div>
             </div>
           </div>
@@ -345,33 +309,33 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
             </div>
           </div>
 
-          {/* 오퍼월 */}
+          {/* 보너스 */}
           <div className="section" ref={offerwallRef}>
             <div className="section-header">
-              <h2 className="section-title">🎁 오퍼월</h2>
+              <h2 className="section-title">🎁 보너스</h2>
             </div>
             <div className="benefit-list-vertical">
-              <div className="benefit-list-item" onClick={() => showToast('광고 시청 완료! +500P')}>
+              <div className="benefit-list-item" onClick={() => showToast('광고 시청 완료! +500핀')}>
                 <div className="benefit-item-icon">📺</div>
                 <div className="benefit-item-content">
                   <div className="benefit-item-title">영상 시청하기</div>
-                  <div className="benefit-item-desc">+500P</div>
+                  <div className="benefit-item-desc">+500핀</div>
                 </div>
                 <div className="benefit-item-arrow">›</div>
               </div>
-              <div className="benefit-list-item" onClick={() => showToast('앱 설치 완료! +1000P')}>
+              <div className="benefit-list-item" onClick={() => showToast('앱 설치 완료! +1000핀')}>
                 <div className="benefit-item-icon">📱</div>
                 <div className="benefit-item-content">
                   <div className="benefit-item-title">앱 설치하기</div>
-                  <div className="benefit-item-desc">+1,000P</div>
+                  <div className="benefit-item-desc">+1,000핀</div>
                 </div>
                 <div className="benefit-item-arrow">›</div>
               </div>
-              <div className="benefit-list-item" onClick={() => showToast('설문조사 완료! +300P')}>
+              <div className="benefit-list-item" onClick={() => showToast('설문조사 완료! +300핀')}>
                 <div className="benefit-item-icon">📝</div>
                 <div className="benefit-item-content">
                   <div className="benefit-item-title">설문조사 참여</div>
-                  <div className="benefit-item-desc">+300P</div>
+                  <div className="benefit-item-desc">+300핀</div>
                 </div>
                 <div className="benefit-item-arrow">›</div>
               </div>
@@ -402,7 +366,7 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
       >
         <div className="bottom-sheet" onClick={(e) => e.stopPropagation()}>
           <div className="sheet-header">
-            <div className="sheet-title">오퍼월 참여 안내</div>
+            <div className="sheet-title">보너스 참여 안내</div>
             <button className="btn-close" onClick={closeOfferwallSheet}>✕</button>
           </div>
 

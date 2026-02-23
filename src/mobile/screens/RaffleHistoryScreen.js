@@ -37,7 +37,7 @@ const RaffleHistoryScreen = () => {
             <path d="M19 12H5M12 19l-7-7 7-7" />
           </svg>
         </button>
-        <h1 className="page-title">래플 내역</h1>
+        <h1 className="page-title">경품 내역</h1>
       </div>
 
       <div className="detail-content">
@@ -99,7 +99,7 @@ const RaffleHistoryScreen = () => {
         {filteredHistory.length === 0 && (
           <div className="empty-state">
             <div className="empty-icon">🎰</div>
-            <div className="empty-text">래플 내역이 없습니다</div>
+            <div className="empty-text">경품 내역이 없습니다</div>
           </div>
         )}
       </div>

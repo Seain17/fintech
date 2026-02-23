@@ -139,7 +139,7 @@ const ShoppingDetailScreen = () => {
               <span className="info-value">{mall.baseRate}</span>
             </div>
             <div className="info-row">
-              <span className="info-label">포인트 지급일</span>
+              <span className="info-label">핀 지급일</span>
               <span className="info-value">{mall.paymentDate}</span>
             </div>
             <div className="info-row">

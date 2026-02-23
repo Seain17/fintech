@@ -67,6 +67,7 @@
 /* SNB Tabs */
 .benefits-tabs {
   display: flex;
+  justify-content: center;
   gap: 6px;
   margin-top: 16px;
   overflow-x: auto;

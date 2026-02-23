@@ -132,7 +132,7 @@ const RaffleDetailScreen = ({ userTickets = 5, updateTickets, showToast }) => {
         <div className="modal active" onClick={() => setShowConfirmModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-icon">🎟️</div>
-            <div className="modal-title">래플 응모</div>
+            <div className="modal-title">경품 응모</div>
             <div className="modal-desc">
               {raffleData.name}에<br />
               응모권 {ticketCount}장을 사용하여 응모하시겠습니까?

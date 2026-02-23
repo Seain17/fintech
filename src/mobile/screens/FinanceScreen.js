@@ -9,7 +9,7 @@ import './FinanceScreen.css';
  *   → 금리 낮은 순 → 한도 높은 순 (자가평가서 기준)
  *
  * [카드] / [대출] - Curation (전략적 추천)
- *   → 에이핀 포인트 높은 순
+ *   → 에이핀 핀 높은 순
  */
 
 // ============================================
@@ -212,7 +212,7 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
 
     setTimeout(() => {
       if (calcType === 'card') {
-        // 카드: 혜택별 필터 후 포인트 높은 순
+        // 카드: 혜택별 필터 후 핀 높은 순
         const sorted = [...cardProducts]
           .filter(card => calcCardBenefit === 'all' || card.category === calcCardBenefit || card.category === 'all')
           .sort((a, b) => b.benefitPoints - a.benefitPoints);
@@ -259,7 +259,7 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
   };
 
   // ============================================
-  // 카드 정렬: 에이핀 포인트 높은 순
+  // 카드 정렬: 에이핀 핀 높은 순
   // ============================================
   const getSortedCards = () => {
     return [...cardProducts]
@@ -268,7 +268,7 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
   };
 
   // ============================================
-  // 대출 정렬: 포인트순 또는 금리순
+  // 대출 정렬: 핀순 또는 금리순
   // ============================================
   const getSortedLoans = () => {
     const filtered = [...loanProducts].filter(loan => loan.category === loanCategory);

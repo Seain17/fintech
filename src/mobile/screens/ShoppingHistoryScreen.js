@@ -45,7 +45,7 @@ const ShoppingHistoryScreen = () => {
       <div className="shopping-history-info">
         <span className="purchase-amount">{item.amount.toLocaleString()}원</span>
         <span className={`point-amount ${item.points < 0 ? 'negative' : 'positive'}`}>
-          {item.points > 0 ? '+' : ''}{item.points.toLocaleString()} P
+          {item.points > 0 ? '+' : ''}{item.points.toLocaleString()}핀
         </span>
       </div>
       <div className="shopping-history-date">

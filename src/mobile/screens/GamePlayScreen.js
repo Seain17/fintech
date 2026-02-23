@@ -41,7 +41,7 @@ const GamePlayScreen = ({ updatePoints, showToast }) => {
     setTimeout(() => {
       setResult(reward);
       updatePoints(reward);
-      showToast(`🎉 ${reward}P 획득!`);
+      showToast(`🎉 ${reward}핀 획득!`);
       setIsPlaying(false);
     }, 4000);
   };
@@ -59,7 +59,7 @@ const GamePlayScreen = ({ updatePoints, showToast }) => {
 
     setTimeout(() => {
       updatePoints(card.reward);
-      showToast(`🎉 ${card.reward}P 획득!`);
+      showToast(`🎉 ${card.reward}핀 획득!`);
       setIsPlaying(false);
     }, 500);
   };
@@ -89,7 +89,7 @@ const GamePlayScreen = ({ updatePoints, showToast }) => {
               <div className="game-info-icon">🎯</div>
               <div className="game-info-text">
                 <div className="game-info-title">룰렛을 돌려보세요!</div>
-                <div className="game-info-desc">최대 100P까지 획득 가능</div>
+                <div className="game-info-desc">최대 100핀까지 획득 가능</div>
               </div>
             </div>
 
@@ -108,7 +108,7 @@ const GamePlayScreen = ({ updatePoints, showToast }) => {
                       background: index % 2 === 0 ? '#3182F6' : '#FF6B35'
                     }}
                   >
-                    <span className="roulette-text">{reward}P</span>
+                    <span className="roulette-text">{reward}핀</span>
                   </div>
                 ))}
                 <div className="roulette-center">
@@ -120,7 +120,7 @@ const GamePlayScreen = ({ updatePoints, showToast }) => {
             {result && (
               <div className="game-result">
                 <div className="result-icon">🎉</div>
-                <div className="result-text">{result}P 획득!</div>
+                <div className="result-text">{result}핀 획득!</div>
               </div>
             )}
 
@@ -142,7 +142,7 @@ const GamePlayScreen = ({ updatePoints, showToast }) => {
               <div className="game-info-icon">🎴</div>
               <div className="game-info-text">
                 <div className="game-info-title">카드를 선택하세요!</div>
-                <div className="game-info-desc">숨겨진 포인트를 확인하세요</div>
+                <div className="game-info-desc">숨겨진 핀을 확인하세요</div>
               </div>
             </div>
 
@@ -155,7 +155,7 @@ const GamePlayScreen = ({ updatePoints, showToast }) => {
                 >
                   {card.flipped ? (
                     <div className="card-front">
-                      <div className="card-reward">{card.reward}P</div>
+                      <div className="card-reward">{card.reward}핀</div>
                       <div className="card-emoji">🎁</div>
                     </div>
                   ) : (

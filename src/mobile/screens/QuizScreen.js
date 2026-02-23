@@ -10,7 +10,7 @@ const quizData = [
 
 const bubbleMessages = {
   start: '3단계 완주하고 돈다발 챙기세요! 💸',
-  correct: '정답입니다! +10P 적립!',
+  correct: '정답입니다! +10핀 적립!',
   wrong: '아쉽네요! 그래도 다음 단계로!',
   finish: '모두 맞히셨네요! 돈다발을 확인하세요!',
 };
@@ -58,13 +58,13 @@ const QuizScreen = ({ showToast, updatePoints }) => {
 
   const handleBonusAd = () => {
     updatePoints(10);
-    showToast('보너스 돈다발 +10P 추가 적립!');
+    showToast('보너스 돈다발 +10핀 추가 적립!');
     navigate(-1);
   };
 
   const handleSkip = () => {
     if (totalEarned > 0) {
-      showToast(`총 ${totalEarned}P 획득!`);
+      showToast(`총 ${totalEarned}핀 획득!`);
     }
     navigate(-1);
   };
@@ -101,7 +101,7 @@ const QuizScreen = ({ showToast, updatePoints }) => {
               className={`roadmap-node ${i < current || isComplete ? 'passed' : ''} ${i === current && !isComplete ? 'active' : ''}`}
             >
               {i < current || isComplete ? '✔' : i + 1}
-              <span className="roadmap-node-label">10P</span>
+              <span className="roadmap-node-label">10핀</span>
             </div>
           ))}
           <div className={`roadmap-node money-bundle ${isComplete ? 'active' : ''}`}>
@@ -117,7 +117,7 @@ const QuizScreen = ({ showToast, updatePoints }) => {
           <div className="quiz-card-ox">
             <div className="quiz-card-header">
               <span className="quiz-step-badge">STEP {current + 1}</span>
-              <span className="quiz-point-display">+10P</span>
+              <span className="quiz-point-display">+10핀</span>
             </div>
 
             <div className="quiz-text-ox">{quizData[current].q}</div>
@@ -171,14 +171,14 @@ const QuizScreen = ({ showToast, updatePoints }) => {
             <div className="quiz-modal-emoji">💵</div>
             <h2 className="quiz-modal-title">3단계 완주 성공!</h2>
             <p className="quiz-modal-desc">
-              퀴즈 보상 {totalEarned}P 확보 완료.<br />
+              퀴즈 보상 {totalEarned}핀 확보 완료.<br />
               이제 <b>보너스 돈다발</b>을 주워볼까요?
             </p>
             <button className="quiz-bonus-btn" onClick={handleBonusAd}>
               💰 광고 보고 돈다발 줍기
             </button>
             <button className="quiz-skip-btn" onClick={handleSkip}>
-              괜찮아요, {totalEarned}P만 받을게요
+              괜찮아요, {totalEarned}핀만 받을게요
             </button>
           </div>
         </div>

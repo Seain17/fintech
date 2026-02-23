@@ -4,9 +4,9 @@ import './AttendanceScreen.css';
 
 const milestones = {
   7: { icon: '🎟️', label: '응모권', title: '응모권 획득!' },
-  14: { icon: '💰', label: '3P', title: '3P 적립!' },
-  21: { icon: '💰', label: '3P', title: '3P 적립!' },
-  28: { icon: '💎', label: '10P', title: '10P 적립!' },
+  14: { icon: '💰', label: '3핀', title: '3핀 적립!' },
+  21: { icon: '💰', label: '3핀', title: '3핀 적립!' },
+  28: { icon: '💎', label: '10핀', title: '10핀 적립!' },
 };
 
 const AttendanceScreen = ({ showToast, updatePoints }) => {
@@ -51,7 +51,7 @@ const AttendanceScreen = ({ showToast, updatePoints }) => {
     if (todayMilestone) {
       return `오늘은 ${today}일차! ${todayMilestone.label} 획득 찬스예요! ${todayMilestone.icon}`;
     }
-    return `오늘 ${today}일차 출석하고 포인트 받으세요! 💪`;
+    return `오늘 ${today}일차 출석하고 핀 받으세요! 💪`;
   });
   const displayBubble = bubble || initialBubble;
 
@@ -146,13 +146,13 @@ const AttendanceScreen = ({ showToast, updatePoints }) => {
 
   const handleBonusAd = () => {
     updatePoints(20);
-    showToast('2배 적립! +20P 획득!');
+    showToast('2배 적립! +20핀 획득!');
     navigate(-1);
   };
 
   const handleSkip = () => {
     updatePoints(10);
-    showToast('출석 포인트 +10P 적립!');
+    showToast('출석 핀 +10핀 적립!');
     navigate(-1);
   };
 
@@ -244,7 +244,7 @@ const AttendanceScreen = ({ showToast, updatePoints }) => {
         <div className="att-bankbook-header">
           <div>
             <div className="att-bankbook-title">{month + 1}월 챌린지 🏆</div>
-            <div className="att-bankbook-sub">매일 출석하고 포인트 모으자!</div>
+            <div className="att-bankbook-sub">매일 출석하고 핀 모으자!</div>
           </div>
           <div className="att-streak-badge">{currentStreak}일 연속 달성중🔥</div>
         </div>
@@ -316,13 +316,13 @@ const AttendanceScreen = ({ showToast, updatePoints }) => {
             <div className="att-modal-emoji">{todayMilestone ? todayMilestone.icon : '📅'}</div>
             <h2 className="att-modal-title">{todayMilestone ? todayMilestone.title : '출석 완료!'}</h2>
             <p className="att-modal-desc">
-              + 기본 포인트 10P 적립 완료
+              + 기본 핀 10핀 적립 완료
             </p>
             <button className="att-btn-ad-double" onClick={handleBonusAd}>
-              📺 광고 보고 2배 적립 (+20P)
+              📺 광고 보고 2배 적립 (+20핀)
             </button>
             <button className="att-btn-just-get" onClick={handleSkip}>
-              그냥 기본 포인트만 받을게요
+              그냥 기본 핀만 받을게요
             </button>
           </div>
         </div>
