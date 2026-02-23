@@ -196,6 +196,12 @@ const FinanceScreen = ({ showToast }) => {
   const [loanSortBy, setLoanSortBy] = useState('points');
 
   // ============================================
+  // 바텀시트 상태
+  // ============================================
+  const [bottomSheetOpen, setBottomSheetOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  // ============================================
   // 계산기 검색 실행
   // ============================================
   const runCalculation = () => {
@@ -266,6 +272,9 @@ const FinanceScreen = ({ showToast }) => {
     if (loanSortBy === 'rate') {
       return filtered.sort((a, b) => a.interestRate - b.interestRate);
     }
+    if (loanSortBy === 'limit') {
+      return filtered.sort((a, b) => b.maxLimit - a.maxLimit);
+    }
     return filtered.sort((a, b) => b.benefitPoints - a.benefitPoints);
   };
 
@@ -273,7 +282,20 @@ const FinanceScreen = ({ showToast }) => {
   // 상품 클릭 핸들러
   // ============================================
   const handleProductClick = (product) => {
-    showToast(`${product.name} 상세 페이지로 이동`);
+    setSelectedProduct(product);
+    setBottomSheetOpen(true);
+  };
+
+  // 바텀시트 닫기
+  const closeBottomSheet = () => {
+    setBottomSheetOpen(false);
+    setTimeout(() => setSelectedProduct(null), 300);
+  };
+
+  // 제휴사 이동
+  const handleApply = () => {
+    showToast(`${selectedProduct?.name} 제휴사로 이동합니다`);
+    closeBottomSheet();
   };
 
   // ============================================
@@ -297,7 +319,7 @@ const FinanceScreen = ({ showToast }) => {
           className={`main-tab-v3 ${mainTab === 'calculator' ? 'active' : ''}`}
           onClick={() => setMainTab('calculator')}
         >
-          계산기
+          추천
         </button>
         <button
           className={`main-tab-v3 ${mainTab === 'card' ? 'active' : ''}`}
@@ -446,9 +468,16 @@ const FinanceScreen = ({ showToast }) => {
                     </div>
 
                     {calcResults.length === 0 ? (
-                      <div className="no-result-v3">
-                        <div className="no-result-icon">🔍</div>
-                        <p>조건에 맞는 카드가 없어요</p>
+                      <div className="empty-state">
+                        <div className="empty-icon">🔍</div>
+                        <div className="empty-title">검색 결과가 없습니다</div>
+                        <div className="empty-desc">
+                          선택하신 조건에 맞는 카드가 없어요.<br />
+                          다른 혜택을 선택해 보세요.
+                        </div>
+                        <button className="btn-reset" onClick={resetCalculator}>
+                          다시 검색하기
+                        </button>
                       </div>
                     ) : (
                       <>
@@ -464,19 +493,16 @@ const FinanceScreen = ({ showToast }) => {
 
                         <div className="product-list-v3">
                           {calcResults.map((card, index) => (
-                            <div key={card.id} className="product-card-v3 calc" onClick={() => handleProductClick(card)}>
-                              <div className="product-rank-v3">{index + 1}</div>
-                              <div className="product-logo-v3" style={{ background: card.color }}>
+                            <div key={card.id} className="product-card-horizontal" onClick={() => handleProductClick(card)}>
+                              <div className="product-rank-badge">{index === 0 ? '👑' : index + 1}</div>
+                              <div className="product-logo-sm" style={{ background: card.color }}>
                                 <span>{card.logo}</span>
                               </div>
-                              <div className="product-info-v3">
-                                <div className="product-company-v3">{card.company}</div>
-                                <div className="product-name-v3">{card.name}</div>
-                                <div className="product-benefit-v3">{card.benefits}</div>
+                              <div className="product-info-inline">
+                                <span className="product-name-inline">{card.name}</span>
+                                <span className="product-benefit-inline">{card.benefit}</span>
                               </div>
-                              <div className="point-highlight">
-                                <span className="point-value">+{card.benefitPoints.toLocaleString()}핀</span>
-                              </div>
+                              <div className="product-point-inline">+{card.benefitPoints.toLocaleString()}핀</div>
                             </div>
                           ))}
                         </div>
@@ -585,10 +611,24 @@ const FinanceScreen = ({ showToast }) => {
                     </div>
 
                     {getFilteredLoanResults().length === 0 ? (
-                      <div className="no-result-v3">
-                        <div className="no-result-icon">🔍</div>
-                        <p>조건에 맞는 상품이 없어요</p>
-                        <p className="no-result-hint">필터 조건을 조정해보세요</p>
+                      <div className="empty-state">
+                        <div className="empty-icon">🔍</div>
+                        <div className="empty-title">검색 결과가 없습니다</div>
+                        <div className="empty-desc">
+                          선택하신 조건에 맞는 금융상품이 없어요.<br />
+                          금리나 한도 조건을 변경해 보세요.
+                        </div>
+                        <button
+                          className="btn-reset"
+                          onClick={() => setCalcFilters({
+                            minRate: 0,
+                            maxRate: 20,
+                            minLimit: 0,
+                            maxLimit: 200000,
+                          })}
+                        >
+                          필터 초기화
+                        </button>
                       </div>
                     ) : (
                       <>
@@ -604,25 +644,16 @@ const FinanceScreen = ({ showToast }) => {
 
                         <div className="product-list-v3">
                           {getFilteredLoanResults().map((loan, index) => (
-                            <div key={loan.id} className="product-card-v3 calc" onClick={() => handleProductClick(loan)}>
-                              <div className="product-rank-v3 rate">{index + 1}</div>
-                              <div className="product-logo-v3" style={{ background: loan.color }}>
+                            <div key={loan.id} className="product-card-horizontal" onClick={() => handleProductClick(loan)}>
+                              <div className="product-rank-badge">{index === 0 ? '👑' : index + 1}</div>
+                              <div className="product-logo-sm" style={{ background: loan.color }}>
                                 <span>{loan.logo}</span>
                               </div>
-                              <div className="product-info-v3">
-                                <div className="product-company-v3">{loan.company}</div>
-                                <div className="product-name-v3">{loan.name}</div>
-                                <div className="product-rate-v3">
-                                  연 {loan.interestRate}% ~ {loan.maxInterestRate}%
-                                </div>
-                                <div className="product-limit-v3">
-                                  최대 {(loan.maxLimit / 10000).toFixed(0)}억원
-                                </div>
+                              <div className="product-info-inline">
+                                <span className="product-name-inline">{loan.name}</span>
+                                <span className="product-rate-inline">연 {loan.interestRate}%~ · 최대 {loan.maxLimit >= 10000 ? (loan.maxLimit / 10000) + '억' : (loan.maxLimit / 1000) + '천만'}원</span>
                               </div>
-                              <div className="rate-highlight-box">
-                                <span className="rate-value">{loan.interestRate}%</span>
-                                <span className="rate-label">최저</span>
-                              </div>
+                              <div className="product-point-inline">{loan.interestRate}%</div>
                             </div>
                           ))}
                         </div>
@@ -657,27 +688,21 @@ const FinanceScreen = ({ showToast }) => {
 
             <div className="sort-notice curation">
               <span className="sort-icon">🎁</span>
-              <span>에이핀 포인트 적립순</span>
+              <span>핀 적립순</span>
             </div>
 
             <div className="product-list-v3">
               {getSortedCards().map((card, index) => (
-                <div key={card.id} className="product-card-vertical" onClick={() => handleProductClick(card)}>
-                  <div className="card-main-row">
-                    <div className="card-logo-wrap">
-                      <div className="product-rank-badge">{index === 0 ? '👑' : index + 1}</div>
-                      <div className="product-logo-large" style={{ background: card.color }}>
-                        <span>{card.logo}</span>
-                      </div>
-                    </div>
-                    <div className="card-info-section">
-                      <div className="card-company">{card.company}</div>
-                      <div className="card-name">{card.name}</div>
-                      <div className="card-benefit">{card.benefit}</div>
-                    </div>
-                    <div className="card-point-badge">+{card.benefitPoints.toLocaleString()}핀</div>
+                <div key={card.id} className="product-card-horizontal" onClick={() => handleProductClick(card)}>
+                  <div className="product-rank-badge">{index === 0 ? '👑' : index + 1}</div>
+                  <div className="product-logo-sm" style={{ background: card.color }}>
+                    <span>{card.logo}</span>
                   </div>
-                  <button className="card-apply-btn">신청하기</button>
+                  <div className="product-info-inline">
+                    <span className="product-name-inline">{card.name}</span>
+                    <span className="product-benefit-inline">{card.benefit}</span>
+                  </div>
+                  <div className="product-point-inline">+{card.benefitPoints.toLocaleString()}핀</div>
                 </div>
               ))}
             </div>
@@ -705,42 +730,67 @@ const FinanceScreen = ({ showToast }) => {
                 className={`sort-chip ${loanSortBy === 'points' ? 'active' : ''}`}
                 onClick={() => setLoanSortBy('points')}
               >
-                🎁 포인트 적립순
+                핀 적립순
               </button>
               <button
                 className={`sort-chip ${loanSortBy === 'rate' ? 'active' : ''}`}
                 onClick={() => setLoanSortBy('rate')}
               >
-                📉 금리 낮은순
+                금리 낮은순
+              </button>
+              <button
+                className={`sort-chip ${loanSortBy === 'limit' ? 'active' : ''}`}
+                onClick={() => setLoanSortBy('limit')}
+              >
+                한도순
               </button>
             </div>
 
             <div className="product-list-v3">
               {getSortedLoans().map((loan, index) => (
-                <div key={loan.id} className="product-card-vertical" onClick={() => handleProductClick(loan)}>
-                  <div className="card-main-row">
-                    <div className="card-logo-wrap">
-                      <div className="product-rank-badge">{index === 0 ? '👑' : index + 1}</div>
-                      <div className="product-logo-large" style={{ background: loan.color }}>
-                        <span>{loan.logo}</span>
-                      </div>
-                    </div>
-                    <div className="card-info-section">
-                      <div className="card-company">{loan.company}</div>
-                      <div className="card-name">{loan.name}</div>
-                      <div className="loan-details">
-                        <span className="loan-rate">연 {loan.interestRate}%~</span>
-                        <span className="loan-limit">최대 {loan.maxLimit >= 10000 ? (loan.maxLimit / 10000) + '억' : (loan.maxLimit / 1000) + '천만'}원</span>
-                      </div>
-                    </div>
-                    <div className="card-point-badge">+{loan.benefitPoints.toLocaleString()}핀</div>
+                <div key={loan.id} className="product-card-horizontal" onClick={() => handleProductClick(loan)}>
+                  <div className="product-rank-badge">{index === 0 ? '👑' : index + 1}</div>
+                  <div className="product-logo-sm" style={{ background: loan.color }}>
+                    <span>{loan.logo}</span>
                   </div>
-                  <button className="card-apply-btn">신청하기</button>
+                  <div className="product-info-inline">
+                    <span className="product-name-inline">{loan.name}</span>
+                    <span className="product-rate-inline">연 {loan.interestRate}%~ · 최대 {loan.maxLimit >= 10000 ? (loan.maxLimit / 10000) + '억' : (loan.maxLimit / 1000) + '천만'}원</span>
+                  </div>
+                  <div className="product-point-inline">+{loan.benefitPoints.toLocaleString()}핀</div>
                 </div>
               ))}
             </div>
           </div>
         )}
+      </div>
+
+      {/* 바텀시트 */}
+      <div
+        className={`bottom-sheet-overlay ${bottomSheetOpen ? 'active' : ''}`}
+        onClick={closeBottomSheet}
+      >
+        <div className="bottom-sheet" onClick={(e) => e.stopPropagation()}>
+          <div className="sheet-header">
+            <div className="sheet-title">혜택 및 제휴사 이동 안내</div>
+            <button className="btn-close" onClick={closeBottomSheet}>✕</button>
+          </div>
+
+          <div className="sheet-highlight">💡 핀 지급 유의사항</div>
+          <ul className="sheet-list">
+            <li>핀은 카드 발급 또는 대출 실행 완료 후 <strong>익월 15일 이내</strong> 지급됩니다.</li>
+            <li>이미 해당 금융사의 카드를 소유하신 기존 회원은 지급 대상에서 제외될 수 있습니다.</li>
+          </ul>
+
+          <div className="outlink-notice">
+            <strong>제휴사 페이지로 이동합니다</strong>
+            <p>안전한 진행을 위해 에이핀 앱을 벗어나 해당 금융사로 이동합니다. 상품 심사 및 가입은 금융사의 기준을 따릅니다.</p>
+          </div>
+
+          <button className="btn-apply-full" onClick={handleApply}>
+            동의하고 제휴사로 이동하기
+          </button>
+        </div>
       </div>
     </div>
   );
