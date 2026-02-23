@@ -2,9 +2,65 @@
   background: var(--bg-main);
 }
 
+/* 앱바 */
+.mypage-appbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 50px 16px 12px;
+  background: var(--bg-gradient);
+}
+
+.mypage-logo {
+  font-size: 18px;
+  font-weight: 500;
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+.mypage-noti-btn {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.mypage-noti-btn:active {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.mypage-noti-btn svg {
+  width: 24px;
+  height: 24px;
+  color: #fff;
+}
+
+.mypage-noti-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  min-width: 18px;
+  height: 18px;
+  background: #ff3b30;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5px;
+}
+
 .mypage-header {
   background: var(--bg-gradient);
-  padding: 60px 20px 30px;
+  padding: 0 20px 30px;
   position: relative;
   overflow: hidden;
 }

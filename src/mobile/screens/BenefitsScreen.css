@@ -1,9 +1,66 @@
 .benefits-screen {
   background: var(--bg-main);
+  position: relative;
+}
+
+/* 앱바 */
+.benefits-appbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 50px 16px 12px;
+  background: #fff;
+}
+
+.benefits-logo {
+  font-size: 18px;
+  font-weight: 500;
+  color: #333;
+  letter-spacing: 1px;
+}
+
+.benefits-noti-btn {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.benefits-noti-btn:active {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.benefits-noti-btn svg {
+  width: 24px;
+  height: 24px;
+  color: #333;
+}
+
+.benefits-noti-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  min-width: 18px;
+  height: 18px;
+  background: #ff3b30;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5px;
 }
 
 .benefits-header {
-  padding: 60px 20px 0;
+  padding: 0 20px;
   background: linear-gradient(180deg, #fff 0%, #f8f9fa 100%);
   border-bottom: none;
 }
@@ -731,4 +788,219 @@
   font-size: 13px;
   color: var(--text-tertiary);
   margin-top: 6px;
+}
+
+/* ============================================
+   바텀시트
+============================================ */
+.benefits-screen .bottom-sheet-overlay {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  align-items: flex-end;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.benefits-screen .bottom-sheet-overlay.active {
+  display: flex;
+  opacity: 1;
+}
+
+.benefits-screen .bottom-sheet {
+  background: white;
+  width: 100%;
+  border-radius: 20px 20px 0 0;
+  padding: 24px 20px 32px;
+  box-sizing: border-box;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.1, 0.8, 0.2, 1);
+}
+
+.benefits-screen .bottom-sheet-overlay.active .bottom-sheet {
+  transform: translateY(0);
+}
+
+.benefits-screen .sheet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.benefits-screen .sheet-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #222;
+}
+
+.benefits-screen .btn-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #aaa;
+  cursor: pointer;
+  padding: 0;
+}
+
+.benefits-screen .sheet-highlight {
+  background: linear-gradient(135deg, #f0f4ff 0%, #e8eeff 100%);
+  padding: 16px;
+  border-radius: 12px;
+  color: #1a2e71;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.benefits-screen .sheet-highlight.warning {
+  background: linear-gradient(135deg, #fff8e6 0%, #fff3d6 100%);
+  color: #996600;
+}
+
+.benefits-screen .sheet-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px 0;
+  font-size: 13px;
+  color: #555;
+  line-height: 1.6;
+}
+
+.benefits-screen .sheet-list li {
+  margin-bottom: 10px;
+  position: relative;
+  padding-left: 14px;
+}
+
+.benefits-screen .sheet-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #1a2e71;
+}
+
+.benefits-screen .sheet-list li strong {
+  color: #1a2e71;
+}
+
+.benefits-screen .btn-apply-full {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #1a2e71 0%, #2d4a8c 100%);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* ============================================
+   iOS 스타일 시스템 팝업
+============================================ */
+.benefits-screen .system-popup-overlay {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 10000;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.benefits-screen .system-popup-overlay.active {
+  display: flex;
+  opacity: 1;
+}
+
+.benefits-screen .system-popup {
+  background: rgba(255, 255, 255, 0.95);
+  width: 270px;
+  border-radius: 14px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  transform: scale(1.05);
+  transition: transform 0.2s;
+}
+
+.benefits-screen .system-popup-overlay.active .system-popup {
+  transform: scale(1);
+}
+
+.benefits-screen .sys-content {
+  padding: 20px 16px;
+}
+
+.benefits-screen .sys-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.benefits-screen .sys-desc {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.4;
+}
+
+.benefits-screen .sys-btn-group {
+  border-top: 0.5px solid rgba(60, 60, 67, 0.36);
+}
+
+.benefits-screen .sys-btn-row {
+  display: flex;
+  border-top: 0.5px solid rgba(60, 60, 67, 0.36);
+}
+
+.benefits-screen .sys-btn-row:first-child {
+  border-top: none;
+}
+
+.benefits-screen .sys-btn-row.single {
+  flex-direction: column;
+}
+
+.benefits-screen .sys-btn {
+  flex: 1;
+  padding: 14px;
+  background: transparent;
+  border: none;
+  font-size: 17px;
+  color: #007AFF;
+  cursor: pointer;
+  font-weight: 400;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.benefits-screen .sys-btn:not(:last-child) {
+  border-right: 0.5px solid rgba(60, 60, 67, 0.36);
+}
+
+.benefits-screen .sys-btn-row.single .sys-btn {
+  border-right: none;
+}
+
+.benefits-screen .sys-btn.bold {
+  font-weight: 600;
+}
+
+.benefits-screen .sys-btn:active {
+  background: rgba(0, 0, 0, 0.05);
 }

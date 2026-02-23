@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './FinanceScreen.css';
 
 /**
@@ -164,7 +165,9 @@ const loanCategories = [
   { id: 'car', label: '자동차', icon: '🚗' },
 ];
 
-const FinanceScreen = ({ showToast }) => {
+const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
+  const navigate = useNavigate();
+
   // 메인 탭 상태
   const [mainTab, setMainTab] = useState('calculator');
 
@@ -306,10 +309,11 @@ const FinanceScreen = ({ showToast }) => {
       {/* 헤더 */}
       <div className="finance-header-v3">
         <div className="finance-logo">LOGO</div>
-        <button className="finance-noti-btn" onClick={() => showToast('알림')}>
+        <button className="finance-noti-btn" onClick={() => navigate('/notifications')}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" />
           </svg>
+          {unreadCount > 0 && <span className="finance-noti-badge">{unreadCount}</span>}
         </button>
       </div>
 

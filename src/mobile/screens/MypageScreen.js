@@ -2,11 +2,22 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './MypageScreen.css';
 
-const MypageScreen = ({ userPoints, showToast }) => {
+const MypageScreen = ({ userPoints, showToast, unreadCount = 0 }) => {
   const navigate = useNavigate();
 
   return (
     <div className="screen mypage-screen">
+      {/* 앱바 */}
+      <div className="mypage-appbar">
+        <div className="mypage-logo">LOGO</div>
+        <button className="mypage-noti-btn" onClick={() => navigate('/notifications')}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" />
+          </svg>
+          {unreadCount > 0 && <span className="mypage-noti-badge">{unreadCount}</span>}
+        </button>
+      </div>
+
       <div className="mypage-header">
         <div className="profile-section">
           <div className="profile-avatar">

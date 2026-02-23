@@ -50,7 +50,7 @@ const hideNavPaths = [
 ];
 const hideNavPrefixes = ['/raffle/', '/shopping/', '/notification/'];
 
-function MobileApp({ isLoggedIn, isGuest, handleLogin, handleSignup, handleGuest, showToast, userPoints, updatePoints, toast }) {
+function MobileApp({ isLoggedIn, isGuest, handleLogin, handleSignup, handleGuest, showToast, userPoints, updatePoints, toast, unreadCount }) {
   const location = useLocation();
   const shouldHideNav = hideNavPaths.includes(location.pathname)
     || hideNavPrefixes.some(p => location.pathname.startsWith(p));
@@ -67,10 +67,10 @@ function MobileApp({ isLoggedIn, isGuest, handleLogin, handleSignup, handleGuest
           </>
         ) : (
           <>
-            <Route path="/" element={<HomeScreen userPoints={userPoints} showToast={showToast} updatePoints={updatePoints} isGuest={isGuest} />} />
-            <Route path="/benefits" element={<BenefitsScreen showToast={showToast} updatePoints={updatePoints} />} />
-            <Route path="/finance" element={<FinanceScreen showToast={showToast} />} />
-            <Route path="/mypage" element={<MypageScreen userPoints={userPoints} showToast={showToast} />} />
+            <Route path="/" element={<HomeScreen userPoints={userPoints} showToast={showToast} updatePoints={updatePoints} isGuest={isGuest} unreadCount={unreadCount} />} />
+            <Route path="/benefits" element={<BenefitsScreen showToast={showToast} updatePoints={updatePoints} unreadCount={unreadCount} />} />
+            <Route path="/finance" element={<FinanceScreen showToast={showToast} unreadCount={unreadCount} />} />
+            <Route path="/mypage" element={<MypageScreen userPoints={userPoints} showToast={showToast} unreadCount={unreadCount} />} />
 
             {/* Detail Pages */}
             <Route path="/withdraw" element={<WithdrawDetailScreen userPoints={userPoints} showToast={showToast} isGuest={isGuest} />} />
@@ -113,6 +113,7 @@ function AppContent() {
   const [showSplash, setShowSplash] = useState(true);
   const [toast, setToast] = useState({ show: false, message: '' });
   const [userPoints, setUserPoints] = useState(26350);
+  const [unreadCount, setUnreadCount] = useState(3);
 
   const isAdminRoute = location.pathname.startsWith('/admin');
 
@@ -198,6 +199,7 @@ function AppContent() {
       userPoints={userPoints}
       updatePoints={updatePoints}
       toast={toast}
+      unreadCount={unreadCount}
     />
   );
 }

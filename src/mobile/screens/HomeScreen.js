@@ -3,11 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import './HomeScreen.css';
 import exchangeRateData from '../../shared/data/exchangeRate.json';
 
-const HomeScreen = ({ userPoints, showToast, isGuest }) => {
+const HomeScreen = ({ userPoints, showToast, isGuest, unreadCount = 0 }) => {
   const navigate = useNavigate();
   const [isPartnerOpen, setIsPartnerOpen] = useState(false);
-
-  const unreadCount = 3;
 
   const handleGuestBlock = () => {
     navigate('/signup');
