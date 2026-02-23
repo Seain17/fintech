@@ -16,7 +16,7 @@ const LoginScreen = ({ onLogin }) => {
             <span className="login-logo">A</span>
           </div>
           <h1 className="login-title">에이핀 시작하기</h1>
-          <p className="login-subtitle">로그인 후 쌓여있는 포인트를 확인해보세요</p>
+          <p className="login-subtitle">로그인 후 쌓여있는 핀을 확인해보세요</p>
         </div>
 
         <div className="social-login-section">
