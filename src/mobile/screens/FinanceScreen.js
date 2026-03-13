@@ -81,7 +81,6 @@ const loanProducts = [
     interestRate: 3.5,
     maxInterestRate: 14.9,
     maxLimit: 10000,
-    benefitPoints: 12000,
     color: '#0064ff',
   },
   {
@@ -93,7 +92,6 @@ const loanProducts = [
     interestRate: 3.5,
     maxInterestRate: 12.5,
     maxLimit: 15000,
-    benefitPoints: 18000,
     color: '#ffb300',
   },
   {
@@ -105,7 +103,6 @@ const loanProducts = [
     interestRate: 3.69,
     maxInterestRate: 19.9,
     maxLimit: 5000,
-    benefitPoints: 8000,
     color: '#fee500',
   },
   {
@@ -117,7 +114,6 @@ const loanProducts = [
     interestRate: 4.2,
     maxInterestRate: 15.0,
     maxLimit: 20000,
-    benefitPoints: 25000,
     color: '#009688',
   },
   {
@@ -129,7 +125,6 @@ const loanProducts = [
     interestRate: 3.2,
     maxInterestRate: 5.5,
     maxLimit: 100000,
-    benefitPoints: 30000,
     color: '#ffb300',
   },
   {
@@ -141,7 +136,6 @@ const loanProducts = [
     interestRate: 3.4,
     maxInterestRate: 5.8,
     maxLimit: 80000,
-    benefitPoints: 22000,
     color: '#0046ff',
   },
   {
@@ -153,7 +147,6 @@ const loanProducts = [
     interestRate: 4.5,
     maxInterestRate: 9.9,
     maxLimit: 8000,
-    benefitPoints: 15000,
     color: '#0046ff',
   },
 ];
@@ -196,7 +189,7 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
   // 대출 탭 상태
   // ============================================
   const [loanCategory, setLoanCategory] = useState('credit');
-  const [loanSortBy, setLoanSortBy] = useState('points');
+  const [loanSortBy, setLoanSortBy] = useState('rate');
 
   // ============================================
   // 바텀시트 상태
@@ -272,13 +265,11 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
   // ============================================
   const getSortedLoans = () => {
     const filtered = [...loanProducts].filter(loan => loan.category === loanCategory);
-    if (loanSortBy === 'rate') {
-      return filtered.sort((a, b) => a.interestRate - b.interestRate);
-    }
     if (loanSortBy === 'limit') {
       return filtered.sort((a, b) => b.maxLimit - a.maxLimit);
     }
-    return filtered.sort((a, b) => b.benefitPoints - a.benefitPoints);
+    // 기본: 금리 낮은 순
+    return filtered.sort((a, b) => a.interestRate - b.interestRate);
   };
 
   // ============================================
@@ -731,12 +722,6 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
 
             <div className="sort-options">
               <button
-                className={`sort-chip ${loanSortBy === 'points' ? 'active' : ''}`}
-                onClick={() => setLoanSortBy('points')}
-              >
-                핀 적립순
-              </button>
-              <button
                 className={`sort-chip ${loanSortBy === 'rate' ? 'active' : ''}`}
                 onClick={() => setLoanSortBy('rate')}
               >
@@ -761,7 +746,7 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
                     <span className="product-name-inline">{loan.name}</span>
                     <span className="product-rate-inline">연 {loan.interestRate}%~ · 최대 {loan.maxLimit >= 10000 ? (loan.maxLimit / 10000) + '억' : (loan.maxLimit / 1000) + '천만'}원</span>
                   </div>
-                  <div className="product-point-inline">+{loan.benefitPoints.toLocaleString()}핀</div>
+                  <div className="product-point-inline loan-rate">{loan.interestRate}%</div>
                 </div>
               ))}
             </div>

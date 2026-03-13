@@ -709,3 +709,201 @@
   width: 18px;
   height: 18px;
 }
+
+/* Step 3: PASS 본인인증 */
+.signup-pass-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: fadeInUp 0.4s ease-out;
+}
+
+.signup-pass-modal {
+  width: 100%;
+  max-width: 340px;
+  background: var(--bg-card);
+  border-radius: var(--radius-xl);
+  padding: 32px 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  border: 1px solid var(--border);
+}
+
+.signup-pass-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.signup-pass-logo {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+}
+
+.signup-pass-logo svg {
+  width: 32px;
+  height: 32px;
+  color: #fff;
+}
+
+.signup-pass-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.signup-pass-desc {
+  font-size: 14px;
+  color: var(--text-tertiary);
+}
+
+.signup-pass-carriers {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.signup-carrier-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 8px;
+  background: var(--bg-secondary);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.signup-carrier-btn:hover {
+  border-color: var(--primary);
+}
+
+.signup-carrier-btn.selected {
+  border-color: var(--primary);
+  background: var(--primary-50);
+}
+
+.signup-carrier-btn span:last-child {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.carrier-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.carrier-logo.skt {
+  background: linear-gradient(135deg, #e4002b 0%, #ff3366 100%);
+}
+
+.carrier-logo.kt {
+  background: linear-gradient(135deg, #000000 0%, #333333 100%);
+}
+
+.carrier-logo.lgu {
+  background: linear-gradient(135deg, #e6007e 0%, #ff66b2 100%);
+}
+
+.signup-pass-info {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.signup-pass-info-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.signup-pass-info-item + .signup-pass-info-item {
+  margin-top: 10px;
+}
+
+.signup-pass-info-item svg {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  color: var(--success);
+}
+
+.signup-pass-btn {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35);
+  transition: all 0.3s ease;
+}
+
+.signup-pass-btn:active {
+  transform: scale(0.98);
+}
+
+.signup-pass-btn:disabled {
+  background: var(--border);
+  color: var(--text-tertiary);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.signup-pass-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.signup-pass-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.signup-pass-notice {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-tertiary);
+  margin-top: 16px;
+}

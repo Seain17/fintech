@@ -34,6 +34,7 @@ const SignupScreen = ({ onSignup }) => {
   const [terms, setTerms] = useState({
     service: false,
     privacy: false,
+    thirdParty: false,
     marketing: false,
     age: false,
   });
@@ -93,6 +94,32 @@ const SignupScreen = ({ onSignup }) => {
 
 ※ 마케팅 수신 동의는 선택 사항이며, 동의하지 않아도 서비스 이용에 제한이 없습니다.
 ※ 수신 동의 후에도 마이페이지에서 언제든 변경 가능합니다.`
+    },
+    thirdParty: {
+      title: '제3자 정보제공 동의',
+      content: `에이핀은 맞춤형 광고 서비스 제공 및 광고 효과 측정을 위해 아래와 같이 개인정보를 제3자에게 제공합니다.
+
+1. 제공받는 자
+- Google (Google Ads, Firebase)
+- Meta (Facebook, Instagram)
+- 카카오 (카카오모먼트)
+- 기타 광고 파트너사
+
+2. 제공 목적
+- 맞춤형 광고 제공
+- 광고 효과 측정 및 분석
+- 앱 설치 및 이용 행태 분석
+
+3. 제공 항목
+- 광고식별자 (ADID/IDFA)
+- 앱 이용 기록 (설치, 실행, 이벤트)
+- 기기 정보 (OS, 모델명)
+
+4. 보유 및 이용기간
+- 동의 철회 시 또는 제공 목적 달성 시까지
+
+※ 동의를 거부할 권리가 있으며, 동의 거부 시에도 서비스 이용이 가능합니다.
+※ 단, 맞춤형 광고 및 혜택 추천이 제한될 수 있습니다.`
     }
   };
 
@@ -121,9 +148,9 @@ const SignupScreen = ({ onSignup }) => {
   };
 
   const handleAllTerms = () => {
-    const allChecked = terms.service && terms.privacy && terms.marketing && terms.age;
+    const allChecked = terms.service && terms.privacy && terms.thirdParty && terms.marketing && terms.age;
     const newVal = !allChecked;
-    setTerms({ service: newVal, privacy: newVal, marketing: newVal, age: newVal });
+    setTerms({ service: newVal, privacy: newVal, thirdParty: newVal, marketing: newVal, age: newVal });
   };
 
   const handleTermsNext = () => {
@@ -133,13 +160,14 @@ const SignupScreen = ({ onSignup }) => {
   };
 
   const handleVerify = () => {
-    if (phone.length < 10) return;
+    if (!phone) return;
     setVerifying(true);
-    // 외부 인증사 연동 시 이 부분을 교체
+    // PASS 본인인증 SDK 연동 시 이 부분을 교체
+    // 실제 구현 시: PASS SDK 호출 → 인증 완료 콜백에서 setStep(4)
     setTimeout(() => {
       setVerifying(false);
       setStep(4);
-    }, 1200);
+    }, 2000);
   };
 
   const handleBack = () => {
@@ -150,8 +178,8 @@ const SignupScreen = ({ onSignup }) => {
     }
   };
 
-  const allTermsChecked = terms.service && terms.privacy && terms.marketing && terms.age;
-  const requiredTermsChecked = terms.service && terms.privacy && terms.age;
+  const allTermsChecked = terms.service && terms.privacy && terms.thirdParty && terms.marketing && terms.age;
+  const requiredTermsChecked = terms.service && terms.privacy && terms.thirdParty && terms.age;
 
   const CheckIcon = () => (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
@@ -211,6 +239,13 @@ const SignupScreen = ({ onSignup }) => {
                   <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
                 </svg>
                 Google로 계속하기
+              </button>
+
+              <button className="social-btn apple" onClick={() => handleSocialSelect('apple')}>
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+                </svg>
+                Apple로 계속하기
               </button>
 
             </div>
@@ -288,6 +323,23 @@ const SignupScreen = ({ onSignup }) => {
                 </div>
 
                 <div className="signup-term-item">
+                  <div className="signup-term-left" onClick={() => handleTermToggle('thirdParty')}>
+                    <div className={`signup-checkbox ${terms.thirdParty ? 'checked' : ''}`}>
+                      <CheckIcon />
+                    </div>
+                    <span className="signup-term-text">
+                      제3자 정보제공 동의
+                      <span className="signup-term-required">(필수)</span>
+                    </span>
+                  </div>
+                  <button className="signup-term-detail-btn" onClick={(e) => { e.stopPropagation(); setTermDetail('thirdParty'); }}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                  </button>
+                </div>
+
+                <div className="signup-term-item">
                   <div className="signup-term-left" onClick={() => handleTermToggle('marketing')}>
                     <div className={`signup-checkbox ${terms.marketing ? 'checked' : ''}`}>
                       <CheckIcon />
@@ -310,60 +362,94 @@ const SignupScreen = ({ onSignup }) => {
                 onClick={handleTermsNext}
                 disabled={!requiredTermsChecked}
               >
-                다음
+                본인인증 진행하고 완료하기
               </button>
             </div>
           </>
         )}
 
-        {/* Step 3: Identity Verification (외부 인증사 연동 예정) */}
+        {/* Step 3: PASS 본인인증 */}
         {step === 3 && (
-          <>
-            <div className="signup-step-header">
-              <h2 className="signup-step-title">본인인증</h2>
-              <p className="signup-step-desc">안전한 서비스 이용을 위해 정보를 확인해주세요</p>
-            </div>
-            <div className="signup-verify-section">
-              {/* SSO에서 자동으로 받은 정보 */}
-              <div className="signup-sso-info">
-                <div className="signup-sso-item">
-                  <span className="signup-sso-label">이름</span>
-                  <div className="signup-sso-value-row">
-                    <span className="signup-sso-value">홍길동</span>
-                    <span className="signup-sso-badge">SNS 연동</span>
-                  </div>
+          <div className="signup-pass-section">
+            <div className="signup-pass-modal">
+              <div className="signup-pass-header">
+                <div className="signup-pass-logo">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
                 </div>
-                <div className="signup-sso-item">
-                  <span className="signup-sso-label">이메일</span>
-                  <div className="signup-sso-value-row">
-                    <span className="signup-sso-value">hong@email.com</span>
-                    <span className="signup-sso-badge">SNS 연동</span>
-                  </div>
-                </div>
+                <h2 className="signup-pass-title">휴대폰 본인인증</h2>
+                <p className="signup-pass-desc">PASS 앱으로 본인인증을 진행합니다</p>
               </div>
 
-              {/* 휴대폰 번호 입력 */}
-              <div className="signup-form-group">
-                <label className="signup-form-label">휴대폰 번호</label>
-                <input
-                  type="tel"
-                  className="signup-form-input"
-                  placeholder="01012345678"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value.replace(/[^0-9]/g, ''))}
-                  maxLength={11}
-                />
+              <div className="signup-pass-carriers">
+                <button
+                  className={`signup-carrier-btn ${phone === 'SKT' ? 'selected' : ''}`}
+                  onClick={() => setPhone('SKT')}
+                >
+                  <span className="carrier-logo skt">T</span>
+                  <span>SKT</span>
+                </button>
+                <button
+                  className={`signup-carrier-btn ${phone === 'KT' ? 'selected' : ''}`}
+                  onClick={() => setPhone('KT')}
+                >
+                  <span className="carrier-logo kt">K</span>
+                  <span>KT</span>
+                </button>
+                <button
+                  className={`signup-carrier-btn ${phone === 'LGU' ? 'selected' : ''}`}
+                  onClick={() => setPhone('LGU')}
+                >
+                  <span className="carrier-logo lgu">U+</span>
+                  <span>LG U+</span>
+                </button>
+              </div>
+
+              <div className="signup-pass-info">
+                <div className="signup-pass-info-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                    <polyline points="22 4 12 14.01 9 11.01" />
+                  </svg>
+                  <span>PASS 앱이 설치되어 있어야 합니다</span>
+                </div>
+                <div className="signup-pass-info-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                    <polyline points="22 4 12 14.01 9 11.01" />
+                  </svg>
+                  <span>본인 명의 휴대폰으로만 인증 가능</span>
+                </div>
               </div>
 
               <button
-                className="signup-next-btn"
+                className="signup-pass-btn"
                 onClick={handleVerify}
-                disabled={verifying || phone.length < 10}
+                disabled={verifying || !phone}
               >
-                {verifying ? '인증 처리 중...' : '본인인증 하기'}
+                {verifying ? (
+                  <>
+                    <span className="signup-pass-spinner"></span>
+                    PASS 인증 진행 중...
+                  </>
+                ) : (
+                  <>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+                      <line x1="12" y1="18" x2="12.01" y2="18" />
+                    </svg>
+                    PASS 인증하기
+                  </>
+                )}
               </button>
+
+              <p className="signup-pass-notice">
+                인증 버튼을 누르면 PASS 앱이 실행됩니다
+              </p>
             </div>
-          </>
+          </div>
         )}
 
         {/* Step 4: Complete with Nickname */}
