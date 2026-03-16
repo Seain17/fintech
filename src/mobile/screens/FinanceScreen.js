@@ -158,6 +158,75 @@ const loanCategories = [
   { id: 'car', label: '자동차', icon: '🚗' },
 ];
 
+// ============================================
+// 보험 상품 데이터
+// ============================================
+const insuranceProducts = [
+  {
+    id: 1,
+    name: '삼성생명 건강보험',
+    company: '삼성생명',
+    logo: '삼성',
+    category: 'health',
+    monthlyPremium: 35000,
+    coverage: '암/뇌/심장 진단금 최대 1억',
+    benefitPoints: 20000,
+    color: '#1428a0',
+  },
+  {
+    id: 2,
+    name: '한화생명 종신보험',
+    company: '한화생명',
+    logo: '한화',
+    category: 'life',
+    monthlyPremium: 50000,
+    coverage: '사망보험금 최대 3억',
+    benefitPoints: 25000,
+    color: '#ff6b00',
+  },
+  {
+    id: 3,
+    name: '현대해상 운전자보험',
+    company: '현대해상',
+    logo: '현대',
+    category: 'driver',
+    monthlyPremium: 15000,
+    coverage: '교통사고 벌금/변호사 비용 보장',
+    benefitPoints: 12000,
+    color: '#00a651',
+  },
+  {
+    id: 4,
+    name: 'DB손해보험 실손보험',
+    company: 'DB손해보험',
+    logo: 'DB',
+    category: 'health',
+    monthlyPremium: 25000,
+    coverage: '실제 의료비 90% 보장',
+    benefitPoints: 15000,
+    color: '#003d7d',
+  },
+  {
+    id: 5,
+    name: '메리츠화재 펫보험',
+    company: '메리츠화재',
+    logo: '메리츠',
+    category: 'pet',
+    monthlyPremium: 20000,
+    coverage: '반려동물 의료비 70% 보장',
+    benefitPoints: 10000,
+    color: '#e31837',
+  },
+];
+
+// 보험 카테고리
+const insuranceCategories = [
+  { id: 'health', label: '건강/실손', icon: '🏥' },
+  { id: 'life', label: '종신/저축', icon: '💰' },
+  { id: 'driver', label: '운전자', icon: '🚗' },
+  { id: 'pet', label: '펫보험', icon: '🐕' },
+];
+
 const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
   const navigate = useNavigate();
 
@@ -190,6 +259,11 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
   // ============================================
   const [loanCategory, setLoanCategory] = useState('credit');
   const [loanSortBy, setLoanSortBy] = useState('rate');
+
+  // ============================================
+  // 보험 탭 상태
+  // ============================================
+  const [insuranceCategory, setInsuranceCategory] = useState('health');
 
   // ============================================
   // 바텀시트 상태
@@ -273,6 +347,15 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
   };
 
   // ============================================
+  // 보험 정렬: 핀 높은 순
+  // ============================================
+  const getSortedInsurance = () => {
+    return [...insuranceProducts]
+      .filter(ins => insuranceCategory === 'all' || ins.category === insuranceCategory)
+      .sort((a, b) => b.benefitPoints - a.benefitPoints);
+  };
+
+  // ============================================
   // 상품 클릭 핸들러
   // ============================================
   const handleProductClick = (product) => {
@@ -321,6 +404,12 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
           onClick={() => setMainTab('card')}
         >
           카드
+        </button>
+        <button
+          className={`main-tab-v3 ${mainTab === 'insurance' ? 'active' : ''}`}
+          onClick={() => setMainTab('insurance')}
+        >
+          보험
         </button>
         <button
           className={`main-tab-v3 ${mainTab === 'loan' ? 'active' : ''}`}
@@ -747,6 +836,45 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
                     <span className="product-rate-inline">연 {loan.interestRate}%~ · 최대 {loan.maxLimit >= 10000 ? (loan.maxLimit / 10000) + '억' : (loan.maxLimit / 1000) + '천만'}원</span>
                   </div>
                   <div className="product-point-inline loan-rate">{loan.interestRate}%</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ========== 보험 탭 ========== */}
+        {mainTab === 'insurance' && (
+          <div className="insurance-section">
+            <div className="insurance-category-bar">
+              {insuranceCategories.map((cat) => (
+                <button
+                  key={cat.id}
+                  className={`insurance-category-btn ${insuranceCategory === cat.id ? 'active' : ''}`}
+                  onClick={() => setInsuranceCategory(cat.id)}
+                >
+                  <span className="cat-icon">{cat.icon}</span>
+                  <span className="cat-label">{cat.label}</span>
+                </button>
+              ))}
+            </div>
+
+            <div className="sort-notice curation">
+              <span className="sort-icon">🎁</span>
+              <span>핀 적립순</span>
+            </div>
+
+            <div className="product-list-v3">
+              {getSortedInsurance().map((ins, index) => (
+                <div key={ins.id} className="product-card-horizontal" onClick={() => handleProductClick(ins)}>
+                  <div className="product-rank-badge">{index === 0 ? '👑' : index + 1}</div>
+                  <div className="product-logo-sm" style={{ background: ins.color }}>
+                    <span>{ins.logo}</span>
+                  </div>
+                  <div className="product-info-inline">
+                    <span className="product-name-inline">{ins.name}</span>
+                    <span className="product-benefit-inline">월 {ins.monthlyPremium.toLocaleString()}원 · {ins.coverage}</span>
+                  </div>
+                  <div className="product-point-inline">+{ins.benefitPoints.toLocaleString()}핀</div>
                 </div>
               ))}
             </div>
