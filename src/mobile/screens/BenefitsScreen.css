@@ -155,6 +155,17 @@
   margin-top: 8px;
 }
 
+.mission-progress-status {
+  display: inline-block;
+  padding: 6px 14px;
+  background: linear-gradient(135deg, rgba(26, 46, 113, 0.1) 0%, rgba(45, 74, 140, 0.1) 100%);
+  color: #1a2e71;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 5px;
+}
+
 .benefits-scroll-content {
   display: flex;
   flex-direction: column;
@@ -795,7 +806,7 @@
 ============================================ */
 .benefits-screen .bottom-sheet-overlay {
   display: none;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -803,6 +814,7 @@
   background: rgba(0, 0, 0, 0.5);
   z-index: 9999;
   align-items: flex-end;
+  justify-content: center;
   opacity: 0;
   transition: opacity 0.3s;
 }
@@ -815,6 +827,7 @@
 .benefits-screen .bottom-sheet {
   background: white;
   width: 100%;
+  max-width: 390px;
   border-radius: 20px 20px 0 0;
   padding: 24px 20px 32px;
   box-sizing: border-box;
@@ -908,7 +921,7 @@
 ============================================ */
 .benefits-screen .system-popup-overlay {
   display: none;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './BenefitsScreen.css';
 
@@ -25,67 +25,67 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
   const [scrollLeft, setScrollLeft] = useState(0);
   const hasMoved = useRef(false);
 
-  // 권한 팝업 상태 (임시 주석처리)
-  // const [offerwallSheetOpen, setOfferwallSheetOpen] = useState(false);
-  // const [attPopupOpen, setAttPopupOpen] = useState(false);
-  // const [fallbackAlertOpen, setFallbackAlertOpen] = useState(false);
-  // const [pedometerPopupOpen, setPedometerPopupOpen] = useState(false);
+  // 권한 팝업 상태
+  const [offerwallSheetOpen, setOfferwallSheetOpen] = useState(false);
+  const [attPopupOpen, setAttPopupOpen] = useState(false);
+  const [fallbackAlertOpen, setFallbackAlertOpen] = useState(false);
+  const [pedometerPopupOpen, setPedometerPopupOpen] = useState(false);
 
-  // 첫 진입 시 만보기 권한 팝업 (임시 주석처리)
-  // useEffect(() => {
-  //   const hasShownPermission = localStorage.getItem('pedometerPermissionShown');
-  //   if (!hasShownPermission) {
-  //     setTimeout(() => {
-  //       setPedometerPopupOpen(true);
-  //     }, 500);
-  //   }
-  // }, []);
+  // 첫 진입 시 만보기 권한 팝업 (테스트용)
+  useEffect(() => {
+    const hasShownPermission = sessionStorage.getItem('pedometerPermissionShown');
+    if (!hasShownPermission) {
+      setTimeout(() => {
+        setPedometerPopupOpen(true);
+      }, 500);
+    }
+  }, []);
 
-  // 만보기 권한 처리 (임시 주석처리)
-  // const handlePedometerPermission = (allowed) => {
-  //   setPedometerPopupOpen(false);
-  //   localStorage.setItem('pedometerPermissionShown', 'true');
-  //   if (allowed) {
-  //     showToast('만보기 권한이 허용되었습니다');
-  //   } else {
-  //     showToast('만보기 기능을 사용하려면 권한이 필요합니다');
-  //   }
-  // };
+  // 만보기 권한 처리 (테스트용)
+  const handlePedometerPermission = (allowed) => {
+    setPedometerPopupOpen(false);
+    sessionStorage.setItem('pedometerPermissionShown', 'true');
+    if (allowed) {
+      showToast('만보기 권한이 허용되었습니다');
+    } else {
+      showToast('만보기 기능을 사용하려면 권한이 필요합니다');
+    }
+  };
 
-  // 보너스 바텀시트 (임시 주석처리)
-  // const openOfferwallSheet = () => {
-  //   setOfferwallSheetOpen(true);
-  // };
+  // 보너스 바텀시트
+  const openOfferwallSheet = () => {
+    setOfferwallSheetOpen(true);
+  };
 
-  // const closeOfferwallSheet = () => {
-  //   setOfferwallSheetOpen(false);
-  // };
+  const closeOfferwallSheet = () => {
+    setOfferwallSheetOpen(false);
+  };
 
-  // 보너스 동의 -> 추적 권한 팝업 (임시 주석처리)
-  // const proceedToPermission = () => {
-  //   setOfferwallSheetOpen(false);
-  //   setTimeout(() => {
-  //     setAttPopupOpen(true);
-  //   }, 350);
-  // };
+  // 보너스 동의 -> 추적 권한 팝업
+  const proceedToPermission = () => {
+    setOfferwallSheetOpen(false);
+    setTimeout(() => {
+      setAttPopupOpen(true);
+    }, 350);
+  };
 
-  // 추적 권한 처리 (임시 주석처리)
-  // const handleAttPermission = (allowed) => {
-  //   setAttPopupOpen(false);
-  //   setTimeout(() => {
-  //     if (allowed) {
-  //       showToast('보너스 진입 성공! 제휴사 페이지로 이동합니다');
-  //     } else {
-  //       setFallbackAlertOpen(true);
-  //     }
-  //   }, 250);
-  // };
+  // 추적 권한 처리 (테스트용)
+  const handleAttPermission = (allowed) => {
+    setAttPopupOpen(false);
+    setTimeout(() => {
+      if (allowed) {
+        showToast('보너스 진입 성공! 제휴사 페이지로 이동합니다');
+      } else {
+        setFallbackAlertOpen(true);
+      }
+    }, 250);
+  };
 
-  // 설정으로 이동 (임시 주석처리)
-  // const goToSettings = () => {
-  //   setFallbackAlertOpen(false);
-  //   showToast('기기 설정에서 추적 권한을 허용해주세요');
-  // };
+  // 설정으로 이동 (테스트용)
+  const goToSettings = () => {
+    setFallbackAlertOpen(false);
+    showToast('기기 설정에서 추적 권한을 허용해주세요');
+  };
 
   const handleTouchStart = (e) => {
     setIsDragging(true);
@@ -198,7 +198,7 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
           {/* 경품 이벤트 */}
           <div className="section" ref={raffleRef}>
             <div className="section-header">
-              <h2 className="section-title">🎰 경품 이벤트</h2>
+              <h2 className="section-title">🎁 놓치면 아쉬운 경품 혜택!</h2>
             </div>
             <div className="raffle-list-vertical">
               <div className="raffle-list-item" onClick={() => navigate('/raffle/1')}>
@@ -232,16 +232,16 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
             </div>
           </div>
 
-          {/* 데일리 미션 */}
+          {/* 오늘의 미션 */}
           <div className="section" ref={missionRef}>
             <div className="section-header">
-              <h2 className="section-title">📅 데일리 미션</h2>
+              <h2 className="section-title">✨ 오늘의 미션 진행하고 포인트 받아요♥</h2>
             </div>
             <div className="attendance-banner" onClick={() => navigate('/attendance')}>
               <div className="attendance-icon">📅</div>
               <div className="attendance-info">
                 <div className="attendance-title">오늘의 출석체크</div>
-                <div className="attendance-desc">매일 출석하고 50핀 받기!</div>
+                <div className="attendance-desc">매일 출석하고 10핀 받기!</div>
               </div>
               <div className="attendance-arrow">›</div>
             </div>
@@ -262,8 +262,8 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
               <div className="mission-icon">💡</div>
               <div className="mission-content">
                 <div className="mission-title">금융 퀴즈 풀기</div>
-                <div className="mission-desc">3문제 풀고 최대 300핀 획득!</div>
-                <div className="mission-reward-badge">+100핀 / 문제당</div>
+                <div className="mission-desc">알면 자산이 되는 꿀팁! 핀도 챙겨가세요</div>
+                <div className="mission-progress-status">오늘 0/3 완료</div>
               </div>
             </div>
           </div>
@@ -315,7 +315,7 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
               <h2 className="section-title">🎁 보너스</h2>
             </div>
             <div className="benefit-list-vertical">
-              <div className="benefit-list-item" onClick={() => showToast('광고 시청 완료! +500핀')}>
+              <div className="benefit-list-item" onClick={openOfferwallSheet}>
                 <div className="benefit-item-icon">📺</div>
                 <div className="benefit-item-content">
                   <div className="benefit-item-title">영상 시청하기</div>
@@ -323,7 +323,7 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
                 </div>
                 <div className="benefit-item-arrow">›</div>
               </div>
-              <div className="benefit-list-item" onClick={() => showToast('앱 설치 완료! +1000핀')}>
+              <div className="benefit-list-item" onClick={openOfferwallSheet}>
                 <div className="benefit-item-icon">📱</div>
                 <div className="benefit-item-content">
                   <div className="benefit-item-title">앱 설치하기</div>
@@ -331,7 +331,7 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
                 </div>
                 <div className="benefit-item-arrow">›</div>
               </div>
-              <div className="benefit-list-item" onClick={() => showToast('설문조사 완료! +300핀')}>
+              <div className="benefit-list-item" onClick={openOfferwallSheet}>
                 <div className="benefit-item-icon">📝</div>
                 <div className="benefit-item-content">
                   <div className="benefit-item-title">설문조사 참여</div>
@@ -344,7 +344,7 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
         </div>
       </div>
 
-      {/* 권한 팝업 (임시 주석처리)
+      {/* 만보기 권한 팝업 */}
       <div className={`system-popup-overlay ${pedometerPopupOpen ? 'active' : ''}`}>
         <div className="system-popup">
           <div className="sys-content">
@@ -360,6 +360,7 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
         </div>
       </div>
 
+      {/* 보너스 참여 안내 바텀시트 */}
       <div
         className={`bottom-sheet-overlay ${offerwallSheetOpen ? 'active' : ''}`}
         onClick={closeOfferwallSheet}
@@ -385,6 +386,7 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
         </div>
       </div>
 
+      {/* ATT 추적 권한 팝업 */}
       <div className={`system-popup-overlay ${attPopupOpen ? 'active' : ''}`}>
         <div className="system-popup">
           <div className="sys-content">
@@ -402,6 +404,7 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
         </div>
       </div>
 
+      {/* 추적 권한 필요 알림 */}
       <div className={`system-popup-overlay ${fallbackAlertOpen ? 'active' : ''}`}>
         <div className="system-popup">
           <div className="sys-content">
@@ -416,7 +419,6 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
           </div>
         </div>
       </div>
-      */}
     </div>
   );
 };

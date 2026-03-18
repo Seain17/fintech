@@ -227,6 +227,79 @@ const insuranceCategories = [
   { id: 'pet', label: '펫보험', icon: '🐕' },
 ];
 
+// ============================================
+// 증권 상품 데이터
+// ============================================
+const stockProducts = [
+  {
+    id: 1,
+    name: '삼성증권 주식계좌',
+    company: '삼성증권',
+    logo: '삼성',
+    category: 'stock',
+    benefit: '국내주식 수수료 0.01%',
+    benefitPoints: 30000,
+    color: '#1428a0',
+  },
+  {
+    id: 2,
+    name: '미래에셋 CMA계좌',
+    company: '미래에셋증권',
+    logo: '미래',
+    category: 'cma',
+    benefit: 'CMA 연 3.5% 이자',
+    benefitPoints: 25000,
+    color: '#ff6b00',
+  },
+  {
+    id: 3,
+    name: 'NH투자증권 나무',
+    company: 'NH투자증권',
+    logo: 'NH',
+    category: 'stock',
+    benefit: '해외주식 수수료 무료',
+    benefitPoints: 20000,
+    color: '#00a651',
+  },
+  {
+    id: 4,
+    name: '키움증권 영웅문',
+    company: '키움증권',
+    logo: '키움',
+    category: 'stock',
+    benefit: '국내주식 수수료 0.015%',
+    benefitPoints: 15000,
+    color: '#e31837',
+  },
+  {
+    id: 5,
+    name: '토스증권 주식계좌',
+    company: '토스증권',
+    logo: '토스',
+    category: 'stock',
+    benefit: '소수점 주식 거래 가능',
+    benefitPoints: 18000,
+    color: '#0064ff',
+  },
+  {
+    id: 6,
+    name: 'KB증권 M-able',
+    company: 'KB증권',
+    logo: 'KB',
+    category: 'isa',
+    benefit: 'ISA 비과세 혜택',
+    benefitPoints: 22000,
+    color: '#ffb300',
+  },
+];
+
+// 증권 카테고리
+const stockCategories = [
+  { id: 'stock', label: '주식', icon: '📈' },
+  { id: 'cma', label: 'CMA', icon: '💵' },
+  { id: 'isa', label: 'ISA', icon: '🏦' },
+];
+
 const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
   const navigate = useNavigate();
 
@@ -264,6 +337,11 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
   // 보험 탭 상태
   // ============================================
   const [insuranceCategory, setInsuranceCategory] = useState('health');
+
+  // ============================================
+  // 증권 탭 상태
+  // ============================================
+  const [stockCategory, setStockCategory] = useState('stock');
 
   // ============================================
   // 바텀시트 상태
@@ -356,6 +434,15 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
   };
 
   // ============================================
+  // 증권 정렬: 핀 높은 순
+  // ============================================
+  const getSortedStocks = () => {
+    return [...stockProducts]
+      .filter(stock => stockCategory === 'all' || stock.category === stockCategory)
+      .sort((a, b) => b.benefitPoints - a.benefitPoints);
+  };
+
+  // ============================================
   // 상품 클릭 핸들러
   // ============================================
   const handleProductClick = (product) => {
@@ -410,6 +497,12 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
           onClick={() => setMainTab('insurance')}
         >
           보험
+        </button>
+        <button
+          className={`main-tab-v3 ${mainTab === 'stock' ? 'active' : ''}`}
+          onClick={() => setMainTab('stock')}
+        >
+          증권
         </button>
         <button
           className={`main-tab-v3 ${mainTab === 'loan' ? 'active' : ''}`}
@@ -875,6 +968,45 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
                     <span className="product-benefit-inline">월 {ins.monthlyPremium.toLocaleString()}원 · {ins.coverage}</span>
                   </div>
                   <div className="product-point-inline">+{ins.benefitPoints.toLocaleString()}핀</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ========== 증권 탭 ========== */}
+        {mainTab === 'stock' && (
+          <div className="stock-section">
+            <div className="stock-category-bar">
+              {stockCategories.map((cat) => (
+                <button
+                  key={cat.id}
+                  className={`stock-category-btn ${stockCategory === cat.id ? 'active' : ''}`}
+                  onClick={() => setStockCategory(cat.id)}
+                >
+                  <span className="cat-icon">{cat.icon}</span>
+                  <span className="cat-label">{cat.label}</span>
+                </button>
+              ))}
+            </div>
+
+            <div className="sort-notice curation">
+              <span className="sort-icon">🎁</span>
+              <span>핀 적립순</span>
+            </div>
+
+            <div className="product-list-v3">
+              {getSortedStocks().map((stock, index) => (
+                <div key={stock.id} className="product-card-horizontal" onClick={() => handleProductClick(stock)}>
+                  <div className="product-rank-badge">{index === 0 ? '👑' : index + 1}</div>
+                  <div className="product-logo-sm" style={{ background: stock.color }}>
+                    <span>{stock.logo}</span>
+                  </div>
+                  <div className="product-info-inline">
+                    <span className="product-name-inline">{stock.name}</span>
+                    <span className="product-benefit-inline">{stock.benefit}</span>
+                  </div>
+                  <div className="product-point-inline">+{stock.benefitPoints.toLocaleString()}핀</div>
                 </div>
               ))}
             </div>
