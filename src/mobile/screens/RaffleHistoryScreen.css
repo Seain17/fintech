@@ -1,0 +1,190 @@
+.raffle-history-screen {
+  background: var(--bg-main);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* 탭 영역 */
+.raffle-tabs {
+  display: flex;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+}
+
+.raffle-tab {
+  flex: 1;
+  padding: 16px;
+  border: none;
+  background: none;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  text-align: center;
+  position: relative;
+  font-family: inherit;
+}
+
+.raffle-tab.active {
+  color: var(--text-primary);
+}
+
+.raffle-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--primary);
+}
+
+/* 콘텐츠 영역 */
+.raffle-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 날짜 필터 칩 */
+.raffle-content .date-filter-chips {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.raffle-content .date-chip {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: var(--bg-card);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.raffle-content .date-chip.active {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: #fff;
+}
+
+/* 래플 리스트 */
+.raffle-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* 래플 카드 */
+.raffle-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  display: flex;
+  gap: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.raffle-image-placeholder {
+  width: 80px;
+  height: 80px;
+  background: var(--bg-main);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.raffle-image-placeholder img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+}
+
+.placeholder-icon {
+  font-size: 32px;
+  opacity: 0.5;
+}
+
+.raffle-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+/* 마감 시간 (진행 중) */
+.raffle-deadline {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--error);
+  margin-bottom: 6px;
+}
+
+.raffle-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.raffle-participants {
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+/* 진행 종료 뱃지 */
+.raffle-status-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  background: var(--bg-main);
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  margin-bottom: 6px;
+  width: fit-content;
+}
+
+/* 응모결과 버튼 */
+.raffle-result-btn {
+  margin-top: 8px;
+  padding: 8px 16px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  width: fit-content;
+}
+
+/* Empty State */
+.raffle-list .empty-state {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.raffle-list .empty-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.raffle-list .empty-text {
+  font-size: 15px;
+  color: var(--text-tertiary);
+}

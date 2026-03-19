@@ -1,108 +1,51 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './WithdrawDetailScreen.css';
 
-const WithdrawDetailScreen = ({ userPoints, showToast, isGuest }) => {
+const WithdrawDetailScreen = ({ userPoints = 51250, showToast }) => {
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    bank: '',
-    accountNumber: '',
-    accountHolder: '',
-    amount: '',
-    ssn1: '',
-    ssn2: ''
+  const [selectedAmount, setSelectedAmount] = useState(null);
+  const [bank, setBank] = useState('');
+  const [accountNumber, setAccountNumber] = useState('');
+  const [accountHolder, setAccountHolder] = useState('');
+  const [ssn1, setSsn1] = useState('');
+  const [ssn2, setSsn2] = useState('');
+  const [showSsnInfo, setShowSsnInfo] = useState(false);
+  const [agreements, setAgreements] = useState({
+    fee: false,
+    tax: false,
+    schedule: false,
+    responsibility: false
   });
-  const [errors, setErrors] = useState({});
-
-  useEffect(() => {
-    if (isGuest) {
-      navigate('/signup', { replace: true });
-    }
-  }, [isGuest, navigate]);
 
   const banks = [
-    '은행 선택',
-    '국민은행',
-    '신한은행',
-    '우리은행',
-    '하나은행',
-    'KB국민은행',
-    '농협은행',
-    '기업은행',
-    '카카오뱅크',
-    '토스뱅크'
+    '하나은행', '신한은행', '카카오뱅크', '국민은행',
+    '농협은행', '기업은행', '우리은행', '토스뱅크'
   ];
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+  const amountOptions = [
+    { label: '5천원', value: 5000, pin: 50000 },
+    { label: '1만원', value: 10000, pin: 100000 },
+    { label: '3만원', value: 30000, pin: 300000 },
+    { label: '5만원', value: 50000, pin: 500000 },
+  ];
 
-    // Clear error when user types
-    if (errors[name]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: ''
-      }));
-    }
+  const toggleAgreement = (key) => {
+    setAgreements(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
-  const validateForm = () => {
-    const newErrors = {};
+  const allAgreed = Object.values(agreements).every(v => v);
+  const isFormValid = selectedAmount && bank && accountNumber.length >= 7 && accountHolder && ssn1.length === 6 && ssn2.length === 1 && allAgreed;
 
-    if (!formData.bank || formData.bank === '은행 선택') {
-      newErrors.bank = '은행을 선택해주세요';
+  const handleSubmit = () => {
+    if (!isFormValid) {
+      showToast('모든 정보를 입력해주세요');
+      return;
     }
-
-    if (!formData.accountNumber) {
-      newErrors.accountNumber = '계좌번호를 입력해주세요';
-    } else if (!/^\d{10,14}$/.test(formData.accountNumber.replace(/-/g, ''))) {
-      newErrors.accountNumber = '올바른 계좌번호를 입력해주세요';
-    }
-
-    if (!formData.accountHolder) {
-      newErrors.accountHolder = '예금주명을 입력해주세요';
-    }
-
-    if (!formData.amount) {
-      newErrors.amount = '출금액을 입력해주세요';
-    } else if (parseInt(formData.amount) < 5000) {
-      newErrors.amount = '최소 출금 금액은 5,000원입니다';
-    } else if (parseInt(formData.amount) > userPoints * 0.1) {
-      newErrors.amount = '보유 핀이 부족합니다';
-    }
-
-    // 5만원 초과 시 주민번호 필수
-    if (parseInt(formData.amount) > 50000) {
-      if (!formData.ssn1 || !formData.ssn2) {
-        newErrors.ssn = '5만원 초과 출금 시 주민번호가 필요합니다 (세금 신고용)';
-      } else if (!/^\d{6}$/.test(formData.ssn1) || !/^\d{7}$/.test(formData.ssn2)) {
-        newErrors.ssn = '올바른 주민번호를 입력해주세요';
-      }
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    showToast('출금 신청이 완료되었습니다');
+    navigate('/mypage');
   };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (validateForm()) {
-      showToast('출금 신청이 완료되었습니다. 매주 수요일에 입금됩니다.');
-      setTimeout(() => {
-        navigate('/mypage');
-      }, 1500);
-    }
-  };
-
-  const requiredAmount = parseInt(formData.amount) || 0;
-  const requiresSSN = requiredAmount > 50000;
-  const tax = requiredAmount > 50000 ? Math.floor(requiredAmount * 0.22) : 0;
-  const finalAmount = requiredAmount - tax;
 
   return (
     <div className="screen withdraw-detail-screen">
@@ -116,152 +59,171 @@ const WithdrawDetailScreen = ({ userPoints, showToast, isGuest }) => {
       </div>
 
       <div className="withdraw-content">
-        <div className="withdraw-info-card">
-          <div className="info-row">
-            <span className="info-label">보유 핀</span>
-            <span className="info-value">{userPoints.toLocaleString()}핀</span>
+        {/* 보유 핀 */}
+        <div className="withdraw-balance">
+          <span className="balance-label">보유 핀</span>
+          <span className="balance-value">{userPoints.toLocaleString()} 핀</span>
+        </div>
+
+        {/* 출금 금액 선택 */}
+        <div className="form-section">
+          <label className="form-label">출금 금액 *</label>
+          <div className="amount-buttons">
+            {amountOptions.map((option) => (
+              <button
+                key={option.value}
+                className={`amount-btn ${selectedAmount === option.value ? 'active' : ''} ${userPoints < option.pin ? 'disabled' : ''}`}
+                onClick={() => userPoints >= option.pin && setSelectedAmount(option.value)}
+                disabled={userPoints < option.pin}
+              >
+                {option.label}
+              </button>
+            ))}
           </div>
-          <div className="info-row">
-            <span className="info-label">출금 가능 금액</span>
-            <span className="info-value primary">₩{(userPoints * 0.1).toLocaleString()}</span>
+          <div className="form-helper">최소 50,000핀 부터 출금 가능합니다.</div>
+        </div>
+
+        {/* 은행 선택 */}
+        <div className="form-section">
+          <label className="form-label">은행 선택 * <span className="required-hint">*필수 입력 정보</span></label>
+          <select
+            className="form-select"
+            value={bank}
+            onChange={(e) => setBank(e.target.value)}
+          >
+            <option value="">은행 선택</option>
+            {banks.map((b) => (
+              <option key={b} value={b}>{b}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* 계좌번호 */}
+        <div className="form-section">
+          <label className="form-label">계좌번호 *</label>
+          <input
+            type="text"
+            className={`form-input ${accountNumber && accountNumber.length < 7 ? 'error' : ''}`}
+            placeholder="'-' 없이 숫자만 입력"
+            value={accountNumber}
+            onChange={(e) => setAccountNumber(e.target.value.replace(/[^0-9]/g, ''))}
+          />
+          {accountNumber && accountNumber.length < 7 && (
+            <div className="form-error">*계좌번호를 잘못 입력하셨습니다.</div>
+          )}
+        </div>
+
+        {/* 예금주 */}
+        <div className="form-section">
+          <label className="form-label">예금주 *</label>
+          <input
+            type="text"
+            className="form-input"
+            placeholder="예금주명 입력"
+            value={accountHolder}
+            onChange={(e) => setAccountHolder(e.target.value)}
+          />
+          <div className="form-helper">계좌의 예금주명과 일치해야 합니다</div>
+        </div>
+
+        {/* 주민등록번호 */}
+        <div className="form-section">
+          <label className="form-label">
+            주민등록번호 7자리*
+            <button className="ssn-info-btn" onClick={() => setShowSsnInfo(true)}>
+              ⓘ 왜 주민등록번호를 입력하나요?
+            </button>
+          </label>
+          <div className="ssn-input-row">
+            <input
+              type="text"
+              className="form-input ssn-input"
+              placeholder="6자리 입력"
+              maxLength={6}
+              value={ssn1}
+              onChange={(e) => setSsn1(e.target.value.replace(/[^0-9]/g, ''))}
+            />
+            <span className="ssn-divider">-</span>
+            <input
+              type="password"
+              className="form-input ssn-input ssn-back"
+              placeholder="*"
+              maxLength={1}
+              value={ssn2}
+              onChange={(e) => setSsn2(e.target.value.replace(/[^0-9]/g, ''))}
+            />
+            <span className="ssn-mask">* * * * * *</span>
+          </div>
+          <div className="form-helper-link" onClick={() => navigate('/exchange')}>
+            주민등록번호 수집을 원치 않으시면 상품권으로 교환가능해요.
           </div>
         </div>
 
-        <form className="withdraw-form" onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label className="form-label">은행 선택 *</label>
-            <select
-              className="form-select"
-              name="bank"
-              value={formData.bank}
-              onChange={handleChange}
-            >
-              {banks.map((bank, index) => (
-                <option key={index} value={bank}>
-                  {bank}
-                </option>
-              ))}
-            </select>
-            {errors.bank && <div className="form-error">{errors.bank}</div>}
+        {/* 유의사항 */}
+        <div className="form-section">
+          <div className="notice-title">반드시 확인해주세요!</div>
+          <div className="agreement-list">
+            <label className="agreement-item">
+              <input
+                type="checkbox"
+                checked={agreements.fee}
+                onChange={() => toggleAgreement('fee')}
+              />
+              <span>출금 시 수수료가 500원 차감돼요.</span>
+            </label>
+            <label className="agreement-item">
+              <input
+                type="checkbox"
+                checked={agreements.tax}
+                onChange={() => toggleAgreement('tax')}
+              />
+              <span>기타소득세법에 따라, 주민등록번호 7자리 수집에 동의합니다.</span>
+            </label>
+            <label className="agreement-item">
+              <input
+                type="checkbox"
+                checked={agreements.schedule}
+                onChange={() => toggleAgreement('schedule')}
+              />
+              <span>매주 수요일(공휴일인 경우 다음 영업일) 15시 이후 계좌로 지급돼요.</span>
+            </label>
+            <label className="agreement-item">
+              <input
+                type="checkbox"
+                checked={agreements.responsibility}
+                onChange={() => toggleAgreement('responsibility')}
+              />
+              <span>입력된 예금주와 계좌번호 정보가 틀려서 잘못 입금되는 경우 책임지지 않습니다.</span>
+            </label>
           </div>
-
-          <div className="form-group">
-            <label className="form-label">계좌번호 *</label>
-            <input
-              type="text"
-              className="form-input"
-              name="accountNumber"
-              placeholder="'-' 없이 숫자만 입력"
-              value={formData.accountNumber}
-              onChange={handleChange}
-            />
-            {errors.accountNumber && <div className="form-error">{errors.accountNumber}</div>}
-          </div>
-
-          <div className="form-group">
-            <label className="form-label">예금주 *</label>
-            <input
-              type="text"
-              className="form-input"
-              name="accountHolder"
-              placeholder="예금주명 입력"
-              value={formData.accountHolder}
-              onChange={handleChange}
-            />
-            {errors.accountHolder && <div className="form-error">{errors.accountHolder}</div>}
-            <div className="form-helper">계좌의 예금주명과 일치해야 합니다</div>
-          </div>
-
-          <div className="form-group">
-            <label className="form-label">출금 금액 *</label>
-            <input
-              type="number"
-              className="form-input"
-              name="amount"
-              placeholder="최소 5,000원"
-              value={formData.amount}
-              onChange={handleChange}
-            />
-            {errors.amount && <div className="form-error">{errors.amount}</div>}
-            <div className="form-helper">10핀 = 1원 (최소 5,000원)</div>
-          </div>
-
-          {requiresSSN && (
-            <div className="ssn-section">
-              <div className="ssn-notice">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="12" r="10" />
-                  <line x1="12" y1="16" x2="12" y2="12" />
-                  <line x1="12" y1="8" x2="12.01" y2="8" />
-                </svg>
-                <span>5만원 초과 출금 시 세금 신고를 위해 주민번호가 필요합니다</span>
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">주민등록번호 *</label>
-                <div className="ssn-input-group">
-                  <input
-                    type="text"
-                    className="form-input ssn-input"
-                    name="ssn1"
-                    placeholder="앞 6자리"
-                    maxLength="6"
-                    value={formData.ssn1}
-                    onChange={handleChange}
-                  />
-                  <span className="ssn-divider">-</span>
-                  <input
-                    type="password"
-                    className="form-input ssn-input"
-                    name="ssn2"
-                    placeholder="뒤 7자리"
-                    maxLength="7"
-                    value={formData.ssn2}
-                    onChange={handleChange}
-                  />
-                </div>
-                {errors.ssn && <div className="form-error">{errors.ssn}</div>}
-                <div className="form-helper">🔒 안전하게 암호화되어 저장됩니다</div>
-              </div>
-            </div>
-          )}
-
-          {requiredAmount > 0 && (
-            <div className="withdraw-summary">
-              <h3 className="summary-title">출금 요약</h3>
-              <div className="summary-row">
-                <span>신청 금액</span>
-                <span>₩{requiredAmount.toLocaleString()}</span>
-              </div>
-              {tax > 0 && (
-                <div className="summary-row tax">
-                  <span>제세공과금 (22%)</span>
-                  <span>- ₩{tax.toLocaleString()}</span>
-                </div>
-              )}
-              <div className="summary-divider"></div>
-              <div className="summary-row total">
-                <span>실 수령액</span>
-                <span>₩{finalAmount.toLocaleString()}</span>
-              </div>
-            </div>
-          )}
-
-          <div className="withdraw-notice">
-            <h4>유의사항</h4>
-            <ul>
-              <li>최소 출금 금액은 5,000원입니다</li>
-              <li>5만원 초과 시 제세공과금 22%가 부과됩니다</li>
-              <li>출금은 매주 수요일에 일괄 입금됩니다</li>
-              <li>신청 후 취소가 불가능하니 신중히 확인해주세요</li>
-            </ul>
-          </div>
-
-          <button type="submit" className="btn-primary">
-            출금 신청하기
-          </button>
-        </form>
+        </div>
       </div>
+
+      {/* 출금 신청 버튼 */}
+      <div className="withdraw-bottom-btn">
+        <button
+          className={`btn-primary full ${!isFormValid ? 'disabled' : ''}`}
+          onClick={handleSubmit}
+          disabled={!isFormValid}
+        >
+          출금 신청
+        </button>
+      </div>
+
+      {/* 주민등록번호 안내 팝업 */}
+      {showSsnInfo && (
+        <div className="withdraw-modal" onClick={() => setShowSsnInfo(false)}>
+          <div className="withdraw-modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setShowSsnInfo(false)}>✕</button>
+            <div className="modal-title">왜 주민등록 번호를 입력하나요?</div>
+            <div className="modal-desc">
+              연간 기타소득이 일정 금액을 초과할 경우 세무신고가 필요합니다.<br /><br />
+              이에 주민등록번호 앞 7자리를 수집합니다.<br /><br />
+              출금 외의 용도로는 절대 사용되지 않으며, 개인정보보안 법령에 따라 안전하게 보관돼요.
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

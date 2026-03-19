@@ -1,0 +1,115 @@
+.notice-screen {
+  background: var(--bg-main);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.notice-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  background: var(--bg-main);
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 기간 필터 칩 */
+.notice-filter-chips {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.notice-filter-chip {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: var(--bg-card);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.notice-filter-chip.active {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: #fff;
+}
+
+/* 공지사항 리스트 */
+.notice-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: none;
+}
+
+.notice-item {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.notice-header {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  background: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.notice-header svg {
+  flex-shrink: 0;
+  color: var(--text-tertiary);
+}
+
+.notice-item.open .notice-header svg {
+  color: var(--primary);
+}
+
+.notice-info {
+  text-align: left;
+  flex: 1;
+}
+
+.notice-badge {
+  display: inline-block;
+  padding: 3px 8px;
+  background: var(--error);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.notice-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.notice-date {
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+.notice-detail {
+  padding: 14px;
+  margin: 0 8px 8px;
+  background: var(--bg-main);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}

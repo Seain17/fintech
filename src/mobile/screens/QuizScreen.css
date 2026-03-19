@@ -410,3 +410,105 @@
   0%, 100% { transform: scale(1.25) rotate(-5deg); }
   50% { transform: scale(1.25) rotate(5deg); }
 }
+
+/* 셔터 애니메이션 */
+.quiz-shutter-section {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.quiz-shutter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #2D3748 0%, #1A202C 100%);
+  z-index: 100;
+  transform: translateY(-100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  border-bottom: 14px solid #171923;
+}
+
+.quiz-shutter.active {
+  animation: quizDropShutter 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  animation-delay: 0.5s;
+}
+
+.quiz-shutter-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 20px,
+    rgba(0, 0, 0, 0.12) 20px,
+    rgba(0, 0, 0, 0.12) 22px
+  );
+  pointer-events: none;
+}
+
+.quiz-shutter-handle {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 8px;
+  background: #4A5568;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.quiz-shutter-content {
+  z-index: 6;
+  text-align: center;
+  padding: 0 30px;
+}
+
+.quiz-shutter-icon {
+  font-size: 56px;
+  margin-bottom: 16px;
+}
+
+.quiz-shutter.active .quiz-shutter-icon {
+  animation: quizShutterBounce 1s ease-in-out infinite;
+  animation-delay: 1.3s;
+}
+
+.quiz-shutter-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: #ffd700;
+  margin: 0 0 8px 0;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+}
+
+.quiz-shutter-desc {
+  font-size: 15px;
+  margin: 0;
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+@keyframes quizDropShutter {
+  0% { transform: translateY(-100%); }
+  70% { transform: translateY(4%); }
+  85% { transform: translateY(-1%); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes quizShutterBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}

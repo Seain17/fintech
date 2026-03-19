@@ -23,6 +23,7 @@ const AttendanceScreen = ({ showToast, updatePoints }) => {
   const [sparkles, setSparkles] = useState([]);
   const [flyingVisible, setFlyingVisible] = useState(false);
   const [pressed, setPressed] = useState(false);
+  const [showShutter, setShowShutter] = useState(false);
 
   const sparkleId = useRef(0);
   const frameRef = useRef(null);
@@ -109,7 +110,9 @@ const AttendanceScreen = ({ showToast, updatePoints }) => {
         setTodayStamped(true);
         setShaking(true);
         setTimeout(() => setShaking(false), 300);
-        setTimeout(() => setShowModal(true), 800);
+        // 셔터 애니메이션 시작
+        setTimeout(() => setShowShutter(true), 500);
+        setTimeout(() => setShowModal(true), 2000);
         return;
       }
 
@@ -141,7 +144,9 @@ const AttendanceScreen = ({ showToast, updatePoints }) => {
         setTodayStamped(true);
         setShaking(true);
         setTimeout(() => setShaking(false), 300);
-        setTimeout(() => setShowModal(true), 800);
+        // 셔터 애니메이션 시작
+        setTimeout(() => setShowShutter(true), 500);
+        setTimeout(() => setShowModal(true), 2000);
       };
     }, 400);
   };
@@ -195,40 +200,59 @@ const AttendanceScreen = ({ showToast, updatePoints }) => {
         <h1 className="page-title">도장 쾅! 출석체크</h1>
       </div>
 
-      {/* 김미소 대리 */}
-      <div className="att-teller">
-        <div className="att-bubble">{displayBubble}</div>
-        <div className="att-avatar">👩🏻‍💼</div>
-        <div className="att-nametag">김미소 대리</div>
-      </div>
-
-      {/* 도장 액션 영역 */}
-      <div className="att-action-area">
-        <div
-          className={`att-stamp-object ${stampExiting ? 'exiting' : ''} ${pressed ? 'pressing' : ''}`}
-          onClick={handleStampClick}
-          onMouseDown={handleStampDown}
-          onMouseUp={handleStampUp}
-          onMouseLeave={handleStampUp}
-          onTouchStart={handleStampDown}
-          onTouchEnd={handleStampUp}
-        >
-          <img src="/stamp.png" alt="출석완료 도장" className="att-stamp-img" />
-          {sparkles.map(s => (
-            <span key={s.id} className="att-sparkle" style={{ left: s.x, top: s.y }}>⚡️</span>
-          ))}
+      {/* 상단 섹션 (셔터 포함) */}
+      <div className="att-shutter-section">
+        {/* 김미소 대리 */}
+        <div className="att-teller">
+          <div className="att-bubble">{displayBubble}</div>
+          <div className="att-avatar">👩🏻‍💼</div>
+          <div className="att-nametag">김미소 대리</div>
         </div>
 
-        <div className={`att-energy-gauge ${stampExiting ? 'exiting' : ''}`}>
-          <div className="att-energy-label">파워</div>
-          <div className="att-energy-bar-container">
-            <div className="att-energy-bar" style={{ height: `${percent}%` }} />
+        {/* 도장 액션 영역 */}
+        <div className="att-action-area">
+          <div
+            className={`att-stamp-object ${stampExiting ? 'exiting' : ''} ${pressed ? 'pressing' : ''}`}
+            onClick={handleStampClick}
+            onMouseDown={handleStampDown}
+            onMouseUp={handleStampUp}
+            onMouseLeave={handleStampUp}
+            onTouchStart={handleStampDown}
+            onTouchEnd={handleStampUp}
+          >
+            <img src="/stamp.png" alt="출석완료 도장" className="att-stamp-img" />
+            {sparkles.map(s => (
+              <span key={s.id} className="att-sparkle" style={{ left: s.x, top: s.y }}>⚡️</span>
+            ))}
           </div>
-          <div className="att-energy-percent">{Math.round(percent)}%</div>
+
+          <div className={`att-energy-gauge ${stampExiting ? 'exiting' : ''}`}>
+            <div className="att-energy-label">파워</div>
+            <div className="att-energy-bar-container">
+              <div className="att-energy-bar" style={{ height: `${percent}%` }} />
+            </div>
+            <div className="att-energy-percent">{Math.round(percent)}%</div>
+          </div>
+
+          {!isComplete && (
+            <div className="att-click-guide">👆 도장을 연타해서 기를 모으세요!</div>
+          )}
         </div>
 
-        {!isComplete && (
-          <div className="att-click-guide">👆 도장을 연타해서 기를 모으세요!</div>
+        {/* 셔터 */}
+        {showShutter && (
+          <div className="att-shutter active">
+            <div className="att-shutter-lines"></div>
+            <div className="att-shutter-content">
+              <div className="att-shutter-icon">👋</div>
+              <h2 className="att-shutter-title">금일 출석체크 완료!</h2>
+              <p className="att-shutter-desc">
+                셔터 내려갑니다~<br />
+                내일도 잊지 말고 찾아와주실 거죠?
+              </p>
+            </div>
+            <div className="att-shutter-handle"></div>
+          </div>
         )}
       </div>
 

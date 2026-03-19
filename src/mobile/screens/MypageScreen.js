@@ -33,7 +33,7 @@ const MypageScreen = ({ userPoints, showToast, unreadCount = 0 }) => {
 
         <div className="mypage-actions">
           <button className="mypage-action-btn withdraw" onClick={() => navigate('/withdraw')}>출금</button>
-          <button className="mypage-action-btn exchange" onClick={() => showToast('기프티콘 교환')}>교환</button>
+          <button className="mypage-action-btn exchange" onClick={() => navigate('/exchange')}>교환</button>
         </div>
       </div>
 
@@ -47,7 +47,7 @@ const MypageScreen = ({ userPoints, showToast, unreadCount = 0 }) => {
           </button>
           <button className="mypage-menu-item" onClick={() => navigate('/point-history')}>
             <div className="mypage-menu-icon">📊</div>
-            <span>핀 적립 내역</span>
+            <span>핀 내역</span>
             <span>›</span>
           </button>
         </div>
@@ -55,13 +55,8 @@ const MypageScreen = ({ userPoints, showToast, unreadCount = 0 }) => {
         <div className="mypage-menu-section">
           <div className="mypage-menu-section-title">혜택</div>
           <button className="mypage-menu-item" onClick={() => navigate('/raffle-history')}>
-            <div className="mypage-menu-icon">🎰</div>
-            <span>경품 내역</span>
-            <span>›</span>
-          </button>
-          <button className="mypage-menu-item" onClick={() => navigate('/shopping-history')}>
-            <div className="mypage-menu-icon">🛒</div>
-            <span>쇼핑적립 내역</span>
+            <div className="mypage-menu-icon">🎁</div>
+            <span>경품 응모 내역</span>
             <span>›</span>
           </button>
         </div>

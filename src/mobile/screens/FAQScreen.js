@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './DetailScreen.css';
+import './FAQScreen.css';
 
 const faqCategories = [
   { id: 'all', label: '전체' },
@@ -8,32 +8,33 @@ const faqCategories = [
   { id: 'withdraw', label: '출금' },
   { id: 'raffle', label: '경품' },
   { id: 'account', label: '계정' },
+  { id: 'etc', label: '기타' },
 ];
 
 const faqData = [
   {
     id: 1,
-    category: 'point',
-    question: '핀은 어떻게 적립되나요?',
-    answer: '앱 내 다양한 활동(게임, 미션, 쇼핑 등)을 통해 핀을 적립할 수 있습니다. 또한 제휴사 핀을 전환하여 적립할 수도 있습니다.'
+    category: 'withdraw',
+    question: '출금은 어떻게 하는 건가요?',
+    answer: '마이페이지에서 출금 버튼을 눌러 출금 신청을 할 수 있습니다. 최소 출금 금액은 5,000원이며 본인 명의 계좌로만 출금 가능합니다.'
   },
   {
     id: 2,
     category: 'point',
-    question: '핀 유효기간이 있나요?',
-    answer: '적립된 핀은 적립일로부터 2년간 유효합니다. 유효기간이 지난 핀은 자동으로 소멸됩니다.'
+    question: '핀은 어떻게 적립되나요?',
+    answer: '앱 내 다양한 활동(출석체크, 퀴즈, 만보기, 쇼핑 등)을 통해 핀을 적립할 수 있습니다.'
   },
   {
     id: 3,
-    category: 'withdraw',
-    question: '출금 신청은 어떻게 하나요?',
-    answer: '마이페이지에서 출금 버튼을 눌러 출금 신청을 할 수 있습니다. 최소 출금 금액은 10,000원이며, 본인 명의 계좌로만 출금 가능합니다.'
+    category: 'point',
+    question: '핀 유효기간이 있나요?',
+    answer: '적립된 핀은 적립일로부터 1년간 유효합니다. 유효기간이 지난 핀은 자동으로 소멸됩니다.'
   },
   {
     id: 4,
     category: 'withdraw',
     question: '출금 처리는 얼마나 걸리나요?',
-    answer: '출금 신청 후 영업일 기준 1~3일 이내에 처리됩니다. 주말 및 공휴일에는 처리가 지연될 수 있습니다.'
+    answer: '매주 수요일(공휴일인 경우 다음 영업일) 15시 이후 계좌로 지급됩니다.'
   },
   {
     id: 5,
@@ -59,6 +60,12 @@ const faqData = [
     question: '회원 탈퇴는 어떻게 하나요?',
     answer: '앱 설정 > 회원 탈퇴에서 탈퇴할 수 있습니다. 탈퇴 시 모든 핀이 소멸되며 복구가 불가능하니 신중히 결정해주세요.'
   },
+  {
+    id: 9,
+    category: 'etc',
+    question: '앱이 자꾸 튕겨요',
+    answer: '앱을 최신 버전으로 업데이트해주세요. 문제가 지속되면 1:1 문의를 통해 알려주시기 바랍니다.'
+  },
 ];
 
 const FAQScreen = () => {
@@ -71,7 +78,7 @@ const FAQScreen = () => {
     : faqData.filter(item => item.category === selectedCategory);
 
   return (
-    <div className="screen detail-screen">
+    <div className="screen faq-screen">
       <div className="page-header">
         <button className="page-back-btn" onClick={() => navigate(-1)}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -81,12 +88,13 @@ const FAQScreen = () => {
         <h1 className="page-title">자주 묻는 질문</h1>
       </div>
 
-      <div className="detail-content">
-        <div className="category-scroll">
+      <div className="faq-content">
+        {/* 카테고리 필터 칩 */}
+        <div className="faq-category-chips">
           {faqCategories.map((cat) => (
             <button
               key={cat.id}
-              className={`category-chip ${selectedCategory === cat.id ? 'active' : ''}`}
+              className={`faq-category-chip ${selectedCategory === cat.id ? 'active' : ''}`}
               onClick={() => setSelectedCategory(cat.id)}
             >
               {cat.label}
@@ -94,6 +102,7 @@ const FAQScreen = () => {
           ))}
         </div>
 
+        {/* FAQ 리스트 */}
         <div className="faq-list">
           {filteredFaq.map((item) => (
             <div key={item.id} className={`faq-item ${openId === item.id ? 'open' : ''}`}>
@@ -108,7 +117,7 @@ const FAQScreen = () => {
               </button>
               {openId === item.id && (
                 <div className="faq-answer">
-                  <span>A. {item.answer}</span>
+                  A. {item.answer}
                 </div>
               )}
             </div>

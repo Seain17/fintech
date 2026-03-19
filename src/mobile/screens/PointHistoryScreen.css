@@ -1,11 +1,75 @@
 .point-history-screen {
   background: var(--bg-main);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* 보유 핀 카드 */
+.pin-balance-card {
+  background: var(--bg-card);
+  margin: 16px;
+  padding: 24px 20px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.pin-balance-label {
+  font-size: 14px;
+  color: var(--text-tertiary);
+  margin-bottom: 8px;
+}
+
+.pin-balance-value {
+  font-family: 'Outfit', sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
 .history-filters {
   background: var(--bg-card);
-  padding: 16px;
-  border-bottom: 1px solid var(--border-light);
+  padding: 0 16px 16px;
+}
+
+/* 언더라인 탭 */
+.underline-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+
+.underline-tab {
+  flex: 1;
+  padding: 14px 0;
+  border: none;
+  background: none;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  text-align: center;
+  position: relative;
+  font-family: inherit;
+  transition: color 0.2s;
+}
+
+.underline-tab.active {
+  color: var(--text-primary);
+}
+
+.underline-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--primary);
 }
 
 .filter-tabs {
@@ -47,6 +111,31 @@
   color: var(--text-secondary);
   background: var(--bg-card);
   cursor: pointer;
+}
+
+/* 날짜 필터 칩 */
+.date-filter-chips {
+  display: flex;
+  gap: 8px;
+}
+
+.date-chip {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: var(--bg-card);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.date-chip.active {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: #fff;
 }
 
 .history-list {

@@ -35,6 +35,7 @@ import NotificationScreen from './mobile/screens/NotificationScreen';
 import NotificationDetailScreen from './mobile/screens/NotificationDetailScreen';
 import WalkingScreen from './mobile/screens/WalkingScreen';
 import NicknameEditScreen from './mobile/screens/NicknameEditScreen';
+import ExchangeScreen from './mobile/screens/ExchangeScreen';
 
 // Mobile Components
 import BottomNav from './mobile/components/BottomNav';
@@ -48,7 +49,7 @@ const hideNavPaths = [
   '/withdraw', '/withdraw-history', '/point-history',
   '/raffle-history', '/shopping-history', '/quiz', '/attendance',
   '/settings', '/inquiry', '/faq', '/notice', '/notifications', '/walking',
-  '/nickname-edit'
+  '/nickname-edit', '/exchange'
 ];
 const hideNavPrefixes = ['/raffle/', '/shopping/', '/notification/'];
 
@@ -95,6 +96,7 @@ function MobileApp({ isLoggedIn, isGuest, handleLogin, handleSignup, handleGuest
             <Route path="/notice" element={<NoticeScreen />} />
             <Route path="/profile-edit" element={<ProfileEditScreen showToast={showToast} />} />
             <Route path="/nickname-edit" element={<NicknameEditScreen showToast={showToast} />} />
+            <Route path="/exchange" element={<ExchangeScreen userPoints={userPoints} showToast={showToast} />} />
             <Route path="/terms" element={<TermsScreen />} />
             <Route path="/privacy" element={<PrivacyScreen />} />
 
@@ -115,7 +117,7 @@ function AppContent() {
   const [isGuest, setIsGuest] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
   const [toast, setToast] = useState({ show: false, message: '' });
-  const [userPoints, setUserPoints] = useState(26350);
+  const [userPoints, setUserPoints] = useState(51250);
   // eslint-disable-next-line no-unused-vars
   const [unreadCount, setUnreadCount] = useState(3);
 

@@ -5,14 +5,12 @@ import './SettingsScreen.css';
 const SettingsScreen = ({ showToast }) => {
   const navigate = useNavigate();
   const [settings, setSettings] = useState({
-    pushMarketing: true,
-    smsMarketing: false,
-    emailMarketing: true,
-    pushTransaction: true,
-    pushEvent: true
+    withdrawAlert: true,
+    eventAlert: true,
+    marketingAlert: false
   });
-  const [showWithdrawModal, setShowWithdrawModal] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [showWithdrawModal, setShowWithdrawModal] = useState(false);
 
   const toggleSetting = (key) => {
     setSettings(prev => ({
@@ -47,14 +45,13 @@ const SettingsScreen = ({ showToast }) => {
           <div className="settings-group">
             <div className="setting-item">
               <div className="setting-info">
-                <div className="setting-label">거래 알림</div>
-                <div className="setting-desc">핀 적립, 출금 알림</div>
+                <div className="setting-label">출금 알림</div>
               </div>
               <label className="toggle-switch">
                 <input
                   type="checkbox"
-                  checked={settings.pushTransaction}
-                  onChange={() => toggleSetting('pushTransaction')}
+                  checked={settings.withdrawAlert}
+                  onChange={() => toggleSetting('withdrawAlert')}
                 />
                 <span className="toggle-slider"></span>
               </label>
@@ -63,13 +60,13 @@ const SettingsScreen = ({ showToast }) => {
             <div className="setting-item">
               <div className="setting-info">
                 <div className="setting-label">이벤트 알림</div>
-                <div className="setting-desc">경품, 혜택 정보</div>
+                <div className="setting-desc">래플, 혜택 정보</div>
               </div>
               <label className="toggle-switch">
                 <input
                   type="checkbox"
-                  checked={settings.pushEvent}
-                  onChange={() => toggleSetting('pushEvent')}
+                  checked={settings.eventAlert}
+                  onChange={() => toggleSetting('eventAlert')}
                 />
                 <span className="toggle-slider"></span>
               </label>
@@ -77,44 +74,14 @@ const SettingsScreen = ({ showToast }) => {
 
             <div className="setting-item">
               <div className="setting-info">
-                <div className="setting-label">마케팅 푸시 알림</div>
+                <div className="setting-label">마케팅 알림</div>
                 <div className="setting-desc">프로모션, 광고</div>
               </div>
               <label className="toggle-switch">
                 <input
                   type="checkbox"
-                  checked={settings.pushMarketing}
-                  onChange={() => toggleSetting('pushMarketing')}
-                />
-                <span className="toggle-slider"></span>
-              </label>
-            </div>
-
-            <div className="setting-item">
-              <div className="setting-info">
-                <div className="setting-label">마케팅 SMS 수신</div>
-                <div className="setting-desc">문자 메시지 수신</div>
-              </div>
-              <label className="toggle-switch">
-                <input
-                  type="checkbox"
-                  checked={settings.smsMarketing}
-                  onChange={() => toggleSetting('smsMarketing')}
-                />
-                <span className="toggle-slider"></span>
-              </label>
-            </div>
-
-            <div className="setting-item">
-              <div className="setting-info">
-                <div className="setting-label">마케팅 이메일 수신</div>
-                <div className="setting-desc">뉴스레터, 프로모션</div>
-              </div>
-              <label className="toggle-switch">
-                <input
-                  type="checkbox"
-                  checked={settings.emailMarketing}
-                  onChange={() => toggleSetting('emailMarketing')}
+                  checked={settings.marketingAlert}
+                  onChange={() => toggleSetting('marketingAlert')}
                 />
                 <span className="toggle-slider"></span>
               </label>
@@ -125,7 +92,7 @@ const SettingsScreen = ({ showToast }) => {
         <div className="settings-section">
           <h3 className="settings-section-title">약관 및 정책</h3>
           <div className="settings-group">
-            <button className="setting-item" onClick={() => navigate('/terms')}>
+            <button className="setting-item clickable" onClick={() => navigate('/terms')}>
               <div className="setting-info">
                 <div className="setting-label">이용약관</div>
               </div>
@@ -133,7 +100,7 @@ const SettingsScreen = ({ showToast }) => {
                 <path d="M9 18l6-6-6-6"/>
               </svg>
             </button>
-            <button className="setting-item" onClick={() => navigate('/privacy')}>
+            <button className="setting-item clickable" onClick={() => navigate('/privacy')}>
               <div className="setting-info">
                 <div className="setting-label">개인정보처리방침</div>
               </div>
@@ -147,7 +114,7 @@ const SettingsScreen = ({ showToast }) => {
         <div className="settings-section">
           <h3 className="settings-section-title">계정 관리</h3>
           <div className="settings-group">
-            <button className="setting-item" onClick={() => setShowLogoutModal(true)}>
+            <button className="setting-item clickable" onClick={() => setShowLogoutModal(true)}>
               <div className="setting-info">
                 <div className="setting-label">로그아웃</div>
               </div>
@@ -155,7 +122,7 @@ const SettingsScreen = ({ showToast }) => {
                 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>
               </svg>
             </button>
-            <button className="setting-item danger" onClick={() => setShowWithdrawModal(true)}>
+            <button className="setting-item clickable danger" onClick={() => setShowWithdrawModal(true)}>
               <div className="setting-info">
                 <div className="setting-label">회원 탈퇴</div>
               </div>
@@ -168,39 +135,46 @@ const SettingsScreen = ({ showToast }) => {
       </div>
 
       {showLogoutModal && (
-        <div className="modal active" onClick={() => setShowLogoutModal(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-icon">👋</div>
-            <div className="modal-title">로그아웃</div>
-            <div className="modal-desc">
+        <div className="settings-modal" onClick={() => setShowLogoutModal(false)}>
+          <div className="settings-modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="settings-modal-icon">👋</div>
+            <div className="settings-modal-title">로그아웃</div>
+            <div className="settings-modal-desc">
               정말 로그아웃 하시겠습니까?
             </div>
-            <button className="btn-secondary" onClick={() => setShowLogoutModal(false)}>
-              취소
-            </button>
-            <button className="btn-primary" style={{ marginTop: '8px' }} onClick={handleLogout}>
-              로그아웃
-            </button>
+            <div className="settings-modal-buttons">
+              <button className="modal-btn secondary" onClick={() => setShowLogoutModal(false)}>
+                취소
+              </button>
+              <button className="modal-btn primary" onClick={handleLogout}>
+                로그아웃
+              </button>
+            </div>
           </div>
         </div>
       )}
 
       {showWithdrawModal && (
-        <div className="modal active" onClick={() => setShowWithdrawModal(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-icon">😢</div>
-            <div className="modal-title">회원 탈퇴</div>
-            <div className="modal-desc">
+        <div className="settings-modal" onClick={() => setShowWithdrawModal(false)}>
+          <div className="settings-modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="settings-modal-icon">😢</div>
+            <div className="settings-modal-title">회원 탈퇴</div>
+            <div className="settings-modal-desc">
               탈퇴 시 모든 핀이 소멸되며<br />
               복구가 불가능합니다.<br /><br />
               정말 탈퇴하시겠습니까?
             </div>
-            <button className="btn-secondary" onClick={() => setShowWithdrawModal(false)}>
-              취소
-            </button>
-            <button className="modal-btn danger" style={{ background: 'var(--error)', marginTop: '8px' }} onClick={() => showToast('탈퇴가 취소되었습니다')}>
-              탈퇴하기
-            </button>
+            <div className="settings-modal-buttons">
+              <button className="modal-btn secondary" onClick={() => setShowWithdrawModal(false)}>
+                취소
+              </button>
+              <button className="modal-btn danger" onClick={() => {
+                showToast('회원 탈퇴가 완료되었습니다');
+                setShowWithdrawModal(false);
+              }}>
+                탈퇴하기
+              </button>
+            </div>
           </div>
         </div>
       )}

@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import './DetailScreen.css';
 
 const withdrawHistory = [
-  { id: 1, date: '2026-01-20', amount: 50000, status: 'completed', bank: '국민은행', account: '***-**-789' },
-  { id: 2, date: '2026-01-15', amount: 80000, status: 'completed', bank: '신한은행', account: '***-**-321' },
-  { id: 3, date: '2026-01-10', amount: 100000, status: 'completed', bank: '국민은행', account: '***-**-789' },
-  { id: 4, date: '2026-01-05', amount: 30000, status: 'completed', bank: '카카오뱅크', account: '****-**-456' },
+  { id: 1, date: '2026-01-30', amount: 50000, status: 'completed', bank: '국민은행', account: '123-*****-******' },
+  { id: 2, date: '2026-01-15', amount: 50000, status: 'cancelled', bank: '국민은행', account: '123-*****-******', reason: '예금주명 미일치' },
+  { id: 3, date: '2026-01-10', amount: 100000, status: 'completed', bank: '신한은행', account: '456-*****-******' },
+  { id: 4, date: '2026-01-05', amount: 30000, status: 'completed', bank: '카카오뱅크', account: '789-*****-******' },
 ];
 
 const WithdrawHistoryScreen = () => {
@@ -15,11 +15,14 @@ const WithdrawHistoryScreen = () => {
   const getStatusBadge = (status) => {
     switch (status) {
       case 'completed': return <span className="status-badge completed">완료</span>;
+      case 'cancelled': return <span className="status-badge rejected">취소</span>;
       case 'pending': return <span className="status-badge pending">대기중</span>;
-      case 'rejected': return <span className="status-badge rejected">거부</span>;
       default: return null;
     }
   };
+
+  const completedHistory = withdrawHistory.filter(item => item.status === 'completed');
+  const totalAmount = completedHistory.reduce((acc, cur) => acc + cur.amount, 0);
 
   return (
     <div className="screen detail-screen">
@@ -36,26 +39,29 @@ const WithdrawHistoryScreen = () => {
         <div className="history-summary">
           <div className="summary-item">
             <span className="summary-label">총 출금 횟수</span>
-            <span className="summary-value">{withdrawHistory.length}회</span>
+            <span className="summary-value">{completedHistory.length}회</span>
           </div>
           <div className="summary-item">
             <span className="summary-label">총 출금 금액</span>
             <span className="summary-value highlight">
-              {withdrawHistory.reduce((acc, cur) => acc + cur.amount, 0).toLocaleString()}원
+              {totalAmount.toLocaleString()}원
             </span>
           </div>
         </div>
 
         <div className="history-list">
           {withdrawHistory.map((item) => (
-            <div key={item.id} className="history-item">
+            <div key={item.id} className={`history-item ${item.status === 'cancelled' ? 'cancelled' : ''}`}>
               <div className="history-main">
                 <div className="history-info">
                   <div className="history-title">{item.bank} {item.account}</div>
                   <div className="history-date">{item.date}</div>
+                  {item.reason && (
+                    <div className="history-reason">사유 : {item.reason}</div>
+                  )}
                 </div>
                 <div className="history-right">
-                  <div className="history-amount">-{item.amount.toLocaleString()}원</div>
+                  <div className="history-amount">{item.amount.toLocaleString()}원</div>
                   {getStatusBadge(item.status)}
                 </div>
               </div>
@@ -66,7 +72,7 @@ const WithdrawHistoryScreen = () => {
         {withdrawHistory.length === 0 && (
           <div className="empty-state">
             <div className="empty-icon">💸</div>
-            <div className="empty-text">출금 내역이 없습니다</div>
+            <div className="empty-text">출금 기록이 없습니다</div>
           </div>
         )}
       </div>
