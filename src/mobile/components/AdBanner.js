@@ -40,4 +40,5 @@ export const GmarketBanner = () => (
   </div>
 );
 
-export default { iPadProBanner, SamsungFireBanner, GmarketBanner };
+const AdBanners = { iPadProBanner, SamsungFireBanner, GmarketBanner };
+export default AdBanners;
