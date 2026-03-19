@@ -33,7 +33,6 @@ const NicknameEditScreen = ({ showToast }) => {
   // 유효성 검사
   const isValid = nickname.length >= 2;
   const showError = isTouched && nickname.length > 0 && nickname.length < 2;
-  const isEmpty = nickname.length === 0;
 
   return (
     <div className="screen detail-screen">
