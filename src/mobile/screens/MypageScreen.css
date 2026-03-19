@@ -11,11 +11,31 @@
   background: var(--bg-gradient);
 }
 
-.mypage-logo {
-  font-size: 18px;
-  font-weight: 500;
+/* A-Fin 로고 */
+.mypage-appbar .app-logo {
+  display: flex;
+  align-items: center;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.mypage-appbar .app-logo .logo-a {
+  background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+}
+
+.mypage-appbar .app-logo .logo-dot {
   color: #fff;
-  letter-spacing: 1px;
+  margin: 0 1px;
+}
+
+.mypage-appbar .app-logo .logo-fin {
+  color: #fff;
+  font-weight: 700;
 }
 
 .mypage-noti-btn {
@@ -59,22 +79,9 @@
 }
 
 .mypage-header {
-  background: var(--bg-gradient);
-  padding: 0 20px 30px;
+  background: linear-gradient(180deg, #f0e6ff 0%, #e8f4ff 100%);
+  padding: 16px 20px 24px;
   position: relative;
-  overflow: hidden;
-}
-
-.mypage-header::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  right: -30%;
-  width: 300px;
-  height: 300px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
-  animation: float 6s ease-in-out infinite;
 }
 
 .profile-section {
@@ -86,78 +93,45 @@
   z-index: 1;
 }
 
-.profile-avatar {
-  width: 72px;
-  height: 72px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
+.profile-name-row {
   display: flex;
   align-items: center;
-  justify-content: center;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  animation: pulse 3s ease-in-out infinite;
-}
-
-.profile-avatar svg {
-  width: 36px;
-  height: 36px;
-  color: #fff;
+  gap: 10px;
 }
 
 .profile-name {
   font-size: 22px;
   font-weight: 700;
-  color: #fff;
-  margin-bottom: 4px;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  color: #1a1a1a;
 }
 
-.profile-email {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.mypage-points {
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: var(--radius-xl);
-  padding: 24px;
-  margin: 0 -4px;
-  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
-  animation: fadeInUp 0.5s ease-out;
-  position: relative;
-}
-
-.mypage-points::before {
-  content: '💎';
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  font-size: 30px;
-  opacity: 0.15;
-  animation: float 4s ease-in-out infinite;
-}
-
-.mypage-point-row {
+.profile-edit-btn {
+  width: 28px;
+  height: 28px;
+  background: rgba(0, 0, 0, 0.08);
+  border: none;
+  border-radius: 50%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  justify-content: center;
+  cursor: pointer;
 }
 
-.mypage-point-value {
-  font-family: 'Outfit';
-  font-size: 28px;
-  font-weight: 800;
-  background: linear-gradient(135deg, #191F28 0%, #4E5968 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.profile-edit-btn svg {
+  width: 14px;
+  height: 14px;
+  color: #666;
+}
+
+.profile-edit-btn:active {
+  background: rgba(0, 0, 0, 0.12);
 }
 
 .mypage-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
+  margin-top: 16px;
 }
 
 .mypage-action-btn {
@@ -169,25 +143,12 @@
   cursor: pointer;
   font-family: inherit;
   transition: all 0.3s ease;
-}
-
-.mypage-action-btn.withdraw {
-  background: var(--bg-gradient);
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: #fff;
-  box-shadow: 0 6px 20px rgba(26, 46, 113, 0.35);
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.25);
 }
 
-.mypage-action-btn.withdraw:active {
-  transform: scale(0.96);
-}
-
-.mypage-action-btn.exchange {
-  background: linear-gradient(135deg, rgba(26, 46, 113, 0.1) 0%, rgba(45, 74, 140, 0.1) 100%);
-  color: #1a2e71;
-  border: 2px solid rgba(26, 46, 113, 0.2);
-}
-
-.mypage-action-btn.exchange:active {
+.mypage-action-btn:active {
   transform: scale(0.96);
 }
 

@@ -9,7 +9,7 @@ const MypageScreen = ({ userPoints, showToast, unreadCount = 0 }) => {
     <div className="screen mypage-screen">
       {/* 앱바 */}
       <div className="mypage-appbar">
-        <div className="mypage-logo">LOGO</div>
+        <div className="app-logo"><span className="logo-a">A</span><span className="logo-dot">-</span><span className="logo-fin">Fin</span></div>
         <button className="mypage-noti-btn" onClick={() => navigate('/notifications')}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" />
@@ -20,26 +20,20 @@ const MypageScreen = ({ userPoints, showToast, unreadCount = 0 }) => {
 
       <div className="mypage-header">
         <div className="profile-section">
-          <div className="profile-avatar">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-            </svg>
+          <div className="profile-name-row">
+            <span className="profile-name">홍길동</span>
+            <button className="profile-edit-btn" onClick={() => navigate('/nickname-edit')}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+              </svg>
+            </button>
           </div>
-          <div>
-            <div className="profile-name">홍길동</div>
-            <div className="profile-email">hong@email.com</div>
-          </div>
-                  </div>
+        </div>
 
-        <div className="mypage-points">
-          <div className="mypage-point-row">
-            <span>보유 핀</span>
-            <span className="mypage-point-value">{userPoints.toLocaleString()}핀</span>
-          </div>
-          <div className="mypage-actions">
-            <button className="mypage-action-btn withdraw" onClick={() => navigate('/withdraw')}>출금</button>
-            <button className="mypage-action-btn exchange" onClick={() => showToast('기프티콘 교환')}>교환</button>
-          </div>
+        <div className="mypage-actions">
+          <button className="mypage-action-btn withdraw" onClick={() => navigate('/withdraw')}>출금</button>
+          <button className="mypage-action-btn exchange" onClick={() => showToast('기프티콘 교환')}>교환</button>
         </div>
       </div>
 

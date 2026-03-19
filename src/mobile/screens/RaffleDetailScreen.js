@@ -1,146 +1,345 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './RaffleDetailScreen.css';
+import { iPadProBanner } from '../components/AdBanner';
+import '../components/AdBanner.css';
 
-const RaffleDetailScreen = ({ userTickets = 5, updateTickets, showToast }) => {
+const RaffleDetailScreen = ({ userTickets = 1, userPoints = 3520, updateTickets, showToast }) => {
   const navigate = useNavigate();
-  // eslint-disable-next-line no-unused-vars
   const { id } = useParams();
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [ticketCount, setTicketCount] = useState(1);
+  const [showEntryModal, setShowEntryModal] = useState(false);
+  const [showCompleteModal, setShowCompleteModal] = useState(false);
   const [currentTickets, setCurrentTickets] = useState(userTickets);
+  const [selectedEntry, setSelectedEntry] = useState(null);
+  const [myEntryCount, setMyEntryCount] = useState(7);
+  const [notificationEnabled, setNotificationEnabled] = useState(false);
+
+  // 카운트다운 타이머
+  const [timeLeft, setTimeLeft] = useState({
+    days: 6,
+    hours: 59,
+    minutes: 1,
+    seconds: 0
+  });
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(prev => {
+        let { days, hours, minutes, seconds } = prev;
+
+        if (seconds > 0) {
+          seconds--;
+        } else if (minutes > 0) {
+          minutes--;
+          seconds = 59;
+        } else if (hours > 0) {
+          hours--;
+          minutes = 59;
+          seconds = 59;
+        } else if (days > 0) {
+          days--;
+          hours = 23;
+          minutes = 59;
+          seconds = 59;
+        }
+
+        return { days, hours, minutes, seconds };
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
 
   const raffleData = {
-    id: 1,
-    name: '애플 에어팟 프로 2',
-    image: '🎧',
-    ticketCost: 1,
-    participants: 234,
-    dueDate: '2026-01-30',
-    announceDate: '2026-01-31',
-    description: '애플 에어팟 프로 2세대 (새 제품)\n노이즈 캔슬링 기능이 탑재된 무선 이어폰입니다.',
-    color: 'linear-gradient(135deg, #1a2e71 0%, #2d4a8c 100%)'
+    id: id || 1,
+    name: '갤럭시 S25 울트라',
+    winnerCount: 10,
+    image: '/images/raffle/galaxy.png',
+    participants: 297953,
+    entryPeriod: '07월 01일 ~ 07월 14일',
+    announceDate: '07월 15일 10시',
+    winners: 1,
   };
 
-  const handleEnter = () => {
-    if (currentTickets < ticketCount) {
-      showToast('응모권이 부족합니다');
+  const entryOptions = [
+    { type: 'ticket', amount: 1, label: '1장' },
+    { type: 'ticket', amount: 5, label: '5장' },
+    { type: 'ticket', amount: 10, label: '10장' },
+    { type: 'pin', amount: 50, label: '50 핀', ticketEquiv: 1 },
+    { type: 'pin', amount: 250, label: '250 핀', ticketEquiv: 5 },
+    { type: 'pin', amount: 500, label: '500 핀', ticketEquiv: 10 },
+  ];
+
+  const handleOpenEntry = () => {
+    setShowEntryModal(true);
+    setSelectedEntry(null);
+  };
+
+  const handleSelectEntry = (option) => {
+    if (option.type === 'ticket' && currentTickets < option.amount) {
       return;
     }
-    setShowConfirmModal(true);
+    if (option.type === 'pin' && userPoints < option.amount) {
+      return;
+    }
+    setSelectedEntry(option);
   };
 
-  const confirmEnter = () => {
-    setCurrentTickets(prev => prev - ticketCount);
-    if (updateTickets) {
-      updateTickets(-ticketCount);
+  const handleConfirmEntry = () => {
+    if (!selectedEntry) return;
+
+    if (selectedEntry.type === 'ticket') {
+      setCurrentTickets(prev => prev - selectedEntry.amount);
+      if (updateTickets) {
+        updateTickets(-selectedEntry.amount);
+      }
+      setMyEntryCount(prev => prev + selectedEntry.amount);
+    } else {
+      setMyEntryCount(prev => prev + selectedEntry.ticketEquiv);
     }
-    setShowConfirmModal(false);
-    showToast('🎉 응모 완료! 행운을 빕니다!');
-    setTimeout(() => navigate('/benefits'), 1500);
+
+    setShowEntryModal(false);
+    setShowCompleteModal(true);
   };
 
-  const increaseTicket = () => {
-    if (ticketCount < currentTickets) {
-      setTicketCount(prev => prev + 1);
-    }
+  const handleCloseComplete = () => {
+    setShowCompleteModal(false);
   };
 
-  const decreaseTicket = () => {
-    if (ticketCount > 1) {
-      setTicketCount(prev => prev - 1);
-    }
+  const handleWatchAd = (type) => {
+    showToast('광고 재생 중...');
+    setTimeout(() => {
+      setCurrentTickets(prev => prev + 1);
+      showToast('응모권 1장을 획득했습니다!');
+    }, 2000);
   };
+
+  const toggleNotification = () => {
+    setNotificationEnabled(!notificationEnabled);
+    showToast(notificationEnabled ? '알림이 해제되었습니다' : '알림이 설정되었습니다');
+  };
+
+  const formatNumber = (num) => num.toString().padStart(2, '0');
 
   return (
     <div className="screen raffle-detail-screen">
-      <div className="raffle-detail-header" style={{ background: raffleData.color }}>
-        <button className="page-back-btn white" onClick={() => navigate(-1)}>
+      {/* 헤더 */}
+      <div className="raffle-detail-header">
+        <button className="page-back-btn" onClick={() => navigate(-1)}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M19 12H5M12 19l-7-7 7-7" />
           </svg>
         </button>
-        <div className="raffle-image-large">{raffleData.image}</div>
+        <h1 className="header-title">경품 응모</h1>
       </div>
 
       <div className="raffle-detail-content">
-        <div className="raffle-detail-info">
-          <div className="raffle-badge-row">
-            <div className="raffle-tag hot">🔥 인기</div>
-            <div className="raffle-tag dday">D-2</div>
+        {/* 상품 이미지 */}
+        <div className="raffle-product-image">
+          <img src={raffleData.image} alt={raffleData.name} onError={(e) => { e.target.style.display = 'none'; }} />
+        </div>
+
+        {/* 상품명 */}
+        <h2 className="raffle-product-name">
+          {raffleData.name} [{raffleData.winnerCount}명]
+        </h2>
+
+        {/* 참여 정보 */}
+        <div className="raffle-participation-info">
+          <span className="participants-count">{raffleData.participants.toLocaleString()}명 참여</span>
+          <span className="separator">|</span>
+          <span className="my-entry-count">내 응모 {myEntryCount}회</span>
+        </div>
+
+        {/* 카운트다운 */}
+        <div className="raffle-countdown">
+          <div className="countdown-item">
+            <span className="countdown-value">{formatNumber(timeLeft.days)}</span>
+            <span className="countdown-label">DAY</span>
           </div>
-          <h1 className="raffle-name">{raffleData.name}</h1>
-          <div className="raffle-meta">
-            <span>🎟️ 응모권 1장당 1회 응모</span>
-            <span>👥 {raffleData.participants}명 참여중</span>
+          <span className="countdown-separator">:</span>
+          <div className="countdown-item">
+            <span className="countdown-value">{formatNumber(timeLeft.hours)}</span>
+            <span className="countdown-label">HH</span>
           </div>
-          <div className="my-tickets">
-            <span>보유 응모권</span>
+          <span className="countdown-separator">:</span>
+          <div className="countdown-item">
+            <span className="countdown-value">{formatNumber(timeLeft.minutes)}</span>
+            <span className="countdown-label">MM</span>
+          </div>
+          <span className="countdown-separator">:</span>
+          <div className="countdown-item">
+            <span className="countdown-value">{formatNumber(timeLeft.seconds)}</span>
+            <span className="countdown-label">SS</span>
+          </div>
+        </div>
+
+        {/* 일정 정보 */}
+        <div className="raffle-schedule">
+          <div className="schedule-row">
+            <span className="schedule-label">응모 기간</span>
+            <span className="schedule-value">{raffleData.entryPeriod}</span>
+          </div>
+          <div className="schedule-row">
+            <span className="schedule-label">발표일시</span>
+            <span className="schedule-value highlight">{raffleData.announceDate}</span>
+          </div>
+          <div className="schedule-row">
+            <span className="schedule-label">당첨인원</span>
+            <span className="schedule-value">{raffleData.winners}명</span>
+          </div>
+        </div>
+
+        {/* 보유 응모권 */}
+        <div className="raffle-my-tickets">
+          <span className="my-tickets-label">현재 보유 응모권</span>
+          <div className="my-tickets-value">
+            <span className="ticket-icon">🎟️</span>
             <span className="ticket-count">{currentTickets}장</span>
           </div>
         </div>
 
-        <div className="raffle-section">
-          <h3 className="section-title">📅 일정</h3>
-          <div className="info-card">
-            <div className="info-row">
-              <span className="info-label">응모 마감</span>
-              <span className="info-value">{raffleData.dueDate}</span>
+        {/* 응모권 미션 */}
+        <div className="raffle-mission-section">
+          <h3 className="mission-title">미션 참여하고 당첨확률 높이기</h3>
+
+          <div className="mission-item" onClick={() => handleWatchAd('normal')}>
+            <div className="mission-content">
+              <span className="mission-name">영상 광고 보고 오면</span>
+              <span className="mission-sub">응모권 3개</span>
             </div>
-            <div className="info-row">
-              <span className="info-label">당첨자 발표</span>
-              <span className="info-value">{raffleData.announceDate}</span>
+            <button className="mission-btn">3개 받기</button>
+          </div>
+
+          <div className="mission-item" onClick={() => handleWatchAd('reward')}>
+            <div className="mission-content">
+              <span className="mission-name">일반 광고 보고 오면</span>
+              <span className="mission-sub">응모권 3개</span>
             </div>
+            <div className="mission-timer">60:00</div>
+          </div>
+
+          <div className="mission-item" onClick={() => showToast('친구 초대 링크가 복사되었습니다')}>
+            <div className="mission-content">
+              <span className="mission-name">친구 초대하면</span>
+              <span className="mission-sub">응모권 3개</span>
+            </div>
+            <button className="mission-btn share">공유하기</button>
           </div>
         </div>
 
-        <div className="raffle-section">
-          <h3 className="section-title">📦 상품 설명</h3>
-          <div className="info-card">
-            <p className="raffle-description">{raffleData.description}</p>
-          </div>
-        </div>
+        {/* 광고 배너 */}
+        {iPadProBanner()}
 
-        <div className="raffle-section">
-          <h3 className="section-title">⚠️ 유의사항</h3>
-          <div className="info-card">
-            <ul className="notice-list">
-              <li>응모 후 취소가 불가능합니다</li>
-              <li>중복 응모 가능하며, 응모권 수에 비례하여 당첨 확률이 높아집니다</li>
-              <li>당첨자는 앱 알림 및 이메일로 안내됩니다</li>
-              <li>경품 수령 기한 내 미수령 시 당첨이 취소됩니다</li>
-            </ul>
+        {/* 알림 설정 */}
+        <div className="raffle-notification" onClick={toggleNotification}>
+          <div className="notification-content">
+            <span className="notification-title">경품 최대한 많이 응모하는법!</span>
+            <span className="notification-desc">1시간마다 응모권 잊지 않게 챙겨드릴게요!</span>
           </div>
-        </div>
-
-        <div className="raffle-enter-section">
-          <div className="ticket-selector">
-            <span className="ticket-label">사용할 응모권</span>
-            <div className="ticket-counter">
-              <button className="counter-btn" onClick={decreaseTicket} disabled={ticketCount <= 1}>-</button>
-              <span className="counter-value">{ticketCount}</span>
-              <button className="counter-btn" onClick={increaseTicket} disabled={ticketCount >= currentTickets}>+</button>
-            </div>
-          </div>
-          <button className="btn-primary" onClick={handleEnter} disabled={currentTickets < 1}>
-            {ticketCount}장으로 응모하기
+          <button className={`notification-btn ${notificationEnabled ? 'active' : ''}`}>
+            알림 받기
           </button>
+        </div>
+
+        {/* 이전 응모 현황 */}
+        <button className="raffle-history-link" onClick={() => navigate('/raffle-history')}>
+          <span>이전 응모 현황보기</span>
+          <span className="arrow">›</span>
+        </button>
+
+        {/* 유의사항 */}
+        <div className="raffle-notice">
+          <h3 className="notice-title">유의사항</h3>
+          <ul className="notice-list">
+            <li>응모권 미션은 1시간에 한 번 가능합니다.</li>
+            <li>매주 월요일 새로운 경품 이벤트가 진행됩니다.</li>
+            <li>당첨자에 한하여 연락 드리며, 미 당첨자에게는 별도의 연락을 드리지 않습니다.</li>
+            <li>회원정보가 일치하지 않거나 부당한 방법으로 응모한 고객의 경우 당첨이 자동 취소되며, 추후 이벤트 응모 시 불이익을 받을 수 있습니다.</li>
+          </ul>
         </div>
       </div>
 
-      {showConfirmModal && (
-        <div className="modal active" onClick={() => setShowConfirmModal(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-icon">🎟️</div>
-            <div className="modal-title">경품 응모</div>
-            <div className="modal-desc">
-              {raffleData.name}에<br />
-              응모권 {ticketCount}장을 사용하여 응모하시겠습니까?
+      {/* 하단 응모하기 버튼 */}
+      <div className="raffle-bottom-btn">
+        <button className="btn-entry" onClick={handleOpenEntry}>
+          응모하기
+        </button>
+        <div className="raffle-remaining-time">
+          종료까지 {timeLeft.days}일 {formatNumber(timeLeft.hours)}:{formatNumber(timeLeft.minutes)}:{formatNumber(timeLeft.seconds)} 남음
+        </div>
+      </div>
+
+      {/* 응모 팝업 */}
+      {showEntryModal && (
+        <div className="modal active" onClick={() => setShowEntryModal(false)}>
+          <div className="modal-content entry-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setShowEntryModal(false)}>✕</button>
+            <h2 className="modal-title">응모하기</h2>
+
+            <div className="entry-info">
+              <div className="entry-info-row">
+                <span>보유 응모권 :</span>
+                <span>{currentTickets}장</span>
+              </div>
+              <div className="entry-info-row">
+                <span>보유 핀 :</span>
+                <span>{userPoints.toLocaleString()} 핀</span>
+              </div>
             </div>
-            <button className="modal-btn" onClick={confirmEnter}>응모하기</button>
-            <button className="btn-secondary" onClick={() => setShowConfirmModal(false)} style={{ marginTop: '8px' }}>
-              취소
+
+            <div className="entry-options">
+              {entryOptions.slice(0, 3).map((option, index) => (
+                <button
+                  key={index}
+                  className={`entry-option ${selectedEntry === option ? 'selected' : ''} ${currentTickets < option.amount ? 'disabled' : ''}`}
+                  onClick={() => handleSelectEntry(option)}
+                  disabled={currentTickets < option.amount}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+            <div className="entry-options">
+              {entryOptions.slice(3).map((option, index) => (
+                <button
+                  key={index}
+                  className={`entry-option pin ${selectedEntry === option ? 'selected' : ''} ${userPoints < option.amount ? 'disabled' : ''}`}
+                  onClick={() => handleSelectEntry(option)}
+                  disabled={userPoints < option.amount}
+                >
+                  <span>{option.label}</span>
+                  <span className="entry-equiv">({option.ticketEquiv}장 응모)</span>
+                </button>
+              ))}
+            </div>
+
+            {currentTickets === 0 && (
+              <div className="entry-warning">
+                응모권이 부족해요.<br />
+                광고를 보고 추가로 획득해 보세요!
+              </div>
+            )}
+
+            <button
+              className={`btn-entry-confirm ${!selectedEntry ? 'disabled' : ''}`}
+              onClick={handleConfirmEntry}
+              disabled={!selectedEntry}
+            >
+              {selectedEntry ? `${selectedEntry.type === 'ticket' ? selectedEntry.amount + '장' : selectedEntry.ticketEquiv + '장'} 응모하기` : '응모하기'}
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* 응모 완료 팝업 */}
+      {showCompleteModal && (
+        <div className="modal active" onClick={handleCloseComplete}>
+          <div className="modal-content complete-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={handleCloseComplete}>✕</button>
+            <h2 className="modal-title">응모하기</h2>
+            <p className="complete-message">응모가 완료되었습니다.</p>
+            <button className="btn-confirm" onClick={handleCloseComplete}>확인</button>
           </div>
         </div>
       )}

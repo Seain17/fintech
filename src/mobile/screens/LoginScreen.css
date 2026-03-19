@@ -18,13 +18,13 @@
 .login-logo-wrap {
   width: 72px;
   height: 72px;
-  background: var(--bg-gradient);
+  background: linear-gradient(135deg, #904cfc 0%, #6b4ef9 100%);
   border-radius: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 20px;
-  box-shadow: var(--shadow-primary);
+  box-shadow: 0 8px 24px rgba(107, 78, 249, 0.35);
 }
 
 .login-logo {

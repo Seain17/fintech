@@ -34,6 +34,7 @@ import AttendanceScreen from './mobile/screens/AttendanceScreen';
 import NotificationScreen from './mobile/screens/NotificationScreen';
 import NotificationDetailScreen from './mobile/screens/NotificationDetailScreen';
 import WalkingScreen from './mobile/screens/WalkingScreen';
+import NicknameEditScreen from './mobile/screens/NicknameEditScreen';
 
 // Mobile Components
 import BottomNav from './mobile/components/BottomNav';
@@ -46,7 +47,8 @@ import AdminApp from './AdminApp';
 const hideNavPaths = [
   '/withdraw', '/withdraw-history', '/point-history',
   '/raffle-history', '/shopping-history', '/quiz', '/attendance',
-  '/settings', '/inquiry', '/faq', '/notice', '/notifications', '/walking'
+  '/settings', '/inquiry', '/faq', '/notice', '/notifications', '/walking',
+  '/nickname-edit'
 ];
 const hideNavPrefixes = ['/raffle/', '/shopping/', '/notification/'];
 
@@ -92,6 +94,7 @@ function MobileApp({ isLoggedIn, isGuest, handleLogin, handleSignup, handleGuest
             <Route path="/faq" element={<FAQScreen />} />
             <Route path="/notice" element={<NoticeScreen />} />
             <Route path="/profile-edit" element={<ProfileEditScreen showToast={showToast} />} />
+            <Route path="/nickname-edit" element={<NicknameEditScreen showToast={showToast} />} />
             <Route path="/terms" element={<TermsScreen />} />
             <Route path="/privacy" element={<PrivacyScreen />} />
 

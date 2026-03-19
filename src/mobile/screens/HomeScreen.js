@@ -1,11 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './HomeScreen.css';
 import exchangeRateData from '../../shared/data/exchangeRate.json';
+import { SamsungFireBanner } from '../components/AdBanner';
+import '../components/AdBanner.css';
 
 const HomeScreen = ({ userPoints, showToast, isGuest, unreadCount = 0 }) => {
   const navigate = useNavigate();
   const [isPartnerOpen, setIsPartnerOpen] = useState(false);
+  const [showAdModal, setShowAdModal] = useState(false);
+
+  // 전면 광고 모달 (첫 진입 시 표시)
+  useEffect(() => {
+    const hasSeenAd = sessionStorage.getItem('homeAdModalShown');
+    if (!hasSeenAd) {
+      setTimeout(() => {
+        setShowAdModal(true);
+      }, 500);
+    }
+  }, []);
+
+  const closeAdModal = () => {
+    setShowAdModal(false);
+    sessionStorage.setItem('homeAdModalShown', 'true');
+  };
+
+  const closeAdModalToday = () => {
+    setShowAdModal(false);
+    sessionStorage.setItem('homeAdModalShown', 'true');
+    // 실제로는 localStorage에 날짜 저장하여 하루동안 안보이게 처리
+  };
 
   const handleGuestBlock = () => {
     navigate('/signup');
@@ -23,7 +47,7 @@ const HomeScreen = ({ userPoints, showToast, isGuest, unreadCount = 0 }) => {
 
       {/* 앱바 */}
       <div className="home-appbar">
-        <div className="home-logo">LOGO</div>
+        <div className="app-logo"><span className="logo-a">A</span><span className="logo-dot">-</span><span className="logo-fin">Fin</span></div>
         <button className="home-noti-btn" onClick={() => navigate('/notifications')}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" />
@@ -67,31 +91,43 @@ const HomeScreen = ({ userPoints, showToast, isGuest, unreadCount = 0 }) => {
             {/* 핀 적립 아이콘들 */}
             <div className={`point-partners ${isPartnerOpen ? 'open' : ''}`}>
               <div className="point-partner-item">
-                <div className="partner-icon-img" onClick={() => showToast('네이버페이 연동')}>
-                  <img src="/images/icons/naver-pay.png" alt="네이버페이" />
+                <div className="partner-icon-text hana" onClick={() => showToast('하나페이 연동')}>
+                  <span>하나</span>
                 </div>
-                <span className="partner-points">100핀</span>
+                <div className="partner-info">
+                  <span className="partner-name">하나페이</span>
+                  <span className="partner-points">100핀</span>
+                </div>
                 <button className="partner-action-btn" onClick={() => showToast('전환 완료')}>전환</button>
               </div>
               <div className="point-partner-item">
                 <div className="partner-icon-img" onClick={() => showToast('페이북 연동')}>
-                  <img src="/images/icons/toss-pay.png" alt="페이북" />
+                  <img src="/images/icons/shinhan-sol.png" alt="페이북" />
                 </div>
-                <span className="partner-points">100핀</span>
+                <div className="partner-info">
+                  <span className="partner-name">페이북</span>
+                  <span className="partner-points">100핀</span>
+                </div>
                 <button className="partner-action-btn" onClick={() => showToast('전환 완료')}>전환</button>
               </div>
               <div className="point-partner-item">
                 <div className="partner-icon-img" onClick={() => showToast('신한SOL 연동')}>
-                  <img src="/images/icons/shinhan-sol.png" alt="신한SOL" />
+                  <img src="/images/icons/kakao-pay.png" alt="신한SOL" />
                 </div>
-                <span className="partner-points">100핀</span>
+                <div className="partner-info">
+                  <span className="partner-name">신한SOL</span>
+                  <span className="partner-points">100핀</span>
+                </div>
                 <button className="partner-action-btn" onClick={() => showToast('전환 완료')}>전환</button>
               </div>
               <div className="point-partner-item">
                 <div className="partner-icon-img" onClick={() => showToast('카카오페이 연동')}>
-                  <img src="/images/icons/kakao-pay.png" alt="카카오페이" />
+                  <img src="/images/icons/toss-pay.png" alt="카카오페이" />
                 </div>
-                <span className="partner-points">-</span>
+                <div className="partner-info">
+                  <span className="partner-name">카카오페이</span>
+                  <span className="partner-points">미연결</span>
+                </div>
                 <button className="partner-action-btn connect" onClick={() => showToast('연결하기')}>연결하기</button>
               </div>
             </div>
@@ -132,20 +168,19 @@ const HomeScreen = ({ userPoints, showToast, isGuest, unreadCount = 0 }) => {
           </div>
         </div>
 
-        {/* 꿀정보 배너 */}
-        <div className="info-banner" onClick={() => navigate('/benefits')}>
-          <div className="info-banner-content">
-            <p className="info-banner-title">이미소 대리가</p>
-            <p className="info-banner-title">알려주는 꿀정보!</p>
-            <button className="info-banner-btn">
-              <span>다양한 경품 응모하기</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <path d="M9 18l6-6-6-6" />
-              </svg>
-            </button>
-          </div>
-          <div className="info-banner-character">
-            <img src="/images/icons/banner-character.png" alt="" />
+        {/* 동영상 광고 배너 */}
+        <div className="video-ad-banner" onClick={() => navigate('/benefits')}>
+          <video
+            className="video-ad-player"
+            src="/images/banners/ad-video.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster="/images/banners/ad-poster.png"
+          />
+          <div className="video-ad-overlay">
+            <span className="video-ad-badge">AD</span>
           </div>
         </div>
 
@@ -268,7 +303,38 @@ const HomeScreen = ({ userPoints, showToast, isGuest, unreadCount = 0 }) => {
 
           <p className="news-footer">네이버 뉴스 제공 · 매일 오전 10시 업데이트</p>
         </div>
+
+        {/* 광고 배너 - 삼성화재 */}
+        {SamsungFireBanner()}
       </div>
+
+      {/* 전면 광고 모달 */}
+      {showAdModal && (
+        <div className="home-ad-modal-overlay">
+          <div className="home-ad-modal">
+            <button className="home-ad-modal-close" onClick={closeAdModal}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+            <div className="home-ad-modal-content">
+              <img
+                src="/images/banners/modal.png"
+                alt="광고"
+                className="home-ad-modal-image"
+                onClick={() => {
+                  showToast('광고 페이지로 이동');
+                  closeAdModal();
+                }}
+              />
+            </div>
+            <button className="home-ad-modal-skip" onClick={closeAdModalToday}>
+              오늘 그만 보기
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

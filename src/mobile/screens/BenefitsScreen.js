@@ -1,6 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './BenefitsScreen.css';
+import { iPadProBanner } from '../components/AdBanner';
+import '../components/AdBanner.css';
 
 const tabs = [
   { id: 'raffle', label: '경품', icon: '🎰' },
@@ -30,6 +32,23 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
   const [attPopupOpen, setAttPopupOpen] = useState(false);
   const [fallbackAlertOpen, setFallbackAlertOpen] = useState(false);
   const [pedometerPopupOpen, setPedometerPopupOpen] = useState(false);
+
+  // 캐러셀 배너 상태
+  const [currentBanner, setCurrentBanner] = useState(0);
+  const bannerRef = useRef(null);
+  const banners = [
+    { id: 1, image: '/images/banners/coupang-banner.png', alt: '쿠팡 배너' },
+    { id: 2, image: '/images/banners/coupang-banner.png', alt: '배너 2' },
+    { id: 3, image: '/images/banners/coupang-banner.png', alt: '배너 3' },
+  ];
+
+  // 배너 자동 슬라이드
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentBanner((prev) => (prev + 1) % banners.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, [banners.length]);
 
   // 첫 진입 시 만보기 권한 팝업 (테스트용)
   useEffect(() => {
@@ -158,7 +177,7 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
     <div className="screen benefits-screen">
       {/* 앱바 */}
       <div className="benefits-appbar">
-        <div className="benefits-logo">LOGO</div>
+        <div className="app-logo"><span className="logo-a">A</span><span className="logo-dot">-</span><span className="logo-fin">Fin</span></div>
         <button className="benefits-noti-btn" onClick={() => navigate('/notifications')}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" />
@@ -168,7 +187,32 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
       </div>
 
       <div className="benefits-header">
-        <h1 className="page-title">혜택</h1>
+        {/* 캐러셀 배너 */}
+        <div className="benefits-carousel" ref={bannerRef}>
+          <div
+            className="benefits-carousel-track"
+            style={{ transform: `translateX(-${currentBanner * 100}%)` }}
+          >
+            {banners.map((banner) => (
+              <div
+                key={banner.id}
+                className="benefits-carousel-slide"
+              >
+                <img src={banner.image} alt={banner.alt} className="carousel-image" />
+              </div>
+            ))}
+          </div>
+          <div className="benefits-carousel-dots">
+            {banners.map((_, index) => (
+              <button
+                key={index}
+                className={`carousel-dot ${index === currentBanner ? 'active' : ''}`}
+                onClick={() => setCurrentBanner(index)}
+              />
+            ))}
+          </div>
+        </div>
+
         <div
           className={`benefits-tabs ${isDragging ? 'dragging' : ''}`}
           ref={tabsRef}
@@ -202,31 +246,36 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
             </div>
             <div className="raffle-list-vertical">
               <div className="raffle-list-item" onClick={() => navigate('/raffle/1')}>
-                <div className="raffle-item-image" style={{ background: 'linear-gradient(135deg, #1a2e71 0%, #2d4a8c 100%)' }}>
-                  <div className="raffle-item-icon">🎧</div>
+                <div className="raffle-item-image">
+                  <img src="/images/raffle/airpods.png" alt="에어팟" onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }} />
+                  <div className="raffle-item-icon" style={{ display: 'none' }}>🎧</div>
                 </div>
                 <div className="raffle-item-content">
-                  <div className="raffle-item-badge hot">🔥 D-2</div>
+                  <div className="raffle-item-badge urgent">마감까지 8일 20:41:53 남음</div>
                   <div className="raffle-item-name">애플 에어팟 프로 2</div>
-                  <div className="raffle-item-info">
-                    <span className="raffle-item-participants">234명 참여중</span>
-                    <span className="raffle-item-separator">·</span>
-                    <span className="raffle-item-cost">응모권 1장</span>
-                  </div>
+                  <div className="raffle-item-participants">45,234명 참여 중</div>
                 </div>
               </div>
               <div className="raffle-list-item" onClick={() => navigate('/raffle/2')}>
-                <div className="raffle-item-image" style={{ background: 'linear-gradient(135deg, #3d5a9e 0%, #5c7cba 100%)' }}>
-                  <div className="raffle-item-icon">📱</div>
+                <div className="raffle-item-image">
+                  <img src="/images/raffle/iphone.png" alt="아이폰" onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }} />
+                  <div className="raffle-item-icon" style={{ display: 'none' }}>📱</div>
                 </div>
                 <div className="raffle-item-content">
-                  <div className="raffle-item-badge new">🆕 D-5</div>
+                  <div className="raffle-item-badge ongoing">마감까지 12일 20:41:53 남음</div>
                   <div className="raffle-item-name">아이폰 15 Pro Max</div>
-                  <div className="raffle-item-info">
-                    <span className="raffle-item-participants">1,892명 참여중</span>
-                    <span className="raffle-item-separator">·</span>
-                    <span className="raffle-item-cost">응모권 1장</span>
-                  </div>
+                  <div className="raffle-item-participants">1,234명 참여 중</div>
+                </div>
+              </div>
+              <div className="raffle-list-item" onClick={() => navigate('/raffle/3')}>
+                <div className="raffle-item-image">
+                  <img src="/images/raffle/robot.png" alt="청소기" onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }} />
+                  <div className="raffle-item-icon" style={{ display: 'none' }}>🤖</div>
+                </div>
+                <div className="raffle-item-content">
+                  <div className="raffle-item-badge upcoming">2/31 진행 예정</div>
+                  <div className="raffle-item-name">로보ROCK 청소기</div>
+                  <div className="raffle-item-participants">1,234명 참여 중</div>
                 </div>
               </div>
             </div>
@@ -267,6 +316,9 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
               </div>
             </div>
           </div>
+
+          {/* 광고 배너 - iPad Pro */}
+          {iPadProBanner()}
 
           {/* 쇼핑 적립 */}
           <div className="section" ref={shoppingRef}>

@@ -1,6 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AttendanceScreen.css';
+import { iPadProBanner } from '../components/AdBanner';
+import '../components/AdBanner.css';
 
 const milestones = {
   7: { icon: '🎟️', label: '응모권', title: '응모권 획득!' },
@@ -306,6 +308,9 @@ const AttendanceScreen = ({ showToast, updatePoints }) => {
             );
           })}
         </div>
+
+        {/* 광고 배너 - iPad Pro */}
+        {iPadProBanner()}
       </div>
 
       {/* 결과 모달 */}

@@ -3,23 +3,44 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   padding-bottom: 0;
   position: absolute;
   inset: 0;
 }
 
+.splash-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.splash-bottom {
+  width: 100%;
+  padding: 20px;
+  padding-bottom: 40px;
+}
+
+.splash-ad-banner {
+  width: 100%;
+  max-width: 280px;
+  display: block;
+  margin: 0 auto;
+}
+
 .splash-logo-wrap {
   width: 100px;
   height: 100px;
-  background: rgba(255, 255, 255, 0.15);
+  background: linear-gradient(135deg, #904cfc 0%, #6b4ef9 100%);
   border-radius: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 24px;
   animation: pulse 2s infinite;
-  backdrop-filter: blur(20px);
+  box-shadow: 0 10px 30px rgba(107, 78, 249, 0.4);
 }
 
 @keyframes pulse {

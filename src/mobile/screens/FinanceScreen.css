@@ -22,11 +22,31 @@
   flex-shrink: 0;
 }
 
-.finance-logo {
-  font-size: 18px;
-  font-weight: 500;
-  color: #333;
-  letter-spacing: 1px;
+/* A-Fin 로고 */
+.finance-header-v3 .app-logo {
+  display: flex;
+  align-items: center;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.finance-header-v3 .app-logo .logo-a {
+  background: linear-gradient(135deg, #904cfc 0%, #6b4ef9 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+}
+
+.finance-header-v3 .app-logo .logo-dot {
+  color: #904cfc;
+  margin: 0 1px;
+}
+
+.finance-header-v3 .app-logo .logo-fin {
+  color: #1a1a1a;
+  font-weight: 700;
 }
 
 .finance-noti-btn {

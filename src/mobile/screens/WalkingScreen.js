@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './WalkingScreen.css';
+import { iPadProBanner } from '../components/AdBanner';
+import '../components/AdBanner.css';
 
 const WalkingScreen = ({ userPoints = 26350, updatePoints, showToast }) => {
   const navigate = useNavigate();
@@ -143,6 +145,9 @@ const WalkingScreen = ({ userPoints = 26350, updatePoints, showToast }) => {
             </button>
           </div>
         ))}
+
+        {/* 광고 배너 - iPad Pro */}
+        {iPadProBanner()}
 
         <div className="walking-logic-footer">
           <span className="walking-logic-title">ℹ️ A-Fin 에코 로직</span>

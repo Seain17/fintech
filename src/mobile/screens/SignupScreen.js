@@ -199,13 +199,13 @@ const SignupScreen = ({ onSignup }) => {
               </svg>
             </button>
             <div className="signup-progress">
-              {[1, 2, 3].map(i => (
+              {[1, 2].map(i => (
                 <div
                   key={i}
-                  className={`signup-progress-bar ${i < step ? 'completed' : ''} ${i === step ? 'active' : ''}`}
+                  className={`signup-progress-bar ${(i === 1 && step >= 2) || (i === 2 && step >= 3) ? 'completed' : ''} ${(i === 1 && step === 1) || (i === 2 && step >= 2 && step < 4) ? 'active' : ''}`}
                 />
               ))}
-              <span className="signup-step-label">{step}/3</span>
+              <span className="signup-step-label">{step <= 2 ? 1 : 2}/2</span>
             </div>
           </div>
         )}

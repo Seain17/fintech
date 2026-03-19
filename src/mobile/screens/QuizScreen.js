@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './QuizScreen.css';
+import { iPadProBanner } from '../components/AdBanner';
+import '../components/AdBanner.css';
 
 const quizData = [
   { q: '체크카드 소득공제율은 신용카드보다 높다?', a: 'O' },
@@ -160,7 +162,8 @@ const QuizScreen = ({ showToast, updatePoints }) => {
             </div>
           )}
 
-          <div className="quiz-ad-banner">[수익화 배너 영역]</div>
+          {/* 광고 배너 - iPad Pro */}
+          {iPadProBanner()}
         </div>
       )}
 

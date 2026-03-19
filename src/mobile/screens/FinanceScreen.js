@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './FinanceScreen.css';
+import { SamsungFireBanner } from '../components/AdBanner';
+import '../components/AdBanner.css';
 
 /**
  * 금융 탭: 3단 구조 화면
@@ -469,7 +471,7 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
     <div className="screen finance-screen-v3">
       {/* 헤더 */}
       <div className="finance-header-v3">
-        <div className="finance-logo">LOGO</div>
+        <div className="app-logo"><span className="logo-a">A</span><span className="logo-dot">-</span><span className="logo-fin">Fin</span></div>
         <button className="finance-noti-btn" onClick={() => navigate('/notifications')}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" />
@@ -1013,6 +1015,9 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
           </div>
         )}
       </div>
+
+      {/* 광고 배너 - 삼성화재 */}
+      {SamsungFireBanner()}
 
       {/* 바텀시트 */}
       <div

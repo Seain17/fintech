@@ -49,9 +49,94 @@
 - Outfit (숫자)
 - Righteous (영문 강조)
 
-## 디자인 컬러
+## 디자인 컬러 (블루톤 통일)
 - Primary: #1a2e71 (네이비)
-- Finance Primary: #8A2BE2 (퍼플)
+- Secondary: #2d4a8c (블루)
+- Gradient: `linear-gradient(135deg, #1a2e71 0%, #2d4a8c 100%)`
 - Background: #f7f8fa
 - Card: #ffffff
-- Accent: #e8def8 (라벤더)
+
+## 배포
+- **Production URL**: https://fintechprototype.vercel.app
+- **Git Repository**: https://github.com/Seain17/fintech.git
+- **배포 명령어**: `npx vercel --prod`
+
+## 주의사항
+- Vercel CI에서 ESLint 경고가 에러로 처리됨
+- 필요시 `// eslint-disable-next-line` 주석으로 처리
+- 모달/오버레이는 `position: absolute`로 모바일 프레임 내 고정
+- 버튼 하단 고정 시 부모에 `display: flex; flex-direction: column; height: 100%` 적용
+
+## 모바일 레이아웃 가이드라인
+
+### 중요: position: fixed 사용 금지
+- `phone-frame`이 `position: relative` + `overflow: hidden`으로 설정되어 있음
+- `position: fixed`는 viewport 기준이므로 phone-frame을 벗어남
+- **반드시 `position: absolute`를 사용할 것**
+
+### 고정 버튼 (Bottom Button)
+하단 고정 버튼 사용 시:
+
+```css
+/* 부모 screen에 position: relative 필수 */
+.detail-screen {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;  /* 필수! */
+}
+
+/* 하단 버튼은 absolute로 */
+.bottom-btn {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px 20px;
+  background: #fff;
+  z-index: 50;
+}
+```
+
+### 스크롤 컨텐츠 영역
+고정 버튼이 있는 화면의 스크롤 영역:
+
+```css
+.scroll-content {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 100px;  /* 고정 버튼 높이만큼 여백 */
+  -webkit-overflow-scrolling: touch;
+}
+```
+
+### 모달/팝업
+모바일 프레임 내에서 표시되어야 하는 모달:
+
+```css
+/* 해당 screen 클래스 명시하여 scope 제한 */
+.detail-screen .modal {
+  position: absolute;  /* fixed 아님! */
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+```
+
+### 헤더 (Sticky Header)
+스크롤 시 고정되는 헤더 (sticky는 사용 가능):
+
+```css
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #fff;
+}
+```
+
+### 주요 체크리스트
+- [ ] **`position: fixed` 절대 사용 금지** → `position: absolute` 사용
+- [ ] 부모 screen에 `position: relative` 추가
+- [ ] 고정 버튼 있는 화면은 콘텐츠에 `padding-bottom` 추가
+- [ ] 모달은 해당 screen 클래스로 scope 제한
