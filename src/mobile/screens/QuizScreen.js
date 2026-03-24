@@ -167,8 +167,10 @@ const QuizScreen = ({ showToast, updatePoints }) => {
               </div>
             )}
 
-            {/* 광고 배너 - iPad Pro */}
-            {iPadProBanner()}
+            {/* 페이지 하단 배너 */}
+            <div className="quiz-bottom-banner">
+              {iPadProBanner()}
+            </div>
           </div>
         )}
 
@@ -187,6 +189,7 @@ const QuizScreen = ({ showToast, updatePoints }) => {
             <div className="quiz-shutter-handle"></div>
           </div>
         )}
+
       </div>
 
       {/* 결과 모달 */}

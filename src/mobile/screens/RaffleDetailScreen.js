@@ -127,10 +127,11 @@ const RaffleDetailScreen = ({ userTickets = 1, userPoints = 3520, updateTickets,
       <div className="raffle-detail-header">
         <button className="page-back-btn" onClick={() => navigate(-1)}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M19 12H5M12 19l-7-7 7-7" />
+            <path d="M15 18l-6-6 6-6" />
           </svg>
         </button>
         <h1 className="header-title">경품 응모</h1>
+        <div className="header-space" />
       </div>
 
       <div className="raffle-detail-content">

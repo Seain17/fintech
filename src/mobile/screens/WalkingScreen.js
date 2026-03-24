@@ -82,7 +82,7 @@ const WalkingScreen = ({ userPoints = 26350, updatePoints, showToast }) => {
             <path d="M15 18l-6-6 6-6" />
           </svg>
         </button>
-        <h1 className="walking-title">만보걷기</h1>
+        <h1 className="walking-title">에코만보기</h1>
         <div className="walking-header-space" />
       </div>
 
@@ -146,13 +146,15 @@ const WalkingScreen = ({ userPoints = 26350, updatePoints, showToast }) => {
           </div>
         ))}
 
-        {/* 광고 배너 - iPad Pro */}
-        {iPadProBanner()}
-
         <div className="walking-logic-footer">
           <span className="walking-logic-title">ℹ️ A-Fin 에코 로직</span>
           단순히 걷는다고 탄소가 사라지는 게 아니에요!<br />
           A-Fin은 쿼카님이 <strong>탄소 배출 활동(운전, 엘리베이터 등)을 걷기로 대체</strong>한 가치를 금융 자산으로 환산해 드립니다.
+        </div>
+
+        {/* 페이지 하단 배너 */}
+        <div className="walking-bottom-banner">
+          {iPadProBanner()}
         </div>
       </div>
 

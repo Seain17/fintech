@@ -292,9 +292,9 @@ const HomeScreen = ({ userPoints, showToast, isGuest, unreadCount = 0 }) => {
           </div>
           <div className="quick-grid-item" onClick={() => navigate('/walking')}>
             <div className="quick-grid-icon-img">
-              <img src="/images/icons/walking.png" alt="만보걷기" />
+              <img src="/images/icons/walking.png" alt="에코만보기" />
             </div>
-            <span>만보걷기</span>
+            <span>에코만보기</span>
           </div>
           <div className="quick-grid-item" onClick={() => navigate('/quiz')}>
             <div className="quick-grid-icon-img">

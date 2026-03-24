@@ -3,13 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './AttendanceScreen.css';
 import { iPadProBanner } from '../components/AdBanner';
 import '../components/AdBanner.css';
-
-const milestones = {
-  7: { icon: '🎟️', label: '응모권', title: '응모권 획득!' },
-  14: { icon: '💰', label: '3핀', title: '3핀 적립!' },
-  21: { icon: '💰', label: '3핀', title: '3핀 적립!' },
-  28: { icon: '💎', label: '10핀', title: '10핀 적립!' },
-};
+import { ATTENDANCE_MILESTONES, ATTENDANCE_CONFIG } from '../../shared/constants';
 
 const AttendanceScreen = ({ showToast, updatePoints }) => {
   const navigate = useNavigate();
@@ -29,7 +23,7 @@ const AttendanceScreen = ({ showToast, updatePoints }) => {
   const frameRef = useRef(null);
   const targetCellRef = useRef(null);
   const flyingStampRef = useRef(null);
-  const maxPower = 6;
+  const maxPower = ATTENDANCE_CONFIG.MAX_POWER;
 
   // 현재 달력 정보
   const now = new Date();
@@ -47,7 +41,7 @@ const AttendanceScreen = ({ showToast, updatePoints }) => {
   }
 
   // 오늘이 마일스톤인지
-  const todayMilestone = milestones[today];
+  const todayMilestone = ATTENDANCE_MILESTONES[today];
 
   // 초기 말풍선
   const [initialBubble] = useState(() => {
@@ -176,7 +170,7 @@ const AttendanceScreen = ({ showToast, updatePoints }) => {
   for (let d = 1; d <= daysInMonth; d++) {
     const isToday = d === today;
     const isAttended = attendedDays.includes(d) || (isToday && todayStamped);
-    const milestone = milestones[d];
+    const milestone = ATTENDANCE_MILESTONES[d];
     calendarCells.push({
       type: 'date',
       day: d,
@@ -333,8 +327,10 @@ const AttendanceScreen = ({ showToast, updatePoints }) => {
           })}
         </div>
 
-        {/* 광고 배너 - iPad Pro */}
-        {iPadProBanner()}
+        {/* 페이지 하단 배너 */}
+        <div className="att-bottom-banner">
+          {iPadProBanner()}
+        </div>
       </div>
 
       {/* 결과 모달 */}

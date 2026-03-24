@@ -4,6 +4,7 @@
   flex-direction: column;
   height: 100%;
   padding-bottom: 0;
+  position: relative;
 }
 
 .quiz-screen .page-header {
@@ -511,4 +512,14 @@
 @keyframes quizShutterBounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
+}
+
+/* 페이지 하단 배너 */
+.quiz-bottom-banner {
+  margin-top: 16px;
+}
+
+.quiz-bottom-banner .ad-banner {
+  margin: 0;
+  border-radius: 16px;
 }

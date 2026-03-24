@@ -230,6 +230,7 @@
   border-top-right-radius: 24px;
   box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
   padding: 20px 15px;
+  padding-bottom: 20px;
   overflow-y: auto;
   border-top: 1px solid rgba(0,0,0,0.05);
   position: relative;
@@ -570,4 +571,14 @@
 @keyframes attShutterBounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
+}
+
+/* 페이지 하단 배너 */
+.att-bottom-banner {
+  margin-top: 20px;
+}
+
+.att-bottom-banner .ad-banner {
+  margin: 0;
+  border-radius: 0;
 }

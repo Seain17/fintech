@@ -5,6 +5,7 @@
   flex-direction: column;
   overflow: hidden;
   padding-bottom: 0;
+  position: relative;
 }
 
 /* 헤더 */
@@ -257,6 +258,7 @@
 /* 미션 리스트 */
 .walking-mission-list {
   padding: 20px;
+  padding-bottom: 20px;
   flex: 1;
   overflow-y: auto;
 }
@@ -393,3 +395,14 @@
   margin-top: 20px;
   font-family: 'Outfit', sans-serif;
 }
+
+/* 페이지 하단 배너 */
+.walking-bottom-banner {
+  margin-top: 20px;
+}
+
+.walking-bottom-banner .ad-banner {
+  margin: 0;
+  border-radius: 0;
+}
+
