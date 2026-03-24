@@ -1643,3 +1643,72 @@
   color: #1a2e71;
   font-weight: 700;
 }
+
+/* ============================================
+   브랜드 필터 바
+============================================ */
+.brand-filter-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.brand-filter-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.brand-filter-btn {
+  padding: 8px 14px;
+  border: 1px solid #e5e8eb;
+  background: #fff;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.brand-filter-btn:active {
+  transform: scale(0.96);
+}
+
+.brand-filter-btn.active {
+  background: #f0f4ff;
+  border-color: #1a2e71;
+  color: #1a2e71;
+  font-weight: 600;
+}
+
+/* ============================================
+   정렬 텍스트 (구석 표시)
+============================================ */
+.sort-text-corner {
+  text-align: right;
+  font-size: 11px;
+  font-weight: 500;
+  color: #999;
+  margin-bottom: 10px;
+  padding-right: 4px;
+}
+
+/* ============================================
+   정렬 옵션 with 텍스트 (대출용)
+============================================ */
+.sort-options-with-text {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.sort-options-inline {
+  display: flex;
+  gap: 8px;
+}

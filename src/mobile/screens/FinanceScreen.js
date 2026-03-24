@@ -3,6 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import './FinanceScreen.css';
 import { SamsungFireBanner } from '../components/AdBanner';
 import '../components/AdBanner.css';
+import { AppLogo } from '../../shared/components';
+import {
+  cardProducts,
+  loanProducts,
+  insuranceProducts,
+  stockProducts,
+  loanCategories,
+  insuranceCategories,
+  stockCategories,
+} from '../../shared/data/financeProducts';
 
 /**
  * 금융 탭: 3단 구조 화면
@@ -13,294 +23,6 @@ import '../components/AdBanner.css';
  * [카드] / [대출] - Curation (전략적 추천)
  *   → 에이핀 핀 높은 순
  */
-
-// ============================================
-// 카드 상품 데이터
-// ============================================
-const cardProducts = [
-  {
-    id: 1,
-    name: '신한 Deep Dream 카드',
-    company: '신한카드',
-    logo: '신한',
-    benefit: '모든 가맹점 0.7% 적립',
-    benefitPoints: 5000,
-    color: '#0046ff',
-    category: 'all',
-  },
-  {
-    id: 2,
-    name: '삼성 taptap O 카드',
-    company: '삼성카드',
-    logo: '삼성',
-    benefit: '편의점/카페 10% 적립',
-    benefitPoints: 15000,
-    color: '#1428a0',
-    category: 'food',
-  },
-  {
-    id: 3,
-    name: '현대 M BOOST 카드',
-    company: '현대카드',
-    logo: '현대',
-    benefit: 'M포인트 최대 3% 적립',
-    benefitPoints: 12000,
-    color: '#000000',
-    category: 'shopping',
-  },
-  {
-    id: 4,
-    name: 'KB국민 My WE:SH 카드',
-    company: 'KB국민카드',
-    logo: 'KB',
-    benefit: '쇼핑/배달 5% 할인',
-    benefitPoints: 8000,
-    color: '#ffb300',
-    category: 'shopping',
-  },
-  {
-    id: 5,
-    name: '하나 원큐 카드',
-    company: '하나카드',
-    logo: '하나',
-    benefit: '대중교통/통신 10% 할인',
-    benefitPoints: 10000,
-    color: '#009688',
-    category: 'transport',
-  },
-];
-
-// ============================================
-// 대출 상품 데이터
-// ============================================
-const loanProducts = [
-  {
-    id: 1,
-    name: '토스 마이너스통장',
-    company: '토스뱅크',
-    logo: '토스',
-    category: 'credit',
-    interestRate: 3.5,
-    maxInterestRate: 14.9,
-    maxLimit: 10000,
-    color: '#0064ff',
-  },
-  {
-    id: 2,
-    name: 'KB국민 직장인신용대출',
-    company: 'KB국민은행',
-    logo: 'KB',
-    category: 'credit',
-    interestRate: 3.5,
-    maxInterestRate: 12.5,
-    maxLimit: 15000,
-    color: '#ffb300',
-  },
-  {
-    id: 3,
-    name: '카카오뱅크 비상금대출',
-    company: '카카오뱅크',
-    logo: '카카오',
-    category: 'credit',
-    interestRate: 3.69,
-    maxInterestRate: 19.9,
-    maxLimit: 5000,
-    color: '#fee500',
-  },
-  {
-    id: 4,
-    name: '하나 원큐신용대출',
-    company: '하나은행',
-    logo: '하나',
-    category: 'credit',
-    interestRate: 4.2,
-    maxInterestRate: 15.0,
-    maxLimit: 20000,
-    color: '#009688',
-  },
-  {
-    id: 5,
-    name: 'KB국민 주택담보대출',
-    company: 'KB국민은행',
-    logo: 'KB',
-    category: 'mortgage',
-    interestRate: 3.2,
-    maxInterestRate: 5.5,
-    maxLimit: 100000,
-    color: '#ffb300',
-  },
-  {
-    id: 6,
-    name: '신한 주담대 플러스',
-    company: '신한은행',
-    logo: '신한',
-    category: 'mortgage',
-    interestRate: 3.4,
-    maxInterestRate: 5.8,
-    maxLimit: 80000,
-    color: '#0046ff',
-  },
-  {
-    id: 7,
-    name: '신한 자동차대출',
-    company: '신한은행',
-    logo: '신한',
-    category: 'car',
-    interestRate: 4.5,
-    maxInterestRate: 9.9,
-    maxLimit: 8000,
-    color: '#0046ff',
-  },
-];
-
-// 대출 카테고리
-const loanCategories = [
-  { id: 'credit', label: '신용대출', icon: '💳' },
-  { id: 'mortgage', label: '주택담보', icon: '🏠' },
-  { id: 'car', label: '자동차', icon: '🚗' },
-];
-
-// ============================================
-// 보험 상품 데이터
-// ============================================
-const insuranceProducts = [
-  {
-    id: 1,
-    name: '삼성생명 건강보험',
-    company: '삼성생명',
-    logo: '삼성',
-    category: 'health',
-    monthlyPremium: 35000,
-    coverage: '암/뇌/심장 진단금 최대 1억',
-    benefitPoints: 20000,
-    color: '#1428a0',
-  },
-  {
-    id: 2,
-    name: '한화생명 종신보험',
-    company: '한화생명',
-    logo: '한화',
-    category: 'life',
-    monthlyPremium: 50000,
-    coverage: '사망보험금 최대 3억',
-    benefitPoints: 25000,
-    color: '#ff6b00',
-  },
-  {
-    id: 3,
-    name: '현대해상 운전자보험',
-    company: '현대해상',
-    logo: '현대',
-    category: 'driver',
-    monthlyPremium: 15000,
-    coverage: '교통사고 벌금/변호사 비용 보장',
-    benefitPoints: 12000,
-    color: '#00a651',
-  },
-  {
-    id: 4,
-    name: 'DB손해보험 실손보험',
-    company: 'DB손해보험',
-    logo: 'DB',
-    category: 'health',
-    monthlyPremium: 25000,
-    coverage: '실제 의료비 90% 보장',
-    benefitPoints: 15000,
-    color: '#003d7d',
-  },
-  {
-    id: 5,
-    name: '메리츠화재 펫보험',
-    company: '메리츠화재',
-    logo: '메리츠',
-    category: 'pet',
-    monthlyPremium: 20000,
-    coverage: '반려동물 의료비 70% 보장',
-    benefitPoints: 10000,
-    color: '#e31837',
-  },
-];
-
-// 보험 카테고리
-const insuranceCategories = [
-  { id: 'health', label: '건강/실손', icon: '🏥' },
-  { id: 'life', label: '종신/저축', icon: '💰' },
-  { id: 'driver', label: '운전자', icon: '🚗' },
-  { id: 'pet', label: '펫보험', icon: '🐕' },
-];
-
-// ============================================
-// 증권 상품 데이터
-// ============================================
-const stockProducts = [
-  {
-    id: 1,
-    name: '삼성증권 주식계좌',
-    company: '삼성증권',
-    logo: '삼성',
-    category: 'stock',
-    benefit: '국내주식 수수료 0.01%',
-    benefitPoints: 30000,
-    color: '#1428a0',
-  },
-  {
-    id: 2,
-    name: '미래에셋 CMA계좌',
-    company: '미래에셋증권',
-    logo: '미래',
-    category: 'cma',
-    benefit: 'CMA 연 3.5% 이자',
-    benefitPoints: 25000,
-    color: '#ff6b00',
-  },
-  {
-    id: 3,
-    name: 'NH투자증권 나무',
-    company: 'NH투자증권',
-    logo: 'NH',
-    category: 'stock',
-    benefit: '해외주식 수수료 무료',
-    benefitPoints: 20000,
-    color: '#00a651',
-  },
-  {
-    id: 4,
-    name: '키움증권 영웅문',
-    company: '키움증권',
-    logo: '키움',
-    category: 'stock',
-    benefit: '국내주식 수수료 0.015%',
-    benefitPoints: 15000,
-    color: '#e31837',
-  },
-  {
-    id: 5,
-    name: '토스증권 주식계좌',
-    company: '토스증권',
-    logo: '토스',
-    category: 'stock',
-    benefit: '소수점 주식 거래 가능',
-    benefitPoints: 18000,
-    color: '#0064ff',
-  },
-  {
-    id: 6,
-    name: 'KB증권 M-able',
-    company: 'KB증권',
-    logo: 'KB',
-    category: 'isa',
-    benefit: 'ISA 비과세 혜택',
-    benefitPoints: 22000,
-    color: '#ffb300',
-  },
-];
-
-// 증권 카테고리
-const stockCategories = [
-  { id: 'stock', label: '주식', icon: '📈' },
-  { id: 'cma', label: 'CMA', icon: '💵' },
-  { id: 'isa', label: 'ISA', icon: '🏦' },
-];
 
 const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
   const navigate = useNavigate();
@@ -328,22 +50,66 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
   // 카드 탭 상태
   // ============================================
   const [cardFilter, setCardFilter] = useState('all');
+  const [cardBrand, setCardBrand] = useState('all');
 
   // ============================================
   // 대출 탭 상태
   // ============================================
   const [loanCategory, setLoanCategory] = useState('credit');
   const [loanSortBy, setLoanSortBy] = useState('rate');
+  const [loanBrand, setLoanBrand] = useState('all');
 
   // ============================================
   // 보험 탭 상태
   // ============================================
   const [insuranceCategory, setInsuranceCategory] = useState('health');
+  const [insuranceBrand, setInsuranceBrand] = useState('all');
 
   // ============================================
   // 증권 탭 상태
   // ============================================
   const [stockCategory, setStockCategory] = useState('stock');
+  const [stockBrand, setStockBrand] = useState('all');
+
+  // ============================================
+  // 브랜드 목록 정의
+  // ============================================
+  const cardBrands = [
+    { id: 'all', label: '전체' },
+    { id: '신한카드', label: '신한' },
+    { id: '삼성카드', label: '삼성' },
+    { id: '현대카드', label: '현대' },
+    { id: 'KB국민카드', label: 'KB국민' },
+    { id: '하나카드', label: '하나' },
+  ];
+
+  const loanBrands = [
+    { id: 'all', label: '전체' },
+    { id: '토스뱅크', label: '토스' },
+    { id: 'KB국민은행', label: 'KB국민' },
+    { id: '카카오뱅크', label: '카카오' },
+    { id: '하나은행', label: '하나' },
+    { id: '신한은행', label: '신한' },
+  ];
+
+  const insuranceBrands = [
+    { id: 'all', label: '전체' },
+    { id: '삼성생명', label: '삼성' },
+    { id: '한화생명', label: '한화' },
+    { id: '현대해상', label: '현대' },
+    { id: 'DB손해보험', label: 'DB' },
+    { id: '메리츠화재', label: '메리츠' },
+  ];
+
+  const stockBrands = [
+    { id: 'all', label: '전체' },
+    { id: '삼성증권', label: '삼성' },
+    { id: '미래에셋증권', label: '미래에셋' },
+    { id: 'NH투자증권', label: 'NH' },
+    { id: '키움증권', label: '키움' },
+    { id: '토스증권', label: '토스' },
+    { id: 'KB증권', label: 'KB' },
+  ];
 
   // ============================================
   // 바텀시트 상태
@@ -406,19 +172,22 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
   };
 
   // ============================================
-  // 카드 정렬: 에이핀 핀 높은 순
+  // 카드 정렬: 에이핀 핀 높은 순 + 브랜드 필터
   // ============================================
   const getSortedCards = () => {
     return [...cardProducts]
       .filter(card => cardFilter === 'all' || card.category === cardFilter || card.category === 'all')
+      .filter(card => cardBrand === 'all' || card.company === cardBrand)
       .sort((a, b) => b.benefitPoints - a.benefitPoints);
   };
 
   // ============================================
-  // 대출 정렬: 핀순 또는 금리순
+  // 대출 정렬: 핀순 또는 금리순 + 브랜드 필터
   // ============================================
   const getSortedLoans = () => {
-    const filtered = [...loanProducts].filter(loan => loan.category === loanCategory);
+    const filtered = [...loanProducts]
+      .filter(loan => loan.category === loanCategory)
+      .filter(loan => loanBrand === 'all' || loan.company === loanBrand);
     if (loanSortBy === 'limit') {
       return filtered.sort((a, b) => b.maxLimit - a.maxLimit);
     }
@@ -427,20 +196,22 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
   };
 
   // ============================================
-  // 보험 정렬: 핀 높은 순
+  // 보험 정렬: 핀 높은 순 + 브랜드 필터
   // ============================================
   const getSortedInsurance = () => {
     return [...insuranceProducts]
       .filter(ins => insuranceCategory === 'all' || ins.category === insuranceCategory)
+      .filter(ins => insuranceBrand === 'all' || ins.company === insuranceBrand)
       .sort((a, b) => b.benefitPoints - a.benefitPoints);
   };
 
   // ============================================
-  // 증권 정렬: 핀 높은 순
+  // 증권 정렬: 핀 높은 순 + 브랜드 필터
   // ============================================
   const getSortedStocks = () => {
     return [...stockProducts]
       .filter(stock => stockCategory === 'all' || stock.category === stockCategory)
+      .filter(stock => stockBrand === 'all' || stock.company === stockBrand)
       .sort((a, b) => b.benefitPoints - a.benefitPoints);
   };
 
@@ -471,7 +242,7 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
     <div className="screen finance-screen-v3">
       {/* 헤더 */}
       <div className="finance-header-v3">
-        <div className="app-logo"><span className="logo-a">A</span><span className="logo-dot">-</span><span className="logo-fin">Fin</span></div>
+        <AppLogo />
         <button className="finance-noti-btn" onClick={() => navigate('/notifications')}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" />
@@ -865,10 +636,19 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
               ))}
             </div>
 
-            <div className="sort-notice curation">
-              <span className="sort-icon">🎁</span>
-              <span>핀 적립순</span>
+            <div className="brand-filter-bar">
+              {cardBrands.map((brand) => (
+                <button
+                  key={brand.id}
+                  className={`brand-filter-btn ${cardBrand === brand.id ? 'active' : ''}`}
+                  onClick={() => setCardBrand(brand.id)}
+                >
+                  {brand.label}
+                </button>
+              ))}
             </div>
+
+            <div className="sort-text-corner">핀 적립순</div>
 
             <div className="product-list-v3">
               {getSortedCards().map((card, index) => (
@@ -904,19 +684,33 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
               ))}
             </div>
 
-            <div className="sort-options">
-              <button
-                className={`sort-chip ${loanSortBy === 'rate' ? 'active' : ''}`}
-                onClick={() => setLoanSortBy('rate')}
-              >
-                금리 낮은순
-              </button>
-              <button
-                className={`sort-chip ${loanSortBy === 'limit' ? 'active' : ''}`}
-                onClick={() => setLoanSortBy('limit')}
-              >
-                한도순
-              </button>
+            <div className="brand-filter-bar">
+              {loanBrands.map((brand) => (
+                <button
+                  key={brand.id}
+                  className={`brand-filter-btn ${loanBrand === brand.id ? 'active' : ''}`}
+                  onClick={() => setLoanBrand(brand.id)}
+                >
+                  {brand.label}
+                </button>
+              ))}
+            </div>
+
+            <div className="sort-options-with-text">
+              <div className="sort-options-inline">
+                <button
+                  className={`sort-chip ${loanSortBy === 'rate' ? 'active' : ''}`}
+                  onClick={() => setLoanSortBy('rate')}
+                >
+                  금리 낮은순
+                </button>
+                <button
+                  className={`sort-chip ${loanSortBy === 'limit' ? 'active' : ''}`}
+                  onClick={() => setLoanSortBy('limit')}
+                >
+                  한도순
+                </button>
+              </div>
             </div>
 
             <div className="product-list-v3">
@@ -953,10 +747,19 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
               ))}
             </div>
 
-            <div className="sort-notice curation">
-              <span className="sort-icon">🎁</span>
-              <span>핀 적립순</span>
+            <div className="brand-filter-bar">
+              {insuranceBrands.map((brand) => (
+                <button
+                  key={brand.id}
+                  className={`brand-filter-btn ${insuranceBrand === brand.id ? 'active' : ''}`}
+                  onClick={() => setInsuranceBrand(brand.id)}
+                >
+                  {brand.label}
+                </button>
+              ))}
             </div>
+
+            <div className="sort-text-corner">핀 적립순</div>
 
             <div className="product-list-v3">
               {getSortedInsurance().map((ins, index) => (
@@ -992,10 +795,19 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
               ))}
             </div>
 
-            <div className="sort-notice curation">
-              <span className="sort-icon">🎁</span>
-              <span>핀 적립순</span>
+            <div className="brand-filter-bar">
+              {stockBrands.map((brand) => (
+                <button
+                  key={brand.id}
+                  className={`brand-filter-btn ${stockBrand === brand.id ? 'active' : ''}`}
+                  onClick={() => setStockBrand(brand.id)}
+                >
+                  {brand.label}
+                </button>
+              ))}
             </div>
+
+            <div className="sort-text-corner">핀 적립순</div>
 
             <div className="product-list-v3">
               {getSortedStocks().map((stock, index) => (
@@ -1016,8 +828,8 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
         )}
       </div>
 
-      {/* 광고 배너 - 삼성화재 */}
-      {SamsungFireBanner()}
+      {/* 광고 배너 - 삼성화재 (추천 탭에서만 표시) */}
+      {mainTab === 'calculator' && SamsungFireBanner()}
 
       {/* 바텀시트 */}
       <div

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './BenefitsScreen.css';
 import { iPadProBanner } from '../components/AdBanner';
 import '../components/AdBanner.css';
+import { AppLogo } from '../../shared/components';
 
 const tabs = [
   { id: 'raffle', label: '경품', icon: '🎰' },
@@ -36,19 +37,30 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
   // 캐러셀 배너 상태
   const [currentBanner, setCurrentBanner] = useState(0);
   const bannerRef = useRef(null);
+  const videoRef = useRef(null);
   const banners = [
-    { id: 1, image: '/images/banners/coupang-banner.png', alt: '쿠팡 배너' },
-    { id: 2, image: '/images/banners/coupang-banner.png', alt: '배너 2' },
-    { id: 3, image: '/images/banners/coupang-banner.png', alt: '배너 3' },
+    { id: 0, type: 'video', video: '/images/banners/ad-c-video.mp4', alt: '광고 영상' },
+    { id: 1, image: '/images/banners/carousel_banner.png', alt: '캐러셀 배너' },
+    { id: 2, image: '/images/banners/coupang-banner.png', alt: '쿠팡 배너' },
   ];
 
-  // 배너 자동 슬라이드
+  // 영상 끝나면 다음 슬라이드로 이동
+  const handleVideoEnd = () => {
+    setCurrentBanner(1);
+  };
+
+  // 배너 자동 슬라이드 (영상 배너일 때는 자동 슬라이드 안함)
   useEffect(() => {
+    if (currentBanner === 0) return; // 첫 번째 영상 배너일 때는 자동 슬라이드 안함
+
     const timer = setInterval(() => {
-      setCurrentBanner((prev) => (prev + 1) % banners.length);
+      setCurrentBanner((prev) => {
+        const next = prev + 1;
+        return next >= banners.length ? 1 : next; // 영상 배너(0)는 건너뜀
+      });
     }, 4000);
     return () => clearInterval(timer);
-  }, [banners.length]);
+  }, [currentBanner, banners.length]);
 
   // 첫 진입 시 만보기 권한 팝업 (테스트용)
   useEffect(() => {
@@ -177,7 +189,7 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
     <div className="screen benefits-screen">
       {/* 앱바 */}
       <div className="benefits-appbar">
-        <div className="app-logo"><span className="logo-a">A</span><span className="logo-dot">-</span><span className="logo-fin">Fin</span></div>
+        <AppLogo />
         <button className="benefits-noti-btn" onClick={() => navigate('/notifications')}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" />
@@ -198,7 +210,19 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
                 key={banner.id}
                 className="benefits-carousel-slide"
               >
-                <img src={banner.image} alt={banner.alt} className="carousel-image" />
+                {banner.type === 'video' ? (
+                  <video
+                    ref={videoRef}
+                    src={banner.video}
+                    className="carousel-video"
+                    autoPlay
+                    muted
+                    playsInline
+                    onEnded={handleVideoEnd}
+                  />
+                ) : (
+                  <img src={banner.image} alt={banner.alt} className="carousel-image" />
+                )}
               </div>
             ))}
           </div>

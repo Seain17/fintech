@@ -1,33 +1,69 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './HomeScreen.css';
 import exchangeRateData from '../../shared/data/exchangeRate.json';
-import { SamsungFireBanner } from '../components/AdBanner';
-import '../components/AdBanner.css';
+import { STORAGE_KEYS, TIMING } from '../../shared/constants';
+import { AppLogo } from '../../shared/components';
 
 const HomeScreen = ({ userPoints, showToast, isGuest, unreadCount = 0 }) => {
   const navigate = useNavigate();
   const [isPartnerOpen, setIsPartnerOpen] = useState(false);
   const [showAdModal, setShowAdModal] = useState(false);
+  const [videoEnded, setVideoEnded] = useState(false);
+  const pickCardsRef = useRef(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+
+  // 마이핀 PICK 가로 스크롤 - 마우스 드래그
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    setStartX(e.pageX - pickCardsRef.current.offsetLeft);
+    setScrollLeft(pickCardsRef.current.scrollLeft);
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - pickCardsRef.current.offsetLeft;
+    const walk = (x - startX) * 1.5;
+    pickCardsRef.current.scrollLeft = scrollLeft - walk;
+  };
+
+  // 마이핀 PICK 가로 스크롤 - 마우스 휠
+  const handleWheel = (e) => {
+    if (pickCardsRef.current) {
+      e.preventDefault();
+      pickCardsRef.current.scrollLeft += e.deltaY;
+    }
+  };
 
   // 전면 광고 모달 (첫 진입 시 표시)
   useEffect(() => {
-    const hasSeenAd = sessionStorage.getItem('homeAdModalShown');
+    const hasSeenAd = sessionStorage.getItem(STORAGE_KEYS.HOME_AD_MODAL_SHOWN);
     if (!hasSeenAd) {
       setTimeout(() => {
         setShowAdModal(true);
-      }, 500);
+      }, TIMING.AD_MODAL_DELAY);
     }
   }, []);
 
   const closeAdModal = () => {
     setShowAdModal(false);
-    sessionStorage.setItem('homeAdModalShown', 'true');
+    sessionStorage.setItem(STORAGE_KEYS.HOME_AD_MODAL_SHOWN, 'true');
   };
 
   const closeAdModalToday = () => {
     setShowAdModal(false);
-    sessionStorage.setItem('homeAdModalShown', 'true');
+    sessionStorage.setItem(STORAGE_KEYS.HOME_AD_MODAL_SHOWN, 'true');
     // 실제로는 localStorage에 날짜 저장하여 하루동안 안보이게 처리
   };
 
@@ -47,7 +83,7 @@ const HomeScreen = ({ userPoints, showToast, isGuest, unreadCount = 0 }) => {
 
       {/* 앱바 */}
       <div className="home-appbar">
-        <div className="app-logo"><span className="logo-a">A</span><span className="logo-dot">-</span><span className="logo-fin">Fin</span></div>
+        <AppLogo />
         <button className="home-noti-btn" onClick={() => navigate('/notifications')}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" />
@@ -137,14 +173,31 @@ const HomeScreen = ({ userPoints, showToast, isGuest, unreadCount = 0 }) => {
         {/* 마이핀 PICK 섹션 */}
         <div className="pick-section">
           <h2 className="pick-title">마이핀 <span>PICK</span></h2>
-          <div className="pick-cards">
+          <div
+            className={`pick-cards ${isDragging ? 'dragging' : ''}`}
+            ref={pickCardsRef}
+            onMouseDown={handleMouseDown}
+            onMouseLeave={handleMouseLeave}
+            onMouseUp={handleMouseUp}
+            onMouseMove={handleMouseMove}
+            onWheel={handleWheel}
+          >
             <div className="pick-card yellow" onClick={() => navigate('/benefits')}>
               <div className="pick-card-text">
                 <p>핀</p>
                 <p>모으기</p>
               </div>
               <div className="pick-card-icon-img">
-                <img src="/images/icons/recommend.png" alt="" />
+                <img src="/images/icons/recommend.png" alt="" draggable="false" />
+              </div>
+            </div>
+            <div className="pick-card gradient-purple" onClick={() => navigate('/card-top10')}>
+              <div className="pick-card-text">
+                <p>에이핀 추천</p>
+                <p>카드혜택 Top10</p>
+              </div>
+              <div className="pick-card-icon-img">
+                <img src="/images/icons/card.png" alt="" draggable="false" />
               </div>
             </div>
             <div className="pick-card blue" onClick={() => showToast('카드 추천 페이지')}>
@@ -153,7 +206,7 @@ const HomeScreen = ({ userPoints, showToast, isGuest, unreadCount = 0 }) => {
                 <p>좋은카드는?</p>
               </div>
               <div className="pick-card-icon-img">
-                <img src="/images/icons/card.png" alt="" />
+                <img src="/images/icons/card.png" alt="" draggable="false" />
               </div>
             </div>
             <div className="pick-card pink" onClick={() => showToast('보험 추천 페이지')}>
@@ -162,26 +215,41 @@ const HomeScreen = ({ userPoints, showToast, isGuest, unreadCount = 0 }) => {
                 <p>추천</p>
               </div>
               <div className="pick-card-icon-img">
-                <img src="/images/icons/insurance.png" alt="" />
+                <img src="/images/icons/insurance.png" alt="" draggable="false" />
               </div>
             </div>
           </div>
         </div>
 
         {/* 동영상 광고 배너 */}
-        <div className="video-ad-banner" onClick={() => navigate('/benefits')}>
-          <video
-            className="video-ad-player"
-            src="/images/banners/ad-video.mp4"
-            autoPlay
-            muted
-            loop
-            playsInline
-            poster="/images/banners/ad-poster.png"
-          />
-          <div className="video-ad-overlay">
-            <span className="video-ad-badge">AD</span>
-          </div>
+        <div className="video-ad-banner" onClick={() => navigate('/card-top10/hana')}>
+          {!videoEnded ? (
+            <>
+              <video
+                className="video-ad-player"
+                src="/images/banners/ad-video.mp4"
+                autoPlay
+                muted
+                playsInline
+                poster="/images/banners/ad-poster.png"
+                onEnded={() => setVideoEnded(true)}
+              />
+              <div className="video-ad-overlay">
+                <span className="video-ad-badge">AD</span>
+              </div>
+            </>
+          ) : (
+            <>
+              <img
+                className="video-ad-player"
+                src="/images/banners/main_banner.png"
+                alt="메인 배너"
+              />
+              <div className="video-ad-overlay">
+                <span className="video-ad-badge">AD</span>
+              </div>
+            </>
+          )}
         </div>
 
         {/* 퀵메뉴 */}
@@ -304,8 +372,10 @@ const HomeScreen = ({ userPoints, showToast, isGuest, unreadCount = 0 }) => {
           <p className="news-footer">네이버 뉴스 제공 · 매일 오전 10시 업데이트</p>
         </div>
 
-        {/* 광고 배너 - 삼성화재 */}
-        {SamsungFireBanner()}
+        {/* 하단 띠배너 */}
+        <div className="bottom-ad-banner" onClick={() => navigate('/card-top10/hana')}>
+          <img src="/images/banners/bottom_banner.png" alt="배너" />
+        </div>
       </div>
 
       {/* 전면 광고 모달 */}
