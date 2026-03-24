@@ -50,66 +50,22 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
   // 카드 탭 상태
   // ============================================
   const [cardFilter, setCardFilter] = useState('all');
-  const [cardBrand, setCardBrand] = useState('all');
 
   // ============================================
   // 대출 탭 상태
   // ============================================
   const [loanCategory, setLoanCategory] = useState('credit');
   const [loanSortBy, setLoanSortBy] = useState('rate');
-  const [loanBrand, setLoanBrand] = useState('all');
 
   // ============================================
   // 보험 탭 상태
   // ============================================
   const [insuranceCategory, setInsuranceCategory] = useState('health');
-  const [insuranceBrand, setInsuranceBrand] = useState('all');
 
   // ============================================
   // 증권 탭 상태
   // ============================================
   const [stockCategory, setStockCategory] = useState('stock');
-  const [stockBrand, setStockBrand] = useState('all');
-
-  // ============================================
-  // 브랜드 목록 정의
-  // ============================================
-  const cardBrands = [
-    { id: 'all', label: '전체' },
-    { id: '신한카드', label: '신한' },
-    { id: '삼성카드', label: '삼성' },
-    { id: '현대카드', label: '현대' },
-    { id: 'KB국민카드', label: 'KB국민' },
-    { id: '하나카드', label: '하나' },
-  ];
-
-  const loanBrands = [
-    { id: 'all', label: '전체' },
-    { id: '토스뱅크', label: '토스' },
-    { id: 'KB국민은행', label: 'KB국민' },
-    { id: '카카오뱅크', label: '카카오' },
-    { id: '하나은행', label: '하나' },
-    { id: '신한은행', label: '신한' },
-  ];
-
-  const insuranceBrands = [
-    { id: 'all', label: '전체' },
-    { id: '삼성생명', label: '삼성' },
-    { id: '한화생명', label: '한화' },
-    { id: '현대해상', label: '현대' },
-    { id: 'DB손해보험', label: 'DB' },
-    { id: '메리츠화재', label: '메리츠' },
-  ];
-
-  const stockBrands = [
-    { id: 'all', label: '전체' },
-    { id: '삼성증권', label: '삼성' },
-    { id: '미래에셋증권', label: '미래에셋' },
-    { id: 'NH투자증권', label: 'NH' },
-    { id: '키움증권', label: '키움' },
-    { id: '토스증권', label: '토스' },
-    { id: 'KB증권', label: 'KB' },
-  ];
 
   // ============================================
   // 바텀시트 상태
@@ -172,22 +128,20 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
   };
 
   // ============================================
-  // 카드 정렬: 에이핀 핀 높은 순 + 브랜드 필터
+  // 카드 정렬: 에이핀 핀 높은 순
   // ============================================
   const getSortedCards = () => {
     return [...cardProducts]
       .filter(card => cardFilter === 'all' || card.category === cardFilter || card.category === 'all')
-      .filter(card => cardBrand === 'all' || card.company === cardBrand)
       .sort((a, b) => b.benefitPoints - a.benefitPoints);
   };
 
   // ============================================
-  // 대출 정렬: 핀순 또는 금리순 + 브랜드 필터
+  // 대출 정렬: 핀순 또는 금리순
   // ============================================
   const getSortedLoans = () => {
     const filtered = [...loanProducts]
-      .filter(loan => loan.category === loanCategory)
-      .filter(loan => loanBrand === 'all' || loan.company === loanBrand);
+      .filter(loan => loan.category === loanCategory);
     if (loanSortBy === 'limit') {
       return filtered.sort((a, b) => b.maxLimit - a.maxLimit);
     }
@@ -196,22 +150,20 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
   };
 
   // ============================================
-  // 보험 정렬: 핀 높은 순 + 브랜드 필터
+  // 보험 정렬: 핀 높은 순
   // ============================================
   const getSortedInsurance = () => {
     return [...insuranceProducts]
       .filter(ins => insuranceCategory === 'all' || ins.category === insuranceCategory)
-      .filter(ins => insuranceBrand === 'all' || ins.company === insuranceBrand)
       .sort((a, b) => b.benefitPoints - a.benefitPoints);
   };
 
   // ============================================
-  // 증권 정렬: 핀 높은 순 + 브랜드 필터
+  // 증권 정렬: 핀 높은 순
   // ============================================
   const getSortedStocks = () => {
     return [...stockProducts]
       .filter(stock => stockCategory === 'all' || stock.category === stockCategory)
-      .filter(stock => stockBrand === 'all' || stock.company === stockBrand)
       .sort((a, b) => b.benefitPoints - a.benefitPoints);
   };
 
@@ -636,18 +588,6 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
               ))}
             </div>
 
-            <div className="brand-filter-bar">
-              {cardBrands.map((brand) => (
-                <button
-                  key={brand.id}
-                  className={`brand-filter-btn ${cardBrand === brand.id ? 'active' : ''}`}
-                  onClick={() => setCardBrand(brand.id)}
-                >
-                  {brand.label}
-                </button>
-              ))}
-            </div>
-
             <div className="sort-text-corner">핀 적립순</div>
 
             <div className="product-list-v3">
@@ -680,18 +620,6 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
                 >
                   <span className="cat-icon">{cat.icon}</span>
                   <span className="cat-label">{cat.label}</span>
-                </button>
-              ))}
-            </div>
-
-            <div className="brand-filter-bar">
-              {loanBrands.map((brand) => (
-                <button
-                  key={brand.id}
-                  className={`brand-filter-btn ${loanBrand === brand.id ? 'active' : ''}`}
-                  onClick={() => setLoanBrand(brand.id)}
-                >
-                  {brand.label}
                 </button>
               ))}
             </div>
@@ -747,18 +675,6 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
               ))}
             </div>
 
-            <div className="brand-filter-bar">
-              {insuranceBrands.map((brand) => (
-                <button
-                  key={brand.id}
-                  className={`brand-filter-btn ${insuranceBrand === brand.id ? 'active' : ''}`}
-                  onClick={() => setInsuranceBrand(brand.id)}
-                >
-                  {brand.label}
-                </button>
-              ))}
-            </div>
-
             <div className="sort-text-corner">핀 적립순</div>
 
             <div className="product-list-v3">
@@ -791,18 +707,6 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
                 >
                   <span className="cat-icon">{cat.icon}</span>
                   <span className="cat-label">{cat.label}</span>
-                </button>
-              ))}
-            </div>
-
-            <div className="brand-filter-bar">
-              {stockBrands.map((brand) => (
-                <button
-                  key={brand.id}
-                  className={`brand-filter-btn ${stockBrand === brand.id ? 'active' : ''}`}
-                  onClick={() => setStockBrand(brand.id)}
-                >
-                  {brand.label}
                 </button>
               ))}
             </div>
