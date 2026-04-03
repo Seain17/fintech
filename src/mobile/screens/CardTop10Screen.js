@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './CardTop10Screen.css';
 
 const cardCompanies = [
+  { id: 'bc', name: 'BC카드', logo: 'BC', color: '#e31837', slogan: '생활 금융 플랫폼' },
   { id: 'hana', name: '하나카드', logo: '하나', color: '#009688', slogan: '손안의 하나' },
   { id: 'shinhan', name: '신한카드', logo: '신한', color: '#0046ff', slogan: '더 나은 금융 생활의 시작' },
   { id: 'samsung', name: '삼성카드', logo: '삼성', color: '#1428a0', slogan: '당신의 라이프스타일 파트너' },
@@ -10,7 +11,6 @@ const cardCompanies = [
   { id: 'kb', name: 'KB국민카드', logo: 'KB', color: '#ffb300', slogan: '금융을 넘어, 생활 속으로' },
   { id: 'woori', name: '우리카드', logo: '우리', color: '#0072bc', slogan: '우리만의 혜택' },
   { id: 'lotte', name: '롯데카드', logo: '롯데', color: '#e60012', slogan: '일상에 가치를 더하다' },
-  { id: 'bc', name: 'BC카드', logo: 'BC', color: '#e31837', slogan: '생활 금융 플랫폼' },
 ];
 
 const CardTop10Screen = ({ showToast }) => {

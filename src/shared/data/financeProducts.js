@@ -8,6 +8,16 @@
 // ============================================
 export const cardProducts = [
   {
+    id: 0,
+    name: 'BC 바로 클리어 카드',
+    company: 'BC카드',
+    logo: 'BC',
+    benefit: '전 가맹점 1.2% 적립',
+    benefitPoints: 20000,
+    color: '#e31837',
+    category: 'all',
+  },
+  {
     id: 1,
     name: '신한 Deep Dream 카드',
     company: '신한카드',

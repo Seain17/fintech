@@ -222,12 +222,12 @@ const HomeScreen = ({ userPoints, showToast, isGuest, unreadCount = 0 }) => {
         </div>
 
         {/* 동영상 광고 배너 */}
-        <div className="video-ad-banner" onClick={() => navigate('/card-top10/hana')}>
+        <div className="video-ad-banner" onClick={() => navigate('/card-top10/bc')}>
           {!videoEnded ? (
             <>
               <video
                 className="video-ad-player"
-                src="/images/banners/ad-video.mp4"
+                src="/images/banners/ad-video-bc.mp4"
                 autoPlay
                 muted
                 playsInline
@@ -242,8 +242,8 @@ const HomeScreen = ({ userPoints, showToast, isGuest, unreadCount = 0 }) => {
             <>
               <img
                 className="video-ad-player"
-                src="/images/banners/main_banner.png"
-                alt="메인 배너"
+                src="/images/banners/main_banner-bc.png"
+                alt="BC카드 배너"
               />
               <div className="video-ad-overlay">
                 <span className="video-ad-badge">AD</span>
@@ -373,8 +373,8 @@ const HomeScreen = ({ userPoints, showToast, isGuest, unreadCount = 0 }) => {
         </div>
 
         {/* 하단 띠배너 */}
-        <div className="bottom-ad-banner" onClick={() => navigate('/card-top10/hana')}>
-          <img src="/images/banners/bottom_banner.png" alt="배너" />
+        <div className="bottom-ad-banner" onClick={() => navigate('/card-top10/bc')}>
+          <img src="/images/banners/bottom_banner-bc.png" alt="BC카드 배너" />
         </div>
       </div>
 
@@ -390,11 +390,11 @@ const HomeScreen = ({ userPoints, showToast, isGuest, unreadCount = 0 }) => {
             </button>
             <div className="home-ad-modal-content">
               <img
-                src="/images/banners/modal.png"
-                alt="광고"
+                src="/images/banners/modal-bc.png"
+                alt="BC카드 광고"
                 className="home-ad-modal-image"
                 onClick={() => {
-                  showToast('광고 페이지로 이동');
+                  navigate('/card-top10/bc');
                   closeAdModal();
                 }}
               />

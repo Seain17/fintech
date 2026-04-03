@@ -13,8 +13,8 @@ const SplashScreen = () => {
       </div>
       <div className="splash-bottom">
         <img
-          src="/images/banners/ad_splash.png"
-          alt="광고"
+          src="/images/banners/ad_splash-bc.png"
+          alt="BC카드 광고"
           className="splash-ad-banner"
         />
       </div>

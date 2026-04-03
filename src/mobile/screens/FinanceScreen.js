@@ -1,50 +1,116 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './FinanceScreen.css';
-import { SamsungFireBanner } from '../components/AdBanner';
-import '../components/AdBanner.css';
 import { AppLogo } from '../../shared/components';
 import {
   cardProducts,
   loanProducts,
-  insuranceProducts,
-  stockProducts,
   loanCategories,
-  insuranceCategories,
-  stockCategories,
 } from '../../shared/data/financeProducts';
 
 /**
- * 금융 탭: 3단 구조 화면
+ * 금융 탭: 4단 구조 화면 (증권 탭 제거)
  *
- * [계산기] - Search & Algorithm (법규 준수)
- *   → 금리 낮은 순 → 한도 높은 순 (자가평가서 기준)
- *
- * [카드] / [대출] - Curation (전략적 추천)
- *   → 에이핀 핀 높은 순
+ * [추천] - 카드사별 인기차트 (브랜드관)
+ * [카드] - 에이핀 핀 높은 순
+ * [보험] - 에이핀 핀 높은 순
+ * [대출] - 금리 낮은 순 (법규 준수)
  */
+
+// 카드사 브랜드 데이터
+const cardBrands = [
+  { id: 'bc', name: 'BCcard', logo: 'BC', color: '#ed1c24', brandColor: '#ed1c24' },
+  { id: 'hana', name: '하나카드', logo: 'H', color: '#009178', brandColor: '#009178' },
+  { id: 'shinhan', name: '신한카드', logo: 'S', color: '#0046ff', brandColor: '#0046ff' },
+  { id: 'woori', name: '우리카드', logo: 'W', color: '#0099d9', brandColor: '#0099d9' },
+  { id: 'samsung', name: '삼성카드', logo: 'SS', color: '#0066b3', brandColor: '#0066b3' },
+];
+
+// 브랜드별 TOP 10 카드 데이터
+const brandTopCards = {
+  hana: [
+    { rank: 1, name: 'JADE Classic', change: null, image: '💳' },
+    { rank: 2, name: '하나 스카이패스 아멕스 플래티늄 카드', change: null, image: '💳' },
+    { rank: 3, name: '토스뱅크 하나카드 Day', change: null, image: '💳' },
+    { rank: 4, name: '트래블로그 신용카드', change: 3, image: '💳' },
+    { rank: 5, name: '원더카드 2.0 LIFE', change: null, image: '💳' },
+    { rank: 6, name: '하나 1Q 카드', change: -1, image: '💳' },
+    { rank: 7, name: '하나머니 쿠팡적립카드', change: 2, image: '💳' },
+    { rank: 8, name: '하나 빅팟카드', change: null, image: '💳' },
+    { rank: 9, name: '하나멤버스 1Q 카드', change: -2, image: '💳' },
+    { rank: 10, name: '하나 트래블로그 체크카드', change: null, image: '💳' },
+  ],
+  bc: [
+    { rank: 1, name: 'GOAT BC 바로카드', change: 2, image: '/images/bc_brand_01.png' },
+    { rank: 2, name: 'BC 바로 ZONE 카드', change: 1, image: '/images/bc_brand_02.png' },
+    { rank: 3, name: 'BC 바로 클리어 플러스', change: 2, image: '/images/bc_brand_01.png' },
+    { rank: 4, name: 'BC 바로 On&Off 카드', change: -2, image: '/images/bc_brand_02.png' },
+    { rank: 5, name: 'BC 바로 MACAO 카드', change: 1, image: '/images/bc_brand_01.png' },
+    { rank: 6, name: 'BC 바로 클리어 카드', change: -1, image: '/images/bc_brand_02.png' },
+    { rank: 7, name: 'BC 페이북 체크카드', change: null, image: '/images/bc_brand_01.png' },
+    { rank: 8, name: 'BC 그린카드', change: 2, image: '/images/bc_brand_02.png' },
+    { rank: 9, name: 'BC 바로 플래티늄', change: -1, image: '/images/bc_brand_01.png' },
+    { rank: 10, name: 'BC 바로 에브리 카드', change: null, image: '/images/bc_brand_02.png' },
+  ],
+  shinhan: [
+    { rank: 1, name: 'Mr.Life 카드', change: null, image: '💳' },
+    { rank: 2, name: '신한카드 Deep Oil', change: null, image: '💳' },
+    { rank: 3, name: '신한카드 taptap O', change: 1, image: '💳' },
+    { rank: 4, name: '신한카드 Hi-Point', change: -1, image: '💳' },
+    { rank: 5, name: 'S-Line 카드', change: null, image: '💳' },
+  ],
+  woori: [
+    { rank: 1, name: '카드의정석 POINT', change: null, image: '💳' },
+    { rank: 2, name: '카드의정석 COOKIE CHECK', change: null, image: '💳' },
+    { rank: 3, name: '다이아몬드 카드', change: 2, image: '💳' },
+    { rank: 4, name: '우리V체크카드', change: null, image: '💳' },
+    { rank: 5, name: '카드의정석 SHOPPING', change: -1, image: '💳' },
+  ],
+  samsung: [
+    { rank: 1, name: '탭탭오 카드', change: null, image: '💳' },
+    { rank: 2, name: '삼성 iD SIMPLE 카드', change: 1, image: '💳' },
+    { rank: 3, name: '삼성카드 taptap', change: -1, image: '💳' },
+    { rank: 4, name: '삼성 아이디 카드', change: null, image: '💳' },
+    { rank: 5, name: '삼성 SELECT 카드', change: 2, image: '💳' },
+  ],
+};
+
+// 브랜드별 이벤트 데이터
+const brandEvents = {
+  hana: [
+    { icon: '🏠', subtitle: '지금까지 최고 1억4천만원!', title: '부동산 세금 환급 확인하세요' },
+    { icon: '🚗', subtitle: '자동차보험 조회하고 가입하면', title: '최대 6만 하나머니' },
+    { icon: '🚙', subtitle: '초기 비용 부담없이', title: '내 차 타는 법, 어떻게 할까요?' },
+    { icon: '💰', subtitle: '평균 53만원 돌려받았어요', title: '숨어있는 보험금 찾기!' },
+  ],
+  bc: [
+    { icon: '🎁', subtitle: 'BC카드 신규 발급 시', title: '최대 5만원 캐시백' },
+    { icon: '✈️', subtitle: '해외여행 필수', title: '환전 수수료 90% 할인' },
+    { icon: '🛒', subtitle: '온라인 쇼핑 할인', title: '쿠팡/네이버 최대 7% 적립' },
+    { icon: '☕', subtitle: '커피 전문점 할인', title: '스타벅스/투썸 15% 청구할인' },
+  ],
+  shinhan: [
+    { icon: '🛒', subtitle: '온라인 쇼핑 할인', title: '쿠팡/네이버 최대 5% 적립' },
+    { icon: '☕', subtitle: '커피 전문점 할인', title: '스타벅스 10% 청구할인' },
+  ],
+  woori: [
+    { icon: '🎬', subtitle: '영화관 할인', title: 'CGV/롯데시네마 4천원 할인' },
+    { icon: '🍽️', subtitle: '외식비 절약', title: '배달앱 5% 청구할인' },
+  ],
+  samsung: [
+    { icon: '📱', subtitle: '통신비 할인', title: 'SKT/KT/LG U+ 1만원 할인' },
+    { icon: '⛽', subtitle: '주유 할인', title: '리터당 80원 할인' },
+  ],
+};
 
 const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
   const navigate = useNavigate();
 
   // 메인 탭 상태
-  const [mainTab, setMainTab] = useState('calculator');
+  const [mainTab, setMainTab] = useState('recommend');
 
-  // ============================================
-  // 계산기 탭 상태
-  // ============================================
-  const [calcStep, setCalcStep] = useState('select'); // 'select' | 'option' | 'result'
-  const [calcType, setCalcType] = useState(null); // 'card' | 'loan'
-  const [calcCardBenefit, setCalcCardBenefit] = useState('all'); // 카드 혜택 선택
-  const [calcLoanType, setCalcLoanType] = useState('credit'); // 대출 종류 선택
-  const [calcFilters, setCalcFilters] = useState({
-    minRate: 0,
-    maxRate: 20,
-    minLimit: 0,
-    maxLimit: 200000,
-  });
-  const [isLoading, setIsLoading] = useState(false);
-  const [calcResults, setCalcResults] = useState([]);
+  // 브랜드 상세 페이지 상태
+  const [selectedBrand, setSelectedBrand] = useState(null);
 
   // ============================================
   // 카드 탭 상태
@@ -57,75 +123,13 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
   const [loanCategory, setLoanCategory] = useState('credit');
   const [loanSortBy, setLoanSortBy] = useState('rate');
 
-  // ============================================
-  // 보험 탭 상태
-  // ============================================
-  const [insuranceCategory, setInsuranceCategory] = useState('health');
-
-  // ============================================
-  // 증권 탭 상태
-  // ============================================
-  const [stockCategory, setStockCategory] = useState('stock');
+  // 보험 탭은 현재 준비중 상태
 
   // ============================================
   // 바텀시트 상태
   // ============================================
   const [bottomSheetOpen, setBottomSheetOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-
-  // ============================================
-  // 계산기 검색 실행
-  // ============================================
-  const runCalculation = () => {
-    setIsLoading(true);
-
-    setTimeout(() => {
-      if (calcType === 'card') {
-        // 카드: 혜택별 필터 후 핀 높은 순
-        const sorted = [...cardProducts]
-          .filter(card => calcCardBenefit === 'all' || card.category === calcCardBenefit || card.category === 'all')
-          .sort((a, b) => b.benefitPoints - a.benefitPoints);
-        setCalcResults(sorted);
-      } else {
-        // 대출: 자가평가서 기준 정렬 (금리 낮은 순 → 한도 높은 순)
-        const sorted = [...loanProducts]
-          .filter(loan => loan.category === calcLoanType)
-          .sort((a, b) => {
-            if (a.interestRate !== b.interestRate) {
-              return a.interestRate - b.interestRate;
-            }
-            return b.maxLimit - a.maxLimit;
-          });
-        setCalcResults(sorted);
-      }
-      setIsLoading(false);
-      setCalcStep('result');
-    }, 1500);
-  };
-
-  // 대출 결과에서 필터 적용
-  const getFilteredLoanResults = () => {
-    return calcResults.filter(loan => {
-      if (loan.interestRate < calcFilters.minRate) return false;
-      if (loan.interestRate > calcFilters.maxRate) return false;
-      if (loan.maxLimit < calcFilters.minLimit) return false;
-      if (loan.maxLimit > calcFilters.maxLimit) return false;
-      return true;
-    });
-  };
-
-  // 계산기 초기화
-  const resetCalculator = () => {
-    setCalcStep('select');
-    setCalcType(null);
-    setCalcResults([]);
-    setCalcFilters({
-      minRate: 0,
-      maxRate: 20,
-      minLimit: 0,
-      maxLimit: 200000,
-    });
-  };
 
   // ============================================
   // 카드 정렬: 에이핀 핀 높은 순
@@ -149,23 +153,6 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
     return filtered.sort((a, b) => a.interestRate - b.interestRate);
   };
 
-  // ============================================
-  // 보험 정렬: 핀 높은 순
-  // ============================================
-  const getSortedInsurance = () => {
-    return [...insuranceProducts]
-      .filter(ins => insuranceCategory === 'all' || ins.category === insuranceCategory)
-      .sort((a, b) => b.benefitPoints - a.benefitPoints);
-  };
-
-  // ============================================
-  // 증권 정렬: 핀 높은 순
-  // ============================================
-  const getSortedStocks = () => {
-    return [...stockProducts]
-      .filter(stock => stockCategory === 'all' || stock.category === stockCategory)
-      .sort((a, b) => b.benefitPoints - a.benefitPoints);
-  };
 
   // ============================================
   // 상품 클릭 핸들러
@@ -187,9 +174,182 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
     closeBottomSheet();
   };
 
+  // 브랜드 클릭 핸들러
+  const handleBrandClick = (brand) => {
+    setSelectedBrand(brand);
+  };
+
+  // 브랜드 상세에서 뒤로가기
+  const handleBackFromBrand = () => {
+    setSelectedBrand(null);
+  };
+
   // ============================================
   // 렌더링
   // ============================================
+
+  // 브랜드 상세 페이지 렌더링
+  if (selectedBrand) {
+    const brand = cardBrands.find(b => b.id === selectedBrand);
+    const topCards = brandTopCards[selectedBrand] || [];
+    const events = brandEvents[selectedBrand] || [];
+
+    // BC카드 전용 이미지 기반 브랜드관
+    if (selectedBrand === 'bc') {
+      return (
+        <div className="screen finance-screen-v3">
+          {/* 헤더 */}
+          <div className="finance-header-v3">
+            <button className="brand-back-btn" onClick={handleBackFromBrand}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M15 19l-7-7 7-7" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+            <button className="finance-noti-btn" onClick={() => navigate('/notifications')}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" />
+              </svg>
+              {unreadCount > 0 && <span className="finance-noti-badge">{unreadCount}</span>}
+            </button>
+          </div>
+
+          {/* BC카드 브랜드관 - 이미지 기반 */}
+          <div className="finance-content-v3 brand-detail-content bc-brand-content">
+            {/* 브랜드 타이틀 */}
+            <h1 className="brand-detail-title">
+              <span style={{ color: '#e31837' }}>BC카드</span> TOP 10
+            </h1>
+
+            {/* TOP 10 이미지 */}
+            <div className="bc-brand-image-section">
+              <img
+                src="/images/bc_brand_01.png"
+                alt="BC카드 TOP 10"
+                className="bc-brand-full-image"
+              />
+            </div>
+
+            {/* 이벤트 타이틀 */}
+            <h2 className="brand-events-title" style={{ marginTop: '24px' }}>
+              <span style={{ color: '#e31837' }}>BC카드</span> Event
+            </h2>
+
+            {/* 이벤트 이미지 */}
+            <div className="bc-brand-image-section">
+              <img
+                src="/images/bc_brand_02.png"
+                alt="BC카드 Event"
+                className="bc-brand-full-image"
+              />
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // 기타 브랜드 기존 렌더링
+    return (
+      <div className="screen finance-screen-v3">
+        {/* 헤더 */}
+        <div className="finance-header-v3">
+          <button className="brand-back-btn" onClick={handleBackFromBrand}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M15 19l-7-7 7-7" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+          <button className="finance-noti-btn" onClick={() => navigate('/notifications')}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" />
+            </svg>
+            {unreadCount > 0 && <span className="finance-noti-badge">{unreadCount}</span>}
+          </button>
+        </div>
+
+        {/* 브랜드 상세 콘텐츠 */}
+        <div className="finance-content-v3 brand-detail-content">
+          {/* 브랜드 타이틀 */}
+          <h1 className="brand-detail-title">
+            <span style={{ color: brand?.brandColor }}>{brand?.name}</span> TOP 10
+          </h1>
+
+          {/* TOP 1 히어로 카드 */}
+          <div className="brand-hero-card" style={{ background: `linear-gradient(135deg, ${brand?.brandColor} 0%, ${brand?.brandColor}dd 100%)` }}>
+            <button className="hero-back-btn" onClick={handleBackFromBrand}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M15 19l-7-7 7-7" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+            <button className="hero-menu-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M4 6h16M4 12h16M4 18h16" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+
+            <div className="hero-title">{brand?.name} TOP10 <span className="hero-help">?</span></div>
+            <div className="hero-date">2026.3.1 ~ 2026.3.31 <span className="hero-arrow">▼</span></div>
+
+            <div className="hero-top1">
+              <span className="hero-rank">1</span>
+              <span className="hero-rank-dash">{topCards[0]?.change > 0 ? `▲${topCards[0]?.change}` : topCards[0]?.change < 0 ? `▼${Math.abs(topCards[0]?.change)}` : '—'}</span>
+              <div className="hero-card-img">
+                {topCards[0]?.image?.startsWith('/') ? (
+                  <img src={topCards[0]?.image} alt={topCards[0]?.name} />
+                ) : topCards[0]?.image}
+              </div>
+              <div className="hero-card-info">
+                <div className="hero-card-name">{topCards[0]?.name}</div>
+                <div className="hero-card-brand">{brand?.name}</div>
+              </div>
+              <span className="hero-arrow-right">›</span>
+            </div>
+          </div>
+
+          {/* TOP 2-10 리스트 */}
+          <div className="brand-ranking-list">
+            {topCards.slice(1).map((card, index) => (
+              <div key={card.rank} className="ranking-item" onClick={() => handleProductClick(card)}>
+                <span className="ranking-num">{card.rank}</span>
+                <span className={`ranking-change ${card.change > 0 ? 'up' : card.change < 0 ? 'down' : ''}`}>
+                  {card.change === null ? '—' : card.change > 0 ? `▲${card.change}` : `▼${Math.abs(card.change)}`}
+                </span>
+                <div className="ranking-card-img">
+                  {card.image?.startsWith('/') ? (
+                    <img src={card.image} alt={card.name} />
+                  ) : card.image}
+                </div>
+                <div className="ranking-card-info">
+                  <div className="ranking-card-name">{card.name}</div>
+                  <div className="ranking-card-brand">{brand?.name}</div>
+                </div>
+                <span className="ranking-arrow">›</span>
+              </div>
+            ))}
+          </div>
+
+          {/* 브랜드 이벤트 섹션 */}
+          <div className="brand-events-section">
+            <h2 className="brand-events-title">
+              <span style={{ color: brand?.brandColor }}>{brand?.name}</span> Event
+            </h2>
+
+            <div className="brand-events-list">
+              {events.map((event, index) => (
+                <div key={index} className="brand-event-item">
+                  <div className="event-icon">{event.icon}</div>
+                  <div className="event-content">
+                    <div className="event-subtitle">{event.subtitle}</div>
+                    <div className="event-title">{event.title}</div>
+                  </div>
+                  <span className="event-arrow">›</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="screen finance-screen-v3">
       {/* 헤더 */}
@@ -203,11 +363,11 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
         </button>
       </div>
 
-      {/* 메인 탭 */}
+      {/* 메인 탭 (증권 탭 제거됨) */}
       <div className="main-tabs-v3">
         <button
-          className={`main-tab-v3 ${mainTab === 'calculator' ? 'active' : ''}`}
-          onClick={() => setMainTab('calculator')}
+          className={`main-tab-v3 ${mainTab === 'recommend' ? 'active' : ''}`}
+          onClick={() => setMainTab('recommend')}
         >
           추천
         </button>
@@ -224,12 +384,6 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
           보험
         </button>
         <button
-          className={`main-tab-v3 ${mainTab === 'stock' ? 'active' : ''}`}
-          onClick={() => setMainTab('stock')}
-        >
-          증권
-        </button>
-        <button
           className={`main-tab-v3 ${mainTab === 'loan' ? 'active' : ''}`}
           onClick={() => setMainTab('loan')}
         >
@@ -239,332 +393,35 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
 
       {/* 콘텐츠 영역 */}
       <div className="finance-content-v3">
-        {/* ========== 계산기 탭 ========== */}
-        {mainTab === 'calculator' && (
-          <div className="calc-section">
-            {/* Step 1: 카드/대출 선택 */}
-            {calcStep === 'select' && (
-              <div className="calc-card-v3">
-                <div className="calc-header-v3">
-                  <h2 className="calc-title-v3">
-                    나에게 맞는<br />
-                    <span className="accent">최적 상품 찾기</span>
-                  </h2>
-                  <p className="calc-subtitle-v3">
-                    금융소비자보호법에 따라<br />
-                    유리한 조건 순으로 추천해드려요
-                  </p>
-                </div>
+        {/* ========== 추천 탭 - 카드사별 인기차트 ========== */}
+        {mainTab === 'recommend' && (
+          <div className="recommend-section">
+            <h2 className="brand-chart-title">
+              <span className="crown-icon">👑</span>
+              카드사별 인기차트
+            </h2>
 
-                <div className="calc-type-select">
-                  <label className="category-label">어떤 상품을 찾으세요?</label>
-                  <div className="calc-type-buttons">
-                    <button
-                      className="calc-type-btn"
-                      onClick={() => {
-                        setCalcType('card');
-                        setCalcStep('option');
-                      }}
-                    >
-                      <span className="type-icon">💳</span>
-                      <span className="type-label">카드</span>
-                      <span className="type-desc">혜택 맞춤 추천</span>
-                    </button>
-                    <button
-                      className="calc-type-btn"
-                      onClick={() => {
-                        setCalcType('loan');
-                        setCalcStep('option');
-                      }}
-                    >
-                      <span className="type-icon">💰</span>
-                      <span className="type-label">대출</span>
-                      <span className="type-desc">금리 비교 추천</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Step 2: 옵션 선택 */}
-            {calcStep === 'option' && (
-              <div className="calc-card-v3">
-                <button className="calc-back-btn" onClick={resetCalculator}>
-                  ← 다시 선택
-                </button>
-
-                <div className="calc-header-v3">
-                  <h2 className="calc-title-v3">
-                    {calcType === 'card' ? '카드 혜택' : '대출 종류'}<br />
-                    <span className="accent">선택하기</span>
-                  </h2>
-                </div>
-
-                {calcType === 'card' ? (
-                  <div className="calc-option-select">
-                    <label className="category-label">어떤 혜택이 필요하세요?</label>
-                    <div className="select-wrapper">
-                      <select
-                        className="category-dropdown"
-                        value={calcCardBenefit}
-                        onChange={(e) => setCalcCardBenefit(e.target.value)}
-                      >
-                        <option value="all">전체 혜택</option>
-                        <option value="shopping">쇼핑 할인</option>
-                        <option value="food">외식/카페</option>
-                        <option value="transport">교통/통신</option>
-                      </select>
-                      <span className="select-arrow">▼</span>
+            <div className="brand-card-list">
+              {cardBrands.map((brand) => (
+                <div
+                  key={brand.id}
+                  className="brand-card-item"
+                  onClick={() => handleBrandClick(brand.id)}
+                >
+                  <div className="brand-card-preview">
+                    <div className="brand-card-img" style={{ background: `linear-gradient(135deg, ${brand.color}22 0%, ${brand.color}11 100%)` }}>
+                      💳
                     </div>
                   </div>
-                ) : (
-                  <div className="calc-option-select">
-                    <label className="category-label">어떤 대출이 필요하세요?</label>
-                    <div className="select-wrapper">
-                      <select
-                        className="category-dropdown"
-                        value={calcLoanType}
-                        onChange={(e) => setCalcLoanType(e.target.value)}
-                      >
-                        <option value="credit">신용대출</option>
-                        <option value="mortgage">주택담보대출</option>
-                        <option value="car">자동차대출</option>
-                      </select>
-                      <span className="select-arrow">▼</span>
-                    </div>
+                  <div className="brand-card-info">
+                    <span className="brand-logo" style={{ color: brand.brandColor }}>{brand.logo}</span>
+                    <span className="brand-name" style={{ color: brand.brandColor }}>{brand.name}</span>
+                    <span className="brand-suffix">브랜드관</span>
                   </div>
-                )}
-
-                <button className="calc-btn-v3" onClick={runCalculation}>
-                  최적 상품 찾기
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                </button>
-              </div>
-            )}
-
-            {/* 로딩 */}
-            {isLoading && (
-              <div className="loading-section">
-                <div className="loading-spinner"></div>
-                <p className="loading-text">
-                  나에게 유리한 {calcType === 'card' ? '카드를' : '대출을'}<br />찾고 있어요
-                </p>
-              </div>
-            )}
-
-            {/* Step 3: 결과 */}
-            {calcStep === 'result' && !isLoading && (
-              <div className="calc-result-section">
-                <button className="calc-back-btn" onClick={resetCalculator}>
-                  ← 다시 검색
-                </button>
-
-                {calcType === 'card' ? (
-                  <>
-                    {/* 카드 결과 */}
-                    <div className="legal-sort-notice">
-                      <span className="legal-icon">🎁</span>
-                      <span>혜택이 좋은 순으로 정렬되었습니다</span>
-                    </div>
-
-                    {calcResults.length === 0 ? (
-                      <div className="empty-state">
-                        <div className="empty-icon">🔍</div>
-                        <div className="empty-title">검색 결과가 없습니다</div>
-                        <div className="empty-desc">
-                          선택하신 조건에 맞는 카드가 없어요.<br />
-                          다른 혜택을 선택해 보세요.
-                        </div>
-                        <button className="btn-reset" onClick={resetCalculator}>
-                          다시 검색하기
-                        </button>
-                      </div>
-                    ) : (
-                      <>
-                        <div className="top-recommend-card">
-                          <div className="top-recommend-badge">🏆 추천 1위</div>
-                          <div className="top-recommend-hook">
-                            +{calcResults[0]?.benefitPoints.toLocaleString()}핀
-                          </div>
-                          <div className="top-recommend-sub">
-                            {calcResults[0]?.name}
-                          </div>
-                        </div>
-
-                        <div className="product-list-v3">
-                          {calcResults.map((card, index) => (
-                            <div key={card.id} className="product-card-horizontal" onClick={() => handleProductClick(card)}>
-                              <div className="product-rank-badge">{index === 0 ? '👑' : index + 1}</div>
-                              <div className="product-logo-sm" style={{ background: card.color }}>
-                                <span>{card.logo}</span>
-                              </div>
-                              <div className="product-info-inline">
-                                <span className="product-name-inline">{card.name}</span>
-                                <span className="product-benefit-inline">{card.benefit}</span>
-                              </div>
-                              <div className="product-point-inline">+{card.benefitPoints.toLocaleString()}핀</div>
-                            </div>
-                          ))}
-                        </div>
-                      </>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    {/* 대출 결과 */}
-                    <div className="legal-sort-notice">
-                      <span className="legal-icon">⚖️</span>
-                      <span>금융소비자보호법에 따라 금리가 낮은 순으로 정렬되었습니다</span>
-                    </div>
-
-                    {/* 대출 결과에서 조건 설정 슬라이더 */}
-                    <div className="result-filter-panel">
-                      <div className="filter-item">
-                        <label>
-                          금리 범위
-                          <span className="filter-value">{calcFilters.minRate}% ~ {calcFilters.maxRate}%</span>
-                        </label>
-                        <div className="range-slider-container">
-                          <div
-                            className="range-slider-track"
-                            style={{
-                              '--min-percent': `${(calcFilters.minRate / 20) * 100}%`,
-                              '--max-percent': `${(calcFilters.maxRate / 20) * 100}%`
-                            }}
-                          />
-                          <input
-                            type="range"
-                            className="range-slider-input"
-                            min="0"
-                            max="20"
-                            step="0.5"
-                            value={calcFilters.minRate}
-                            onChange={(e) => setCalcFilters(prev => ({
-                              ...prev,
-                              minRate: Math.min(parseFloat(e.target.value), prev.maxRate - 0.5)
-                            }))}
-                          />
-                          <input
-                            type="range"
-                            className="range-slider-input"
-                            min="0"
-                            max="20"
-                            step="0.5"
-                            value={calcFilters.maxRate}
-                            onChange={(e) => setCalcFilters(prev => ({
-                              ...prev,
-                              maxRate: Math.max(parseFloat(e.target.value), prev.minRate + 0.5)
-                            }))}
-                          />
-                        </div>
-                        <div className="range-slider-labels">
-                          <span>0%</span>
-                          <span>20%</span>
-                        </div>
-                      </div>
-
-                      <div className="filter-item">
-                        <label>
-                          대출 한도
-                          <span className="filter-value">
-                            {calcFilters.minLimit === 0 ? '0' : (calcFilters.minLimit / 10000).toFixed(0) + '억'} ~ {(calcFilters.maxLimit / 10000).toFixed(0)}억
-                          </span>
-                        </label>
-                        <div className="range-slider-container">
-                          <div
-                            className="range-slider-track"
-                            style={{
-                              '--min-percent': `${(calcFilters.minLimit / 200000) * 100}%`,
-                              '--max-percent': `${(calcFilters.maxLimit / 200000) * 100}%`
-                            }}
-                          />
-                          <input
-                            type="range"
-                            className="range-slider-input"
-                            min="0"
-                            max="200000"
-                            step="5000"
-                            value={calcFilters.minLimit}
-                            onChange={(e) => setCalcFilters(prev => ({
-                              ...prev,
-                              minLimit: Math.min(parseInt(e.target.value), prev.maxLimit - 5000)
-                            }))}
-                          />
-                          <input
-                            type="range"
-                            className="range-slider-input"
-                            min="0"
-                            max="200000"
-                            step="5000"
-                            value={calcFilters.maxLimit}
-                            onChange={(e) => setCalcFilters(prev => ({
-                              ...prev,
-                              maxLimit: Math.max(parseInt(e.target.value), prev.minLimit + 5000)
-                            }))}
-                          />
-                        </div>
-                        <div className="range-slider-labels">
-                          <span>0</span>
-                          <span>20억</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {getFilteredLoanResults().length === 0 ? (
-                      <div className="empty-state">
-                        <div className="empty-icon">🔍</div>
-                        <div className="empty-title">검색 결과가 없습니다</div>
-                        <div className="empty-desc">
-                          선택하신 조건에 맞는 금융상품이 없어요.<br />
-                          금리나 한도 조건을 변경해 보세요.
-                        </div>
-                        <button
-                          className="btn-reset"
-                          onClick={() => setCalcFilters({
-                            minRate: 0,
-                            maxRate: 20,
-                            minLimit: 0,
-                            maxLimit: 200000,
-                          })}
-                        >
-                          필터 초기화
-                        </button>
-                      </div>
-                    ) : (
-                      <>
-                        <div className="top-recommend-card rate">
-                          <div className="top-recommend-badge">🏆 최저금리 1위</div>
-                          <div className="top-recommend-hook">
-                            연 {getFilteredLoanResults()[0]?.interestRate}% ~
-                          </div>
-                          <div className="top-recommend-sub">
-                            {getFilteredLoanResults()[0]?.name}
-                          </div>
-                        </div>
-
-                        <div className="product-list-v3">
-                          {getFilteredLoanResults().map((loan, index) => (
-                            <div key={loan.id} className="product-card-horizontal" onClick={() => handleProductClick(loan)}>
-                              <div className="product-rank-badge">{index === 0 ? '👑' : index + 1}</div>
-                              <div className="product-logo-sm" style={{ background: loan.color }}>
-                                <span>{loan.logo}</span>
-                              </div>
-                              <div className="product-info-inline">
-                                <span className="product-name-inline">{loan.name}</span>
-                                <span className="product-rate-inline">연 {loan.interestRate}%~ · 최대 {loan.maxLimit >= 10000 ? (loan.maxLimit / 10000) + '억' : (loan.maxLimit / 1000) + '천만'}원</span>
-                              </div>
-                              <div className="product-point-inline">{loan.interestRate}%</div>
-                            </div>
-                          ))}
-                        </div>
-                      </>
-                    )}
-                  </>
-                )}
-              </div>
-            )}
+                  <span className="brand-arrow">›</span>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
@@ -659,81 +516,20 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
           </div>
         )}
 
-        {/* ========== 보험 탭 ========== */}
+        {/* ========== 보험 탭 - 페이지 준비중 ========== */}
         {mainTab === 'insurance' && (
-          <div className="insurance-section">
-            <div className="insurance-category-bar">
-              {insuranceCategories.map((cat) => (
-                <button
-                  key={cat.id}
-                  className={`insurance-category-btn ${insuranceCategory === cat.id ? 'active' : ''}`}
-                  onClick={() => setInsuranceCategory(cat.id)}
-                >
-                  <span className="cat-icon">{cat.icon}</span>
-                  <span className="cat-label">{cat.label}</span>
-                </button>
-              ))}
-            </div>
-
-            <div className="sort-text-corner">핀 적립순</div>
-
-            <div className="product-list-v3">
-              {getSortedInsurance().map((ins, index) => (
-                <div key={ins.id} className="product-card-horizontal" onClick={() => handleProductClick(ins)}>
-                  <div className="product-rank-badge">{index === 0 ? '👑' : index + 1}</div>
-                  <div className="product-logo-sm" style={{ background: ins.color }}>
-                    <span>{ins.logo}</span>
-                  </div>
-                  <div className="product-info-inline">
-                    <span className="product-name-inline">{ins.name}</span>
-                    <span className="product-benefit-inline">월 {ins.monthlyPremium.toLocaleString()}원 · {ins.coverage}</span>
-                  </div>
-                  <div className="product-point-inline">+{ins.benefitPoints.toLocaleString()}핀</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* ========== 증권 탭 ========== */}
-        {mainTab === 'stock' && (
-          <div className="stock-section">
-            <div className="stock-category-bar">
-              {stockCategories.map((cat) => (
-                <button
-                  key={cat.id}
-                  className={`stock-category-btn ${stockCategory === cat.id ? 'active' : ''}`}
-                  onClick={() => setStockCategory(cat.id)}
-                >
-                  <span className="cat-icon">{cat.icon}</span>
-                  <span className="cat-label">{cat.label}</span>
-                </button>
-              ))}
-            </div>
-
-            <div className="sort-text-corner">핀 적립순</div>
-
-            <div className="product-list-v3">
-              {getSortedStocks().map((stock, index) => (
-                <div key={stock.id} className="product-card-horizontal" onClick={() => handleProductClick(stock)}>
-                  <div className="product-rank-badge">{index === 0 ? '👑' : index + 1}</div>
-                  <div className="product-logo-sm" style={{ background: stock.color }}>
-                    <span>{stock.logo}</span>
-                  </div>
-                  <div className="product-info-inline">
-                    <span className="product-name-inline">{stock.name}</span>
-                    <span className="product-benefit-inline">{stock.benefit}</span>
-                  </div>
-                  <div className="product-point-inline">+{stock.benefitPoints.toLocaleString()}핀</div>
-                </div>
-              ))}
+          <div className="insurance-section coming-soon-section">
+            <div className="coming-soon-content">
+              <img
+                src="/images/misokim.png"
+                alt="김미소 대리 - 페이지 준비중"
+                className="coming-soon-character"
+              />
             </div>
           </div>
         )}
       </div>
 
-      {/* 광고 배너 - 삼성화재 (추천 탭에서만 표시) */}
-      {mainTab === 'calculator' && SamsungFireBanner()}
 
       {/* 바텀시트 */}
       <div

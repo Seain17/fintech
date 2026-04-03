@@ -37,30 +37,18 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
   // 캐러셀 배너 상태
   const [currentBanner, setCurrentBanner] = useState(0);
   const bannerRef = useRef(null);
-  const videoRef = useRef(null);
   const banners = [
-    { id: 0, type: 'video', video: '/images/banners/ad-c-video.mp4', alt: '광고 영상' },
-    { id: 1, image: '/images/banners/carousel_banner.png', alt: '캐러셀 배너' },
-    { id: 2, image: '/images/banners/coupang-banner.png', alt: '쿠팡 배너' },
+    { id: 0, image: '/images/banners/carousel_banner-bc_02.png', alt: 'BC카드 배너' },
+    { id: 1, image: '/images/banners/carousel_banner-bc_03.png', alt: 'BC카드 배너' },
   ];
 
-  // 영상 끝나면 다음 슬라이드로 이동
-  const handleVideoEnd = () => {
-    setCurrentBanner(1);
-  };
-
-  // 배너 자동 슬라이드 (영상 배너일 때는 자동 슬라이드 안함)
+  // 배너 자동 슬라이드
   useEffect(() => {
-    if (currentBanner === 0) return; // 첫 번째 영상 배너일 때는 자동 슬라이드 안함
-
     const timer = setInterval(() => {
-      setCurrentBanner((prev) => {
-        const next = prev + 1;
-        return next >= banners.length ? 1 : next; // 영상 배너(0)는 건너뜀
-      });
+      setCurrentBanner((prev) => (prev + 1) % banners.length);
     }, 4000);
     return () => clearInterval(timer);
-  }, [currentBanner, banners.length]);
+  }, [banners.length]);
 
   // 첫 진입 시 만보기 권한 팝업 (테스트용)
   useEffect(() => {
@@ -210,19 +198,7 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
                 key={banner.id}
                 className="benefits-carousel-slide"
               >
-                {banner.type === 'video' ? (
-                  <video
-                    ref={videoRef}
-                    src={banner.video}
-                    className="carousel-video"
-                    autoPlay
-                    muted
-                    playsInline
-                    onEnded={handleVideoEnd}
-                  />
-                ) : (
-                  <img src={banner.image} alt={banner.alt} className="carousel-image" />
-                )}
+                <img src={banner.image} alt={banner.alt} className="carousel-image" />
               </div>
             ))}
           </div>
