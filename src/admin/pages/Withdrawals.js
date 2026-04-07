@@ -3,6 +3,7 @@ import Card from '../components/Card';
 import Badge from '../components/Badge';
 import Button from '../components/Button';
 import Tabs from '../components/Tabs';
+import { maskName, maskEmail, maskPhone, maskAccount } from '../../shared/utils';
 
 const withdrawalTabs = [
   { id: 'all', label: '전체' },
@@ -22,40 +23,6 @@ const historyData = [
   { date: '2026-01-15', amount: '₩ 80,000', status: '완료' },
   { date: '2026-01-10', amount: '₩ 100,000', status: '완료' },
 ];
-
-// 마스킹 함수들
-const maskName = (name) => {
-  if (!name || name.length < 2) return name;
-  return name[0] + '*'.repeat(name.length - 1);
-};
-
-const maskEmail = (email) => {
-  if (!email) return email;
-  const [local, domain] = email.split('@');
-  if (!domain) return email;
-  const maskedLocal = local.length > 2
-    ? local.slice(0, 2) + '*'.repeat(local.length - 2)
-    : local[0] + '*';
-  return maskedLocal + '@' + domain;
-};
-
-const maskPhone = (phone) => {
-  if (!phone) return phone;
-  const parts = phone.split('-');
-  if (parts.length === 3) {
-    return parts[0] + '-****-' + parts[2].slice(-2) + '**';
-  }
-  return phone.slice(0, 3) + '****' + phone.slice(-2);
-};
-
-const maskAccount = (accountNumber) => {
-  if (!accountNumber) return accountNumber;
-  const parts = accountNumber.split('-');
-  if (parts.length >= 2) {
-    return parts[0].slice(0, 2) + '*-***-' + parts[parts.length - 1].slice(-2) + '*';
-  }
-  return accountNumber.slice(0, 3) + '***' + accountNumber.slice(-2);
-};
 
 // 엑셀 다운로드 함수
 const downloadExcel = (data) => {

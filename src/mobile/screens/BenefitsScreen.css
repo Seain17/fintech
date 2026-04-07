@@ -326,8 +326,19 @@
 }
 
 .benefit-item-icon.ssg {
-  background: #F56400;
+  background: #FF5A5A;
   font-size: 13px;
+}
+
+.benefit-item-icon.ohouse {
+  background: #35C5F0;
+  font-size: 16px;
+}
+
+.benefit-item-icon.emart {
+  background: #FFD100;
+  font-size: 16px;
+  color: #222;
 }
 
 .benefit-item-content {

@@ -13,6 +13,7 @@ const pageTitles = {
   '/admin/cms': '운영 관리',
   '/admin/benefits': '혜택/금융 상품 관리',
   '/admin/cs': '고객센터',
+  '/admin/admediation': '광고 미디에이션',
 };
 
 function AdminLayout() {

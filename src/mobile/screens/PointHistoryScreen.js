@@ -14,7 +14,7 @@ const PointHistoryScreen = () => {
   const historyData = [
     { id: 1, type: 'earn', source: '출석체크', amount: 50, date: '2024.01.20', time: '09:15' },
     { id: 2, type: 'use', source: '래플 응모 (에어팟)', amount: -100, date: '2024.01.20', time: '09:15' },
-    { id: 3, type: 'earn', source: '쿠팡 쇼핑 적립', amount: 3000, date: '2024.01.20', time: '09:15' },
+    { id: 3, type: 'earn', source: 'SSG 쇼핑 적립', amount: 3000, date: '2024.01.20', time: '09:15' },
     { id: 4, type: 'earn', source: '퀴즈 정답', amount: 50, date: '2024.01.20', time: '09:15' },
     { id: 5, type: 'use', source: '기프티콘 교환', amount: -5000, date: '2024.01.19', time: '15:20' },
     { id: 6, type: 'earn', source: '만보기 달성', amount: 200, date: '2024.01.18', time: '22:00' },

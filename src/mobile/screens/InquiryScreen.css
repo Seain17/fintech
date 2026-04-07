@@ -259,6 +259,20 @@
 .inquiry-item-right {
   flex-shrink: 0;
   margin-left: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.inquiry-arrow {
+  width: 20px;
+  height: 20px;
+  color: var(--text-tertiary);
+  transition: transform 0.2s ease;
+}
+
+.inquiry-arrow.expanded {
+  transform: rotate(180deg);
 }
 
 .inquiry-status-badge {

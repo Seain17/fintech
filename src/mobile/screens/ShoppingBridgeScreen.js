@@ -7,13 +7,22 @@ const ShoppingBridgeScreen = () => {
   const { shopId } = useParams();
   const [countdown, setCountdown] = useState(3);
 
+  const shopData = {
+    gmarket: { name: 'G마켓', url: 'https://www.gmarket.co.kr' },
+    ohouse: { name: '오늘의집', url: 'https://ohou.se' },
+    ssg: { name: 'SSG', url: 'https://www.ssg.com' },
+    emart: { name: '이마트몰', url: 'https://emart.ssg.com' }
+  };
+
+  const currentShop = shopData[shopId] || shopData.gmarket;
+
   useEffect(() => {
     const timer = setInterval(() => {
       setCountdown(prev => {
         if (prev <= 1) {
           clearInterval(timer);
-          window.open('https://www.coupang.com', '_blank');
-          setTimeout(() => navigate('/shopping'), 1000);
+          window.open(currentShop.url, '_blank');
+          setTimeout(() => navigate('/benefits'), 1000);
           return 0;
         }
         return prev - 1;
@@ -21,19 +30,13 @@ const ShoppingBridgeScreen = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [navigate]);
-
-  const shopNames = {
-    coupang: '쿠팡',
-    naver: '네이버쇼핑',
-    '11st': '11번가'
-  };
+  }, [navigate, currentShop.url]);
 
   return (
     <div className="screen bridge-screen">
       <div className="bridge-content">
         <div className="bridge-logo">🚀</div>
-        <h1 className="bridge-title">{shopNames[shopId] || '쇼핑몰'}로 이동중입니다...</h1>
+        <h1 className="bridge-title">{currentShop.name}로 이동중입니다...</h1>
         <div className="bridge-countdown">{countdown}</div>
         <div className="bridge-notice">
           <h3>⚠️ 유의사항</h3>

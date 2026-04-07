@@ -53,37 +53,37 @@ const RaffleHistoryScreen = ({ showToast }) => {
         </button>
       </div>
 
-      <div className="raffle-content">
-        {/* 진행 완료 탭일 때 날짜 필터 */}
-        {activeTab === 'completed' && (
-          <div className="date-filter-chips">
-            <button
-              className={`date-chip ${dateFilter === 'all' ? 'active' : ''}`}
-              onClick={() => setDateFilter('all')}
-            >
-              전체
-            </button>
-            <button
-              className={`date-chip ${dateFilter === 'week' ? 'active' : ''}`}
-              onClick={() => setDateFilter('week')}
-            >
-              1주일
-            </button>
-            <button
-              className={`date-chip ${dateFilter === 'month' ? 'active' : ''}`}
-              onClick={() => setDateFilter('month')}
-            >
-              1개월
-            </button>
-            <button
-              className={`date-chip ${dateFilter === '3months' ? 'active' : ''}`}
-              onClick={() => setDateFilter('3months')}
-            >
-              3개월
-            </button>
-          </div>
-        )}
+      {/* 진행 완료 탭일 때 날짜 필터 - 고정 영역 */}
+      {activeTab === 'completed' && (
+        <div className="date-filter-fixed">
+          <button
+            className={`date-chip ${dateFilter === 'all' ? 'active' : ''}`}
+            onClick={() => setDateFilter('all')}
+          >
+            전체
+          </button>
+          <button
+            className={`date-chip ${dateFilter === 'week' ? 'active' : ''}`}
+            onClick={() => setDateFilter('week')}
+          >
+            1주일
+          </button>
+          <button
+            className={`date-chip ${dateFilter === 'month' ? 'active' : ''}`}
+            onClick={() => setDateFilter('month')}
+          >
+            1개월
+          </button>
+          <button
+            className={`date-chip ${dateFilter === '3months' ? 'active' : ''}`}
+            onClick={() => setDateFilter('3months')}
+          >
+            3개월
+          </button>
+        </div>
+      )}
 
+      <div className="raffle-content">
         {/* 진행 중 리스트 */}
         {activeTab === 'ongoing' && (
           <div className="raffle-list">

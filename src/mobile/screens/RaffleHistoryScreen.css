@@ -41,6 +41,33 @@
   background: var(--primary);
 }
 
+/* 날짜 필터 고정 영역 */
+.date-filter-fixed {
+  display: flex;
+  gap: 8px;
+  padding: 16px;
+  background: var(--bg-main);
+  flex-shrink: 0;
+}
+
+.date-filter-fixed .date-chip {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: var(--bg-card);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.date-filter-fixed .date-chip.active {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: #fff;
+}
+
 /* 콘텐츠 영역 */
 .raffle-content {
   flex: 1;

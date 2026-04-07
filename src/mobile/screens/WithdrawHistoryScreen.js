@@ -35,20 +35,22 @@ const WithdrawHistoryScreen = () => {
         <h1 className="page-title">출금 내역</h1>
       </div>
 
-      <div className="detail-content">
-        <div className="history-summary">
-          <div className="summary-item">
-            <span className="summary-label">총 출금 횟수</span>
-            <span className="summary-value">{completedHistory.length}회</span>
-          </div>
-          <div className="summary-item">
-            <span className="summary-label">총 출금 금액</span>
-            <span className="summary-value highlight">
-              {totalAmount.toLocaleString()}원
-            </span>
-          </div>
+      {/* 고정 영역 */}
+      <div className="history-summary-fixed">
+        <div className="summary-item">
+          <span className="summary-label">총 출금 횟수</span>
+          <span className="summary-value">{completedHistory.length}회</span>
         </div>
+        <div className="summary-item">
+          <span className="summary-label">총 출금 금액</span>
+          <span className="summary-value highlight">
+            {totalAmount.toLocaleString()}원
+          </span>
+        </div>
+      </div>
 
+      {/* 스크롤 영역 */}
+      <div className="detail-content-scroll">
         <div className="history-list">
           {withdrawHistory.map((item) => (
             <div key={item.id} className={`history-item ${item.status === 'cancelled' ? 'cancelled' : ''}`}>

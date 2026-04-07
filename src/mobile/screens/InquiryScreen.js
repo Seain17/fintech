@@ -223,6 +223,15 @@ const InquiryScreen = ({ showToast }) => {
                     </div>
                     <div className="inquiry-item-right">
                       {getStatusBadge(item.status)}
+                      <svg
+                        className={`inquiry-arrow ${expandedId === item.id ? 'expanded' : ''}`}
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path d="M6 9l6 6 6-6" />
+                      </svg>
                     </div>
                   </button>
 

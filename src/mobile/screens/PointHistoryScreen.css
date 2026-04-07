@@ -16,6 +16,7 @@
   flex-direction: column;
   align-items: center;
   box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
 }
 
 .pin-balance-label {
@@ -34,6 +35,7 @@
 .history-filters {
   background: var(--bg-card);
   padding: 0 16px 16px;
+  flex-shrink: 0;
 }
 
 /* 언더라인 탭 */
@@ -138,8 +140,11 @@
   color: #fff;
 }
 
-.history-list {
+.point-history-screen .history-list {
   padding: 16px;
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .history-item {

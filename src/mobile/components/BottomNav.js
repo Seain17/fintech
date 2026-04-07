@@ -49,14 +49,16 @@ const BottomNav = () => {
   };
 
   return (
-    <nav className="bottom-nav">
+    <nav className="bottom-nav" role="navigation" aria-label="메인 네비게이션">
       {navItems.map((item) => (
         <button
           key={item.path}
           className={`nav-item ${isActive(item.path) ? 'active' : ''}`}
           onClick={() => navigate(item.path)}
+          aria-label={`${item.label} ${isActive(item.path) ? '(현재 페이지)' : ''}`}
+          aria-current={isActive(item.path) ? 'page' : undefined}
         >
-          <span className="nav-icon">{item.icon}</span>
+          <span className="nav-icon" aria-hidden="true">{item.icon}</span>
           <span className="nav-label">{item.label}</span>
         </button>
       ))}

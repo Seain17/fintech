@@ -10,6 +10,7 @@ const menuItems = [
   { path: '/admin/cms', icon: '⚙️', label: '운영 관리' },
   { path: '/admin/benefits', icon: '🎁', label: '혜택/금융 상품 관리' },
   { path: '/admin/cs', icon: '🎧', label: '고객센터' },
+  { path: '/admin/admediation', icon: '📡', label: '광고 미디에이션' },
 ];
 
 function Sidebar() {

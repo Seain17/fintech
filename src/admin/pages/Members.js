@@ -3,6 +3,7 @@ import Badge from '../components/Badge';
 import Button from '../components/Button';
 import Table from '../components/Table';
 import Tabs from '../components/Tabs';
+import { maskAccountWithBank } from '../../shared/utils';
 
 const membersData = [
   { no: 1024, name: '홍*동', email: 'hong@email.com', joinDate: '2025-08-15', birth: '1995-**-**', points: '26,350 P', totalWithdraw: '₩ 450,000', status: 'success', statusText: '정상' },
@@ -44,34 +45,6 @@ const withdrawalHistory = [
   { id: 'WD-20260115-1024', date: '2026-01-15 09:30', amount: '₩ 50,000', account: '국민은행 123-456-789', status: 'success', statusText: '완료' },
 ];
 
-// 계좌번호 마스킹 함수
-const maskAccountNumber = (account) => {
-  // "국민은행 123-456-789" -> "국민은행 123-***-789"
-  const parts = account.split(' ');
-  if (parts.length < 2) return account;
-
-  const bankName = parts[0];
-  const accountNum = parts.slice(1).join(' ');
-  const numParts = accountNum.split('-');
-
-  if (numParts.length >= 3) {
-    // 중간 부분 마스킹
-    const masked = numParts.map((part, idx) => {
-      if (idx === 1) return '***';
-      return part;
-    }).join('-');
-    return `${bankName} ${masked}`;
-  }
-
-  // 하이픈이 없는 경우 중간 4자리 마스킹
-  if (accountNum.length > 6) {
-    const start = accountNum.slice(0, 3);
-    const end = accountNum.slice(-3);
-    return `${bankName} ${start}****${end}`;
-  }
-
-  return account;
-};
 
 const raffleHistory = [
   { name: '에어팟 프로 2세대', date: '2026-01-25 14:20', status: 'gray', statusText: '추첨 대기' },
@@ -186,7 +159,7 @@ function Members() {
                     <td>{item.id}</td>
                     <td>{item.date}</td>
                     <td>{item.amount}</td>
-                    <td>{maskAccountNumber(item.account)}</td>
+                    <td>{maskAccountWithBank(item.account)}</td>
                     <td><Badge variant={item.status}>{item.statusText}</Badge></td>
                   </tr>
                 ))}

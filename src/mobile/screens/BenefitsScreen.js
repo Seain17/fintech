@@ -326,19 +326,11 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
               <h2 className="section-title">🛒 쇼핑 적립</h2>
             </div>
             <div className="benefit-list-vertical">
-              <div className="benefit-list-item" onClick={() => navigate('/shopping/coupang')}>
-                <div className="benefit-item-icon coupang">쿠팡</div>
+              <div className="benefit-list-item" onClick={() => navigate('/shopping/ssg')}>
+                <div className="benefit-item-icon ssg">SSG</div>
                 <div className="benefit-item-content">
-                  <div className="benefit-item-title">쿠팡</div>
-                  <div className="benefit-item-desc">최대 2% 적립</div>
-                </div>
-                <div className="benefit-item-arrow">›</div>
-              </div>
-              <div className="benefit-list-item" onClick={() => navigate('/shopping/elevenst')}>
-                <div className="benefit-item-icon eleven">11</div>
-                <div className="benefit-item-content">
-                  <div className="benefit-item-title">11번가</div>
-                  <div className="benefit-item-desc">최대 1.5% 적립</div>
+                  <div className="benefit-item-title">SSG</div>
+                  <div className="benefit-item-desc">3% 적립</div>
                 </div>
                 <div className="benefit-item-arrow">›</div>
               </div>
@@ -346,15 +338,23 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
                 <div className="benefit-item-icon gmarket">G</div>
                 <div className="benefit-item-content">
                   <div className="benefit-item-title">G마켓</div>
-                  <div className="benefit-item-desc">최대 1.2% 적립</div>
+                  <div className="benefit-item-desc">3% 적립</div>
                 </div>
                 <div className="benefit-item-arrow">›</div>
               </div>
-              <div className="benefit-list-item" onClick={() => navigate('/shopping/auction')}>
-                <div className="benefit-item-icon auction">옥션</div>
+              <div className="benefit-list-item" onClick={() => navigate('/shopping/ohouse')}>
+                <div className="benefit-item-icon ohouse">오</div>
                 <div className="benefit-item-content">
-                  <div className="benefit-item-title">옥션</div>
-                  <div className="benefit-item-desc">최대 1.2% 적립</div>
+                  <div className="benefit-item-title">오늘의집</div>
+                  <div className="benefit-item-desc">3.6% 적립</div>
+                </div>
+                <div className="benefit-item-arrow">›</div>
+              </div>
+              <div className="benefit-list-item" onClick={() => navigate('/shopping/emart')}>
+                <div className="benefit-item-icon emart">E</div>
+                <div className="benefit-item-content">
+                  <div className="benefit-item-title">이마트몰</div>
+                  <div className="benefit-item-desc">3% 적립</div>
                 </div>
                 <div className="benefit-item-arrow">›</div>
               </div>

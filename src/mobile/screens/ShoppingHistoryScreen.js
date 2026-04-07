@@ -6,21 +6,21 @@ const ShoppingHistoryScreen = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('completed');
 
-  // 샘플 데이터
+  // 샘플 데이터 (기획서 기반: SSG, G마켓, 오늘의집, 이마트몰)
   const completedHistory = [
-    { id: 1, mall: '쿠팡', mallIcon: '🛒', product: '삼성 갤럭시 버즈3', amount: 189000, points: 1890, date: '2024.01.15', status: '적립완료' },
-    { id: 2, mall: '11번가', mallIcon: '🏪', product: '나이키 에어맥스', amount: 129000, points: 1290, date: '2024.01.10', status: '적립완료' },
-    { id: 3, mall: 'G마켓', mallIcon: '🛍️', product: '애플 에어팟 프로', amount: 259000, points: 2590, date: '2024.01.05', status: '적립완료' },
+    { id: 1, mall: 'SSG', mallIcon: '🛒', product: '삼성 갤럭시 버즈3', amount: 189000, points: 5670, date: '2024.01.15', status: '적립완료' },
+    { id: 2, mall: 'G마켓', mallIcon: '🛍️', product: '나이키 에어맥스', amount: 129000, points: 3870, date: '2024.01.10', status: '적립완료' },
+    { id: 3, mall: '오늘의집', mallIcon: '🏠', product: '무선 스탠드 조명', amount: 89000, points: 3204, date: '2024.01.05', status: '적립완료' },
   ];
 
   const pendingHistory = [
-    { id: 1, mall: '쿠팡', mallIcon: '🛒', product: 'LG 그램 노트북', amount: 1590000, points: 15900, date: '2024.01.20', expectedDate: '2024.02.20', status: '적립예정' },
-    { id: 2, mall: '옥션', mallIcon: '🏷️', product: '다이슨 에어랩', amount: 599000, points: 5990, date: '2024.01.18', expectedDate: '2024.02.18', status: '적립예정' },
+    { id: 1, mall: '이마트몰', mallIcon: '🏬', product: 'LG 그램 노트북', amount: 1590000, points: 47700, date: '2024.01.20', expectedDate: '2024.02.20', status: '적립예정' },
+    { id: 2, mall: 'SSG', mallIcon: '🛒', product: '다이슨 에어랩', amount: 599000, points: 17970, date: '2024.01.18', expectedDate: '2024.02.18', status: '적립예정' },
   ];
 
   const canceledHistory = [
-    { id: 1, mall: '11번가', mallIcon: '🏪', product: '아디다스 운동화', amount: 89000, points: -890, date: '2024.01.12', reason: '고객 변심', status: '취소' },
-    { id: 2, mall: 'G마켓', mallIcon: '🛍️', product: '소니 헤드폰', amount: 349000, points: -3490, date: '2024.01.08', reason: '상품 불량', status: '환불' },
+    { id: 1, mall: 'G마켓', mallIcon: '🛍️', product: '아디다스 운동화', amount: 89000, points: -2670, date: '2024.01.12', reason: '고객 변심', status: '취소' },
+    { id: 2, mall: '오늘의집', mallIcon: '🏠', product: '원목 사이드 테이블', amount: 149000, points: -5364, date: '2024.01.08', reason: '상품 불량', status: '환불' },
   ];
 
   const getHistoryData = () => {

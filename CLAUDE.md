@@ -3,10 +3,21 @@
 ## 모델 정보
 - **사용 모델**: Claude Opus 4.6
 
+## 하네스 문서 체계 (Harness Engineering)
+| 파일 | 역할 | 확인 시점 |
+|------|------|----------|
+| `CLAUDE.md` | 규칙, 금지사항 (Constrain) | 세션 시작 |
+| `progress.md` | 진행상황, 할 일 (Verify) | 작업 전/후 |
+| `architecture.md` | 시스템 구조 (Inform) | 작업 시작 전 |
+
 ## 부팅 순서
-1. 새 세션 시작 시 **README.md를 먼저 읽을 것** (서비스 개요, 기능, 구조 파악)
-2. PowerShell 종료 시 대화 내용 초기화됨 - 매 세션마다 README.md 참조 필요
-3. 프로젝트 경로: `C:\Users\cyunr\OneDrive\Desktop\바이브코딩`
+1. `/start` 명령어 또는 세션 시작 시:
+   - **progress.md** → 현재 상황 파악
+   - **architecture.md** → 시스템 구조 파악
+   - **CLAUDE.md** → 규칙 확인
+2. 작업 완료 후 **progress.md** 업데이트
+3. PowerShell 종료 시 대화 내용 초기화됨
+4. 프로젝트 경로: `C:\Users\cyunr\OneDrive\Desktop\바이브코딩`
 
 ## AI 도구 사용
 - **Claude Code (메인)**: 주 작업 도구 - 코딩, 분석, 문서 작성 등
@@ -140,3 +151,27 @@
 - [ ] 부모 screen에 `position: relative` 추가
 - [ ] 고정 버튼 있는 화면은 콘텐츠에 `padding-bottom` 추가
 - [ ] 모달은 해당 screen 클래스로 scope 제한
+
+## 보안 주의사항
+
+### axios 사용 금지
+- **axios 라이브러리 설치/사용 금지**
+- npm 패키지 공급망 공격 이슈 (타이포스쿼팅, 악성코드 주입)
+- 일부 버전 SSRF 취약점 발견
+- 데이터 유출 및 악성 바이러스 감염 위험
+
+### 대안: 내장 fetch API 사용
+```javascript
+// fetch로 API 호출 (외부 의존성 없음)
+const response = await fetch('/api/endpoint', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(data)
+});
+const result = await response.json();
+```
+
+### npm 패키지 설치 시 주의
+- 공식 패키지인지 확인 (다운로드 수, 게시자)
+- 유사 이름 패키지 주의 (타이포스쿼팅)
+- 외부 의존성 최소화
