@@ -1,93 +1,39 @@
 .onboarding-screen {
-  background: linear-gradient(180deg, #e8f0fe 0%, var(--bg-main) 50%);
+  background: #f3f4f6;
   padding-bottom: 0;
   overflow: hidden;
-}
-
-/* 배경 장식 원 */
-.onboarding-bg-circle {
-  position: absolute;
-  border-radius: 50%;
-  opacity: 0.12;
-  pointer-events: none;
-}
-
-.onboarding-bg-circle-1 {
-  width: 260px;
-  height: 260px;
-  background: var(--bg-gradient);
-  top: -60px;
-  right: -80px;
-  animation: float 6s ease-in-out infinite;
-}
-
-.onboarding-bg-circle-2 {
-  width: 180px;
-  height: 180px;
-  background: var(--bg-gradient-warm);
-  bottom: 180px;
-  left: -60px;
-  animation: float 5s ease-in-out infinite 1.5s;
-}
-
-/* 레이아웃 */
-.onboarding-content {
-  height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 56px 24px 36px;
-  position: relative;
-  z-index: 1;
+  height: 100%;
+}
+
+/* 전체 컨텐츠 영역 */
+.onboarding-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 48px 24px 24px;
+  overflow: hidden;
 }
 
 /* 상단 로고 */
 .onboarding-logo-area {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 32px;
-  animation: fadeInUp 0.6s ease-out;
+  margin-bottom: 0;
 }
 
-.onboarding-logo-box {
-  width: 40px;
-  height: 40px;
-  background: var(--bg-gradient);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 12px rgba(26, 46, 113, 0.3);
-}
-
-.onboarding-logo {
-  font-family: 'Outfit', sans-serif;
-  font-size: 18px;
-  font-weight: 800;
-  color: #fff;
-}
-
-.onboarding-logo-text {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-/* 슬라이드 영역 */
+/* 슬라이드 메인 영역 */
 .onboarding-slide-area {
   flex: 1;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  position: relative;
+  flex-direction: column;
+  margin-top: 28px;
+  max-height: 62%;
 }
 
 .onboarding-slide {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 100%;
 }
 
 .onboarding-slide-next {
@@ -98,56 +44,27 @@
   animation: slideInPrev 0.5s ease-out;
 }
 
-@keyframes slideInNext {
-  from {
-    opacity: 0;
-    transform: translateX(60px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideInPrev {
-  from {
-    opacity: 0;
-    transform: translateX(-60px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* 카드 */
+/* 카드 (아이콘 + 배지 + 제목 + 내용) */
 .onboarding-card {
+  flex: 1;
   width: 100%;
-  background: var(--bg-card);
-  padding: 36px 24px 32px;
-  border-radius: 28px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
+  padding: 32px 28px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  margin-bottom: 36px;
-  border: 1px solid rgba(26, 46, 113, 0.08);
-  position: relative;
-  overflow: hidden;
 }
 
-.onboarding-card::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: var(--bg-gradient);
-}
-
-.onboarding-card-emoji {
-  font-size: 48px;
-  margin-bottom: 16px;
-  animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+.onboarding-card-img {
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+  display: block;
+  margin-bottom: 20px;
 }
 
 .onboarding-card-badge {
@@ -158,21 +75,7 @@
   background: var(--primary-50);
   padding: 5px 14px;
   border-radius: var(--radius-full);
-  margin-bottom: 16px;
-}
-
-.onboarding-card-points {
-  font-family: 'Outfit', sans-serif;
-  font-size: 38px;
-  font-weight: 800;
-  color: var(--primary);
-  margin-bottom: 6px;
-  line-height: 1.1;
-}
-
-.onboarding-card-sub {
-  font-size: 13px;
-  color: var(--text-tertiary);
+  margin-bottom: 20px;
 }
 
 /* 타이틀 / 설명 */
@@ -180,24 +83,31 @@
   font-size: 24px;
   font-weight: 800;
   color: var(--text-primary);
-  text-align: center;
   line-height: 1.4;
   margin-bottom: 12px;
+  text-align: center;
 }
 
 .onboarding-desc {
-  font-size: 15px;
+  font-size: 14px;
   color: var(--text-secondary);
-  text-align: center;
   line-height: 1.6;
+  text-align: center;
+}
+
+/* 하단 버튼 영역 */
+.onboarding-bottom {
+  margin-top: auto;
+  padding: 16px 0 20px;
 }
 
 /* 인디케이터 점 */
 .onboarding-dots {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin-bottom: 28px;
+  gap: 8px;
+  margin-top: 14px;
+  margin-bottom: 0;
 }
 
 .onboarding-dot {
@@ -212,37 +122,11 @@
 }
 
 .onboarding-dot.active {
-  width: 28px;
+  width: 24px;
   border-radius: 4px;
-  background: var(--bg-gradient);
-  box-shadow: 0 0 8px rgba(26, 46, 113, 0.4);
+  background: var(--primary);
 }
 
-/* 하단 버튼 */
-.onboarding-actions {
-  width: 100%;
-}
-
-.btn-guest {
-  width: 100%;
-  padding: 12px;
-  background: none;
-  border: none;
-  color: var(--text-tertiary);
-  font-size: 14px;
-  font-weight: 500;
-  font-family: inherit;
-  cursor: pointer;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  transition: color 0.2s;
-}
-
-.btn-guest:active {
-  color: var(--text-secondary);
-}
-
-/* 버튼 래퍼 */
 .btn-primary-wrap {
   width: 100%;
   display: flex;
@@ -253,37 +137,66 @@
 
 .btn-welcome-badge {
   position: relative;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   background: var(--text-primary);
   color: #fff;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
-  padding: 10px 18px;
-  border-radius: 12px;
-  margin-bottom: 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  padding: 8px 16px;
+  border-radius: 10px;
+  margin-bottom: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   animation: bounce-subtle 2s ease-in-out infinite;
 }
 
-/* 말풍선 꼬리 */
 .btn-welcome-badge::after {
   content: '';
   position: absolute;
-  bottom: -8px;
+  bottom: -7px;
   left: 50%;
   transform: translateX(-50%);
   width: 0;
   height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-top: 10px solid var(--text-primary);
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid var(--text-primary);
+}
+
+.btn-onboarding-primary {
+  width: 100%;
+  padding: 17px;
+  border: none;
+  border-radius: 14px;
+  background: #1a2e71;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-onboarding-primary:active {
+  opacity: 0.85;
+}
+
+.onboarding-bottom .btn-secondary {
+  margin-top: 12px;
 }
 
 @keyframes bounce-subtle {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-4px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes slideInNext {
+  from { opacity: 0; transform: translateX(60px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInPrev {
+  from { opacity: 0; transform: translateX(-60px); }
+  to { opacity: 1; transform: translateX(0); }
 }

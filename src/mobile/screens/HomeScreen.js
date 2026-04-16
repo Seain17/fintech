@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import './HomeScreen.css';
 import exchangeRateData from '../../shared/data/exchangeRate.json';
 import { STORAGE_KEYS, TIMING } from '../../shared/constants';
-import { AppLogo } from '../../shared/components';
+import { AppLogo, PinAmount } from '../../shared/components';
 
-const HomeScreen = ({ userPoints, showToast, isGuest, unreadCount = 0 }) => {
+const HomeScreen = ({ userPoints, showToast, unreadCount = 0 }) => {
   const navigate = useNavigate();
   const [isPartnerOpen, setIsPartnerOpen] = useState(false);
   const [showAdModal, setShowAdModal] = useState(false);
@@ -67,10 +67,6 @@ const HomeScreen = ({ userPoints, showToast, isGuest, unreadCount = 0 }) => {
     // 실제로는 localStorage에 날짜 저장하여 하루동안 안보이게 처리
   };
 
-  const handleGuestBlock = () => {
-    navigate('/signup');
-  };
-
   const exchangeRate = {
     rate: exchangeRateData.USD.rate,
     change: exchangeRateData.USD.change
@@ -105,18 +101,17 @@ const HomeScreen = ({ userPoints, showToast, isGuest, unreadCount = 0 }) => {
               <div className="mypin-info">
                 <span className="mypin-label">나의 에이핀</span>
                 <div className="mypin-value">
-                  <span className="mypin-amount">{userPoints.toLocaleString()}</span>
-                  <span className="mypin-unit">핀</span>
+                  <PinAmount amount={userPoints} size="large" />
                 </div>
               </div>
-              <button className="mypin-detail-btn" onClick={() => isGuest ? handleGuestBlock() : navigate('/point-history')}>
+              <button className="mypin-detail-btn" onClick={() => navigate('/point-history')}>
                 상세
               </button>
             </div>
 
             <button
               className={`mypin-convert-btn ${isPartnerOpen ? 'open' : ''}`}
-              onClick={() => isGuest ? handleGuestBlock() : setIsPartnerOpen(!isPartnerOpen)}
+              onClick={() => setIsPartnerOpen(!isPartnerOpen)}
             >
               <svg className="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <path d={isPartnerOpen ? "M6 15l6-6 6 6" : "M6 9l6 6 6-6"} />
@@ -132,7 +127,7 @@ const HomeScreen = ({ userPoints, showToast, isGuest, unreadCount = 0 }) => {
                 </div>
                 <div className="partner-info">
                   <span className="partner-name">하나페이</span>
-                  <span className="partner-points">100핀</span>
+                  <span className="partner-points"><PinAmount amount={100} size="small" /></span>
                 </div>
                 <button className="partner-action-btn" onClick={() => showToast('전환 완료')}>전환</button>
               </div>
@@ -142,7 +137,7 @@ const HomeScreen = ({ userPoints, showToast, isGuest, unreadCount = 0 }) => {
                 </div>
                 <div className="partner-info">
                   <span className="partner-name">페이북</span>
-                  <span className="partner-points">100핀</span>
+                  <span className="partner-points"><PinAmount amount={100} size="small" /></span>
                 </div>
                 <button className="partner-action-btn" onClick={() => showToast('전환 완료')}>전환</button>
               </div>
@@ -152,7 +147,7 @@ const HomeScreen = ({ userPoints, showToast, isGuest, unreadCount = 0 }) => {
                 </div>
                 <div className="partner-info">
                   <span className="partner-name">신한SOL</span>
-                  <span className="partner-points">100핀</span>
+                  <span className="partner-points"><PinAmount amount={100} size="small" /></span>
                 </div>
                 <button className="partner-action-btn" onClick={() => showToast('전환 완료')}>전환</button>
               </div>
@@ -182,42 +177,9 @@ const HomeScreen = ({ userPoints, showToast, isGuest, unreadCount = 0 }) => {
             onMouseMove={handleMouseMove}
             onWheel={handleWheel}
           >
-            <div className="pick-card yellow" onClick={() => navigate('/benefits')}>
-              <div className="pick-card-text">
-                <p>핀</p>
-                <p>모으기</p>
-              </div>
-              <div className="pick-card-icon-img">
-                <img src="/images/icons/recommend.png" alt="" draggable="false" />
-              </div>
-            </div>
-            <div className="pick-card gradient-purple" onClick={() => navigate('/card-top10')}>
-              <div className="pick-card-text">
-                <p>에이핀 추천</p>
-                <p>카드혜택 Top10</p>
-              </div>
-              <div className="pick-card-icon-img">
-                <img src="/images/icons/card.png" alt="" draggable="false" />
-              </div>
-            </div>
-            <div className="pick-card blue" onClick={() => showToast('카드 추천 페이지')}>
-              <div className="pick-card-text">
-                <p>가장 혜택</p>
-                <p>좋은카드는?</p>
-              </div>
-              <div className="pick-card-icon-img">
-                <img src="/images/icons/card.png" alt="" draggable="false" />
-              </div>
-            </div>
-            <div className="pick-card pink" onClick={() => showToast('보험 추천 페이지')}>
-              <div className="pick-card-text">
-                <p>보험</p>
-                <p>추천</p>
-              </div>
-              <div className="pick-card-icon-img">
-                <img src="/images/icons/insurance.png" alt="" draggable="false" />
-              </div>
-            </div>
+            <img src="/images/banners/01_pick.png" alt="pick 배너 1" className="pick-banner-img" draggable="false" onClick={() => navigate('/benefits', { state: { scrollTo: 'raffle' } })} />
+            <img src="/images/banners/02_pick.png" alt="pick 배너 2" className="pick-banner-img" draggable="false" onClick={() => navigate('/finance', { state: { tab: 'recommend' } })} />
+            <img src="/images/banners/03_pick.png" alt="pick 배너 3" className="pick-banner-img" draggable="false" onClick={() => navigate('/finance', { state: { tab: 'card' } })} />
           </div>
         </div>
 

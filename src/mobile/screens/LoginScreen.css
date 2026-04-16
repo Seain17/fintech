@@ -50,7 +50,7 @@
   width: 100%;
   padding: 16px 20px;
   border: none;
-  border-radius: var(--radius-md);
+  border-radius: 100px;
   font-size: 16px;
   font-weight: 600;
   font-family: inherit;
@@ -91,6 +91,17 @@
 .social-btn svg {
   width: 20px;
   height: 20px;
+}
+
+.login-blocked-demo {
+  margin-top: 12px;
+}
+
+.social-btn.blocked-demo {
+  background: none;
+  border: 1.5px dashed #ccc;
+  color: var(--text-tertiary);
+  font-size: 13px;
 }
 
 .login-divider {

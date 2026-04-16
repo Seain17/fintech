@@ -1,0 +1,60 @@
+/* 핀 아이콘 */
+.pin-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #6366F1, #4F46E5);
+  color: #fff;
+  font-weight: 800;
+  font-family: 'Outfit', sans-serif;
+  flex-shrink: 0;
+}
+
+/* 사이즈 */
+.pin-icon--small {
+  width: 16px;
+  height: 16px;
+  font-size: 10px;
+  border-radius: 4px;
+}
+
+.pin-icon--medium {
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  border-radius: 5px;
+}
+
+.pin-icon--large {
+  width: 24px;
+  height: 24px;
+  font-size: 14px;
+  border-radius: 6px;
+}
+
+/* 핀 금액 표시 */
+.pin-amount {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.pin-amount--small {
+  gap: 4px;
+  font-size: 13px;
+}
+
+.pin-amount--medium {
+  gap: 5px;
+  font-size: 15px;
+}
+
+.pin-amount--large {
+  gap: 6px;
+  font-size: 18px;
+}
+
+.pin-amount-value {
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+}

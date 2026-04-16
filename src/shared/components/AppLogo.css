@@ -1,0 +1,38 @@
+/* A-Fin 로고 공통 스타일 */
+.app-logo {
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+/* 사이즈 변형 */
+.app-logo--small {
+  font-size: 18px;
+}
+
+.app-logo--medium {
+  font-size: 22px;
+}
+
+.app-logo--large {
+  font-size: 28px;
+}
+
+.app-logo .logo-a {
+  background: linear-gradient(135deg, #9B59B6 0%, #7D3C98 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+}
+
+.app-logo .logo-dot {
+  color: #333;
+  font-weight: 600;
+}
+
+.app-logo .logo-fin {
+  color: #333;
+  font-weight: 700;
+}

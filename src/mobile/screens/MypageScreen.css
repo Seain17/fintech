@@ -8,34 +8,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 50px 16px 12px;
-  background: var(--bg-gradient);
-}
-
-/* A-Fin 로고 */
-.mypage-appbar .app-logo {
-  display: flex;
-  align-items: center;
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-}
-
-.mypage-appbar .app-logo .logo-a {
-  background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-weight: 800;
-}
-
-.mypage-appbar .app-logo .logo-dot {
-  color: #fff;
-  margin: 0 1px;
-}
-
-.mypage-appbar .app-logo .logo-fin {
-  color: #fff;
-  font-weight: 700;
+  background: #fff;
 }
 
 .mypage-noti-btn {
@@ -52,13 +25,13 @@
 }
 
 .mypage-noti-btn:active {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .mypage-noti-btn svg {
   width: 24px;
   height: 24px;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .mypage-noti-badge {
@@ -79,15 +52,16 @@
 }
 
 .mypage-header {
-  background: linear-gradient(180deg, #f0e6ff 0%, #e8f4ff 100%);
+  background: #fff;
   padding: 16px 20px 24px;
   position: relative;
+  border-bottom: 1px solid var(--border-light);
 }
 
 .profile-section {
   display: flex;
   align-items: center;
-  gap: 18px;
+  justify-content: space-between;
   margin-bottom: 24px;
   position: relative;
   z-index: 1;
@@ -127,6 +101,29 @@
   background: rgba(0, 0, 0, 0.12);
 }
 
+.my-coupon-link {
+  background: none;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 0;
+  font-family: inherit;
+}
+
+.my-coupon-link span {
+  color: #999;
+  font-size: 16px;
+}
+
+.my-coupon-link:active {
+  opacity: 0.7;
+}
+
 .mypage-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -163,14 +160,14 @@
 .mypage-menu-section {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
 }
 
 .mypage-menu-section-title {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--text-tertiary);
-  padding: 0 4px 8px;
+  padding: 0 4px 6px;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -179,18 +176,18 @@
 .mypage-menu-item {
   width: 100%;
   background: var(--bg-card);
-  padding: 18px;
+  padding: 13px 16px;
   border: none;
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--text-primary);
   font-family: inherit;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   transition: all 0.3s ease;
   border: 1px solid rgba(0, 0, 0, 0.02);
 }
@@ -201,17 +198,23 @@
 }
 
 .mypage-menu-icon {
-  width: 42px;
-  height: 42px;
+  width: 34px;
+  height: 34px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  border-radius: var(--radius-md);
+  font-size: 18px;
+  border-radius: var(--radius-sm);
   flex-shrink: 0;
   transition: all 0.3s ease;
 }
+
+.mypage-menu-icon img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+}
+
 
 .mypage-menu-item:active .mypage-menu-icon {
   transform: scale(1.1);

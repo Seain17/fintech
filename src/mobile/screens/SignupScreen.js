@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './SignupScreen.css';
+import { SmsVerification, PinAmount } from '../../shared/components';
 
 // 더미 닉네임 생성용 단어 리스트
 const adjectives = [
@@ -202,13 +203,13 @@ const SignupScreen = ({ onSignup }) => {
               </svg>
             </button>
             <div className="signup-progress">
-              {[1, 2].map(i => (
+              {[1, 2, 3].map(i => (
                 <div
                   key={i}
-                  className={`signup-progress-bar ${(i === 1 && step >= 2) || (i === 2 && step >= 3) ? 'completed' : ''} ${(i === 1 && step === 1) || (i === 2 && step >= 2 && step < 4) ? 'active' : ''}`}
+                  className={`signup-progress-bar ${step > i ? 'completed' : ''} ${step === i ? 'active' : ''}`}
                 />
               ))}
-              <span className="signup-step-label">{step <= 2 ? 1 : 2}/2</span>
+              <span className="signup-step-label">{step}/3</span>
             </div>
           </div>
         )}
@@ -371,87 +372,15 @@ const SignupScreen = ({ onSignup }) => {
           </>
         )}
 
-        {/* Step 3: PASS 본인인증 */}
+        {/* Step 3: SMS 본인인증 */}
         {step === 3 && (
-          <div className="signup-pass-section">
-            <div className="signup-pass-modal">
-              <div className="signup-pass-header">
-                <div className="signup-pass-logo">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                  </svg>
-                </div>
-                <h2 className="signup-pass-title">휴대폰 본인인증</h2>
-                <p className="signup-pass-desc">PASS 앱으로 본인인증을 진행합니다</p>
-              </div>
-
-              <div className="signup-pass-carriers">
-                <button
-                  className={`signup-carrier-btn ${phone === 'SKT' ? 'selected' : ''}`}
-                  onClick={() => setPhone('SKT')}
-                >
-                  <span className="carrier-logo skt">T</span>
-                  <span>SKT</span>
-                </button>
-                <button
-                  className={`signup-carrier-btn ${phone === 'KT' ? 'selected' : ''}`}
-                  onClick={() => setPhone('KT')}
-                >
-                  <span className="carrier-logo kt">K</span>
-                  <span>KT</span>
-                </button>
-                <button
-                  className={`signup-carrier-btn ${phone === 'LGU' ? 'selected' : ''}`}
-                  onClick={() => setPhone('LGU')}
-                >
-                  <span className="carrier-logo lgu">U+</span>
-                  <span>LG U+</span>
-                </button>
-              </div>
-
-              <div className="signup-pass-info">
-                <div className="signup-pass-info-item">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                    <polyline points="22 4 12 14.01 9 11.01" />
-                  </svg>
-                  <span>PASS 앱이 설치되어 있어야 합니다</span>
-                </div>
-                <div className="signup-pass-info-item">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                    <polyline points="22 4 12 14.01 9 11.01" />
-                  </svg>
-                  <span>본인 명의 휴대폰으로만 인증 가능</span>
-                </div>
-              </div>
-
-              <button
-                className="signup-pass-btn"
-                onClick={handleVerify}
-                disabled={verifying || !phone}
-              >
-                {verifying ? (
-                  <>
-                    <span className="signup-pass-spinner"></span>
-                    PASS 인증 진행 중...
-                  </>
-                ) : (
-                  <>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
-                      <line x1="12" y1="18" x2="12.01" y2="18" />
-                    </svg>
-                    PASS 인증하기
-                  </>
-                )}
-              </button>
-
-              <p className="signup-pass-notice">
-                인증 버튼을 누르면 PASS 앱이 실행됩니다
-              </p>
-            </div>
+          <div className="signup-sms-section">
+            <SmsVerification
+              title="휴대폰 본인인증"
+              subtitle="본인 명의 휴대폰으로 인증해 주세요."
+              submitText="인증 완료"
+              onSuccess={() => setStep(4)}
+            />
           </div>
         )}
 
@@ -459,19 +388,19 @@ const SignupScreen = ({ onSignup }) => {
         {step === 4 && (
           <div className="signup-complete-section">
             <div className="signup-complete-icon">
-              <span className="signup-sparkle"></span>
-              <span className="signup-sparkle"></span>
-              <span className="signup-sparkle"></span>
-              🎉
+              <img src="/images/icons/img-congratulation.png" alt="" className="signup-congratulation-img" />
             </div>
             <h2 className="signup-complete-title">환영합니다!</h2>
             <p className="signup-complete-desc">
               <strong>{nickname}</strong>님,<br/>에이핀의 모든 혜택을 누려보세요
             </p>
             <p className="signup-nickname-hint">닉네임은 마이페이지에서 변경할 수 있어요</p>
-            <div className="signup-points-badge">
-              <div className="signup-points-label">웰컴핀 지급!</div>
-              <div className="signup-points-value">1,000핀</div>
+            <div className="signup-welcome-pin">
+              <img src="/images/icons/img-ticket-03-on.png" alt="" className="signup-ticket-img" />
+              <div className="signup-welcome-pin-overlay">
+                <span className="signup-points-label">웰컴핀 지급!</span>
+                <PinAmount amount={5000} size="large" />
+              </div>
             </div>
             <button className="signup-start-btn" onClick={onSignup}>
               시작하기

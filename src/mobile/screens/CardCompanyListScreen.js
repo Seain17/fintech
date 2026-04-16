@@ -183,11 +183,10 @@ const CardCompanyListScreen = ({ showToast }) => {
 
       {/* 바텀시트 */}
       <div
-        className={`card-detail-overlay ${showSheet ? 'active' : ''}`}
+        className={`bs-overlay ${showSheet ? 'active' : ''}`}
         onClick={closeSheet}
       >
-        <div className="card-detail-sheet" onClick={(e) => e.stopPropagation()}>
-          <div className="sheet-handle" />
+        <div className="bs" onClick={(e) => e.stopPropagation()}>
 
           {selectedCard && (
             <>
@@ -211,9 +210,10 @@ const CardCompanyListScreen = ({ showToast }) => {
                 <p>* 기존 회원은 혜택이 다를 수 있음</p>
               </div>
 
-              <button className="sheet-apply-btn" onClick={handleApply}>
+              <button className="bs-btn-primary" onClick={handleApply}>
                 카드 신청하기
               </button>
+              <button className="bs-btn-close" onClick={closeSheet}>닫기</button>
             </>
           )}
         </div>

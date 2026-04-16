@@ -1,5 +1,5 @@
 .benefits-screen {
-  background: var(--bg-main);
+  background: #f7f8fa;
 }
 
 /* 앱바 */
@@ -8,7 +8,18 @@
   justify-content: space-between;
   align-items: center;
   padding: 50px 16px 12px;
-  background: #fff;
+  background: #f7f8fa;
+}
+
+.benefits-bell-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  position: relative;
 }
 
 /* A-Fin 로고 */
@@ -38,50 +49,33 @@
   font-weight: 700;
 }
 
-.benefits-noti-btn {
-  position: relative;
-  width: 40px;
-  height: 40px;
-  background: none;
-  border: none;
+.benefits-pin-amount {
   display: flex;
   align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  border-radius: 8px;
-}
-
-.benefits-noti-btn:active {
-  background: rgba(0, 0, 0, 0.05);
-}
-
-.benefits-noti-btn svg {
-  width: 24px;
-  height: 24px;
-  color: #333;
-}
-
-.benefits-noti-badge {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  min-width: 18px;
-  height: 18px;
-  background: #ff3b30;
-  color: #fff;
-  font-size: 11px;
+  gap: 5px;
+  font-size: 16px;
   font-weight: 700;
-  border-radius: 9px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 5px;
+  color: var(--primary);
 }
 
 .benefits-header {
-  padding: 0 20px;
-  background: linear-gradient(180deg, #fff 0%, #f8f9fa 100%);
+  padding: 0;
+  background: #f7f8fa;
   border-bottom: none;
+}
+
+/* 히어로 배너 */
+.benefits-hero-banner {
+  width: 100%;
+  aspect-ratio: 390 / 200;
+  overflow: hidden;
+}
+
+.benefits-hero-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .benefits-header .page-title {
@@ -91,65 +85,48 @@
 /* SNB Tabs */
 .benefits-tabs {
   display: flex;
-  justify-content: center;
-  gap: 6px;
-  margin-top: 16px;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  padding-bottom: 16px;
-}
-
-.benefits-tabs::-webkit-scrollbar {
-  display: none;
-}
-
-.benefits-tabs.dragging {
-  cursor: grabbing;
-  user-select: none;
+  justify-content: flex-start;
+  padding: 5px 20px;
+  gap: 12px;
+  background: #f7f8fa;
+  border-bottom: none;
 }
 
 .benefits-tab {
+  width: 74px;
+  height: 80px;
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 6px;
-  padding: 12px 16px;
+  padding: 14px 8px;
+  border-radius: 15px;
+  box-shadow: 0 3px 5px 0 rgba(176, 173, 219, 0.16);
+  background-color: #fff;
   border: none;
-  background: rgba(0, 0, 0, 0.03);
-  border-radius: var(--radius-lg);
   cursor: pointer;
-  flex-shrink: 0;
   font-family: inherit;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  touch-action: pan-x;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
 }
 
-.benefits-tab .tab-icon {
-  font-size: 24px;
-  transition: all 0.3s ease;
+.tab-icon-img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
 }
 
 .benefits-tab .tab-label {
   font-size: 12px;
   font-weight: 600;
   color: var(--text-tertiary);
-  transition: all 0.3s ease;
-}
-
-.benefits-tab.active {
-  background: var(--bg-gradient);
-  box-shadow: 0 6px 20px rgba(26, 46, 113, 0.35);
-  transform: translateY(-2px);
-}
-
-.benefits-tab.active .tab-icon {
-  transform: scale(1.15);
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+  transition: all 0.2s ease;
 }
 
 .benefits-tab.active .tab-label {
-  color: #fff;
+  color: var(--primary);
   font-weight: 700;
 }
 
@@ -357,6 +334,14 @@
 .benefit-item-desc {
   font-size: 13px;
   color: var(--text-tertiary);
+}
+
+.benefit-item-desc.benefit-pin {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+  color: var(--primary);
 }
 
 .benefit-item-arrow {

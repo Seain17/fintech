@@ -1,5 +1,5 @@
 .quiz-screen {
-  background: var(--bg-main);
+  background: #fff;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -9,6 +9,7 @@
 
 .quiz-screen .page-header {
   flex-shrink: 0;
+  background: #fff;
 }
 
 /* 김미소 대리 */
@@ -16,28 +17,49 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 16px 0 8px;
-  flex-shrink: 0;
+  padding: 0;
+  background: transparent;
+  position: absolute;
+  top: 30px;
+  left: 0;
+  right: 0;
+  z-index: 0;
 }
 
 .quiz-bubble {
-  background: var(--bg-card);
-  padding: 8px 16px;
+  background: #fff;
+  padding: 10px 16px;
   border-radius: 18px;
-  border-bottom-left-radius: 4px;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.15);
   font-size: 13px;
   font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 8px;
+  margin-bottom: 0;
   animation: float 3s ease-in-out infinite;
   transition: all 0.3s;
+  position: relative;
 }
 
-.quiz-avatar {
-  font-size: 56px;
-  margin-bottom: -4px;
-  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05));
+.quiz-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 12px;
+  background-color: #fff;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+.quiz-avatar-img {
+  width: 154px;
+  height: 154px;
+  margin: 10px 39px 44px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.12));
+  position: relative;
+  z-index: 0;
 }
 
 .quiz-nametag {
@@ -52,8 +74,18 @@
 
 /* 로드맵 */
 .quiz-roadmap {
-  padding: 0 24px 20px;
+  width: 320px;
+  height: 78px;
+  margin: 183px 0 0;
+  padding: 8px 35px 18px 39px;
+  border-radius: 18px;
+  box-shadow: 2px 3px 0 0 #5c79d8;
+  background-color: #fff;
   flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+  box-sizing: border-box;
+  overflow: visible;
 }
 
 .roadmap-track {
@@ -106,15 +138,23 @@
 }
 
 .roadmap-node.active {
-  border-color: var(--primary);
-  color: var(--primary);
-  transform: scale(1.1);
-  box-shadow: 0 0 0 4px rgba(26, 46, 113, 0.1);
+  width: 32px;
+  height: 32px;
+  margin: 0 0 2px;
+  padding: 8px 12px;
+  border: solid 3px #5755cc;
+  background-color: #fff;
+  color: #5755cc;
+  transform: none;
+  box-shadow: none;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: -0.28px;
 }
 
 .roadmap-node.passed {
-  background: var(--primary);
-  border-color: var(--primary);
+  background: #5755cc;
+  border-color: #5755cc;
   color: #fff;
 }
 
@@ -123,9 +163,14 @@
   height: 46px;
   border: none;
   background: transparent;
-  font-size: 32px;
   filter: grayscale(1);
   opacity: 0.6;
+}
+
+.roadmap-bankroll-img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
 }
 
 .roadmap-node.money-bundle.active {
@@ -149,14 +194,38 @@
   font-weight: 800;
 }
 
+/* 연결 끈 */
+.quiz-connector-row {
+  width: 320px;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 30px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 3;
+  margin-top: -4px;
+  margin-bottom: -25px;
+}
+
+.quiz-connector {
+  display: block;
+  width: 10px;
+  height: 40px;
+  object-fit: contain;
+  position: relative;
+  top: -10px;
+}
+
 /* 퀴즈 컨텐츠 */
 .quiz-content {
-  flex: 1;
-  padding: 0 20px 20px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  overflow-y: auto;
+  gap: 0;
+  background: transparent;
+  position: relative;
+  z-index: 2;
+  width: 320px;
 }
 
 .quiz-content::-webkit-scrollbar {
@@ -164,38 +233,67 @@
 }
 
 .quiz-card-ox {
-  background: var(--bg-card);
-  border-radius: 24px;
-  padding: 28px 24px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+  width: 320px;
+  min-height: 207px;
+  margin: 0 0 13px;
+  padding: 30px 20px 20px;
+  border-radius: 30px;
+  box-shadow: 2px 3px 0 0 #5c79d8;
+  background-color: #fff;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px;
   position: relative;
-  min-height: 280px;
-  justify-content: center;
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .quiz-card-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 
+.quiz-step-box {
+  width: 118px;
+  height: 24px;
+  margin: 0 27px 10px 0;
+  padding: 0 15px 0 0;
+  border-radius: 12px;
+  border: solid 1px #eeecec;
+  background-color: #f7f8fa;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  gap: 4px;
+}
+
 .quiz-step-badge {
-  background: rgba(26, 46, 113, 0.08);
-  color: var(--primary);
-  font-size: 11px;
-  font-weight: 800;
+  font-size: 12px;
+  font-weight: normal;
+  line-height: 1.17;
+  letter-spacing: -0.24px;
+  color: #fff;
+  background: #5755cc;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  white-space: nowrap;
   padding: 5px 10px;
-  border-radius: 8px;
-  letter-spacing: 0.5px;
+  position: relative;
+  z-index: 1;
+  box-shadow: 1px 0 0 #5755cc;
 }
 
 .quiz-point-display {
-  font-size: 14px;
+  font-size: 11px;
   font-weight: 700;
   color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  white-space: nowrap;
 }
 
 .quiz-text-ox {
@@ -209,24 +307,30 @@
 /* O/X 버튼 */
 .quiz-ox-container {
   display: flex;
-  gap: 12px;
+  gap: 10px;
 }
 
 .quiz-ox-btn {
-  flex: 1;
-  height: 68px;
-  background: var(--bg-main);
-  border-radius: 16px;
-  font-size: 28px;
-  font-weight: 900;
-  color: var(--text-tertiary);
+  width: 135px;
+  height: 58px;
+  margin: 20px 10px 0 0;
+  padding: 7px 58px 15px 59px;
+  border-radius: 15px;
+  border: solid 1px #f1efef;
+  background-color: #f7f9fb;
+  font-size: 30px;
+  font-weight: bold;
+  line-height: 1.2;
+  letter-spacing: -0.6px;
+  color: #000;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.15s;
-  border: 2px solid transparent;
   font-family: inherit;
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .quiz-ox-btn:active:not(:disabled) {
@@ -416,9 +520,13 @@
 .quiz-shutter-section {
   position: relative;
   flex: 1;
+  padding: 30px 20px 100px;
+  background-image: linear-gradient(to bottom, #b3c5ff, #4d77ff);
   display: flex;
   flex-direction: column;
+  align-items: center;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .quiz-shutter {

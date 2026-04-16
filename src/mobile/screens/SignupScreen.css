@@ -470,66 +470,16 @@
 }
 
 .signup-complete-icon {
-  width: 100px;
-  height: 100px;
-  background: var(--bg-gradient-gold);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 52px;
-  margin-bottom: 28px;
-  box-shadow: 0 12px 40px rgba(255, 165, 0, 0.35);
+  margin-bottom: 24px;
   animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  position: relative;
 }
 
-.signup-complete-icon::before,
-.signup-complete-icon::after {
-  content: '';
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  background: var(--bg-gradient-gold);
-  border-radius: 50%;
-}
-
-.signup-complete-icon::before {
-  top: -8px;
-  right: -4px;
-  animation: sparkle 1.5s ease-in-out infinite;
-}
-
-.signup-complete-icon::after {
-  bottom: -4px;
-  left: -8px;
-  animation: sparkle 1.5s ease-in-out infinite 0.5s;
-}
-
-.signup-sparkle {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  background: var(--warning);
-  border-radius: 50%;
-}
-
-.signup-sparkle:nth-child(1) {
-  top: 10px;
-  left: -16px;
-  animation: sparkle 2s ease-in-out infinite 0.2s;
-}
-
-.signup-sparkle:nth-child(2) {
-  top: -12px;
-  left: 30px;
-  animation: sparkle 2s ease-in-out infinite 0.7s;
-}
-
-.signup-sparkle:nth-child(3) {
-  bottom: 10px;
-  right: -16px;
-  animation: sparkle 2s ease-in-out infinite 1.2s;
+.signup-congratulation-img {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
 }
 
 .signup-complete-title {
@@ -555,41 +505,35 @@
   animation: fadeInUp 0.5s ease-out 0.45s both;
 }
 
-.signup-points-badge {
-  background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF8C00 100%);
-  background-size: 200% 200%;
-  animation: gradient-shift 3s ease infinite, bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.5s both;
-  padding: 20px 40px;
-  border-radius: var(--radius-xl);
-  margin-bottom: 40px;
-  box-shadow: 0 10px 30px rgba(255, 165, 0, 0.4);
+.signup-welcome-pin {
   position: relative;
+  width: 240px;
+  margin: 0 auto 40px;
+  border-radius: 14px;
   overflow: hidden;
+  animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.5s both;
 }
 
-.signup-points-badge::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
+.signup-ticket-img {
   width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-  animation: shimmer 2s ease-in-out infinite 1s;
+  display: block;
+  border-radius: 14px;
+}
+
+.signup-welcome-pin-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
 }
 
 .signup-points-label {
-  font-size: 14px;
+  font-size: 13px;
   color: rgba(255, 255, 255, 0.9);
   font-weight: 600;
-  margin-bottom: 4px;
-}
-
-.signup-points-value {
-  font-size: 32px;
-  font-weight: 800;
-  color: #fff;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .signup-start-btn {
@@ -710,7 +654,13 @@
   height: 18px;
 }
 
-/* Step 3: PASS 본인인증 */
+/* Step 3: SMS 본인인증 */
+.signup-sms-section {
+  flex: 1;
+  padding: 8px 0;
+}
+
+/* Step 3: PASS 본인인증 (레거시) */
 .signup-pass-section {
   flex: 1;
   display: flex;

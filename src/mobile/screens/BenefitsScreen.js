@@ -1,26 +1,32 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './BenefitsScreen.css';
 import { iPadProBanner } from '../components/AdBanner';
 import '../components/AdBanner.css';
-import { AppLogo } from '../../shared/components';
+import { AppLogo, PinIcon, PinAmount } from '../../shared/components';
 
 const tabs = [
-  { id: 'raffle', label: '경품', icon: '🎰' },
-  { id: 'mission', label: '미션', icon: '📅' },
-  { id: 'shopping', label: '쇼핑', icon: '🛒' },
-  { id: 'offerwall', label: '보너스', icon: '🎁' },
+  { id: 'raffle', label: '경품', icon: '/images/icons/icon-favor-01.png' },
+  { id: 'mission', label: '미션', icon: '/images/icons/icon-favor-02.png' },
+  { id: 'shopping', label: '쇼핑', icon: '/images/icons/icon-favor-03.png' },
 ];
 
-const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
+const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0, userPoints = 0 }) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Refs for each section
   const raffleRef = useRef(null);
   const missionRef = useRef(null);
   const shoppingRef = useRef(null);
-  const offerwallRef = useRef(null);
 
+  useEffect(() => {
+    if (location.state?.scrollTo === 'raffle' && raffleRef.current) {
+      setTimeout(() => {
+        raffleRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+  }, [location.state]);
   // Tab drag scroll
   const tabsRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -29,7 +35,6 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
   const hasMoved = useRef(false);
 
   // 권한 팝업 상태
-  const [offerwallSheetOpen, setOfferwallSheetOpen] = useState(false);
   const [attPopupOpen, setAttPopupOpen] = useState(false);
   const [fallbackAlertOpen, setFallbackAlertOpen] = useState(false);
   const [pedometerPopupOpen, setPedometerPopupOpen] = useState(false);
@@ -71,30 +76,11 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
     }
   };
 
-  // 보너스 바텀시트
-  const openOfferwallSheet = () => {
-    setOfferwallSheetOpen(true);
-  };
-
-  const closeOfferwallSheet = () => {
-    setOfferwallSheetOpen(false);
-  };
-
-  // 보너스 동의 -> 추적 권한 팝업
-  const proceedToPermission = () => {
-    setOfferwallSheetOpen(false);
-    setTimeout(() => {
-      setAttPopupOpen(true);
-    }, 350);
-  };
-
   // 추적 권한 처리 (테스트용)
   const handleAttPermission = (allowed) => {
     setAttPopupOpen(false);
     setTimeout(() => {
-      if (allowed) {
-        showToast('보너스 진입 성공! 제휴사 페이지로 이동합니다');
-      } else {
+      if (!allowed) {
         setFallbackAlertOpen(true);
       }
     }, 250);
@@ -160,7 +146,6 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
       raffle: raffleRef,
       mission: missionRef,
       shopping: shoppingRef,
-      offerwall: offerwallRef,
     };
 
     const targetRef = refMap[tabId];
@@ -178,12 +163,7 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
       {/* 앱바 */}
       <div className="benefits-appbar">
         <AppLogo />
-        <button className="benefits-noti-btn" onClick={() => navigate('/notifications')}>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" />
-          </svg>
-          {unreadCount > 0 && <span className="benefits-noti-badge">{unreadCount}</span>}
-        </button>
+        <PinAmount amount={userPoints} size="medium" className="benefits-pin-amount" />
       </div>
 
       <div className="benefits-header">
@@ -194,10 +174,7 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
             style={{ transform: `translateX(-${currentBanner * 100}%)` }}
           >
             {banners.map((banner) => (
-              <div
-                key={banner.id}
-                className="benefits-carousel-slide"
-              >
+              <div key={banner.id} className="benefits-carousel-slide">
                 <img src={banner.image} alt={banner.alt} className="carousel-image" />
               </div>
             ))}
@@ -213,24 +190,17 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
           </div>
         </div>
 
-        <div
-          className={`benefits-tabs ${isDragging ? 'dragging' : ''}`}
-          ref={tabsRef}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseLeave}
-        >
+        {/* 탭 */}
+        <div className="benefits-tabs">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               className="benefits-tab"
               onClick={() => handleTabClick(tab.id)}
             >
-              <span className="tab-icon">{tab.icon}</span>
+              <img src={tab.icon} alt={tab.label} className="tab-icon-img"
+                onError={(e) => { e.target.style.display = 'none'; }}
+              />
               <span className="tab-label">{tab.label}</span>
             </button>
           ))}
@@ -242,7 +212,7 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
           {/* 경품 이벤트 */}
           <div className="section" ref={raffleRef}>
             <div className="section-header">
-              <h2 className="section-title">🎁 놓치면 아쉬운 경품 혜택!</h2>
+              <h2 className="section-title">🔥 놓치면 아쉬운 경품 혜택!</h2>
             </div>
             <div className="raffle-list-vertical">
               <div className="raffle-list-item" onClick={() => navigate('/raffle/1')}>
@@ -323,30 +293,30 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
           {/* 쇼핑 적립 */}
           <div className="section" ref={shoppingRef}>
             <div className="section-header">
-              <h2 className="section-title">🛒 쇼핑 적립</h2>
+              <h2 className="section-title">🛒 쇼핑하고 포인트 적립까지!</h2>
             </div>
             <div className="benefit-list-vertical">
-              <div className="benefit-list-item" onClick={() => navigate('/shopping/ssg')}>
-                <div className="benefit-item-icon ssg">SSG</div>
-                <div className="benefit-item-content">
-                  <div className="benefit-item-title">SSG</div>
-                  <div className="benefit-item-desc">3% 적립</div>
-                </div>
-                <div className="benefit-item-arrow">›</div>
-              </div>
               <div className="benefit-list-item" onClick={() => navigate('/shopping/gmarket')}>
                 <div className="benefit-item-icon gmarket">G</div>
                 <div className="benefit-item-content">
-                  <div className="benefit-item-title">G마켓</div>
-                  <div className="benefit-item-desc">3% 적립</div>
+                  <div className="benefit-item-title">지마켓</div>
+                  <div className="benefit-item-desc">에이핀 적립률 1.7%</div>
                 </div>
                 <div className="benefit-item-arrow">›</div>
               </div>
               <div className="benefit-list-item" onClick={() => navigate('/shopping/ohouse')}>
                 <div className="benefit-item-icon ohouse">오</div>
                 <div className="benefit-item-content">
-                  <div className="benefit-item-title">오늘의집</div>
-                  <div className="benefit-item-desc">3.6% 적립</div>
+                  <div className="benefit-item-title">오늘의 집</div>
+                  <div className="benefit-item-desc">에이핀 적립률 1.8%</div>
+                </div>
+                <div className="benefit-item-arrow">›</div>
+              </div>
+              <div className="benefit-list-item" onClick={() => navigate('/shopping/ssg')}>
+                <div className="benefit-item-icon ssg">SSG</div>
+                <div className="benefit-item-content">
+                  <div className="benefit-item-title">SSG 몰</div>
+                  <div className="benefit-item-desc">에이핀 적립률 1.6%</div>
                 </div>
                 <div className="benefit-item-arrow">›</div>
               </div>
@@ -354,45 +324,13 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
                 <div className="benefit-item-icon emart">E</div>
                 <div className="benefit-item-content">
                   <div className="benefit-item-title">이마트몰</div>
-                  <div className="benefit-item-desc">3% 적립</div>
+                  <div className="benefit-item-desc">에이핀 적립률 1.5%</div>
                 </div>
                 <div className="benefit-item-arrow">›</div>
               </div>
             </div>
           </div>
 
-          {/* 보너스 */}
-          <div className="section" ref={offerwallRef}>
-            <div className="section-header">
-              <h2 className="section-title">🎁 보너스</h2>
-            </div>
-            <div className="benefit-list-vertical">
-              <div className="benefit-list-item" onClick={openOfferwallSheet}>
-                <div className="benefit-item-icon">📺</div>
-                <div className="benefit-item-content">
-                  <div className="benefit-item-title">영상 시청하기</div>
-                  <div className="benefit-item-desc">+500핀</div>
-                </div>
-                <div className="benefit-item-arrow">›</div>
-              </div>
-              <div className="benefit-list-item" onClick={openOfferwallSheet}>
-                <div className="benefit-item-icon">📱</div>
-                <div className="benefit-item-content">
-                  <div className="benefit-item-title">앱 설치하기</div>
-                  <div className="benefit-item-desc">+1,000핀</div>
-                </div>
-                <div className="benefit-item-arrow">›</div>
-              </div>
-              <div className="benefit-list-item" onClick={openOfferwallSheet}>
-                <div className="benefit-item-icon">📝</div>
-                <div className="benefit-item-content">
-                  <div className="benefit-item-title">설문조사 참여</div>
-                  <div className="benefit-item-desc">+300핀</div>
-                </div>
-                <div className="benefit-item-arrow">›</div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -412,31 +350,6 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0 }) => {
         </div>
       </div>
 
-      {/* 보너스 참여 안내 바텀시트 */}
-      <div
-        className={`bottom-sheet-overlay ${offerwallSheetOpen ? 'active' : ''}`}
-        onClick={closeOfferwallSheet}
-      >
-        <div className="bottom-sheet" onClick={(e) => e.stopPropagation()}>
-          <div className="sheet-header">
-            <div className="sheet-title">보너스 참여 안내</div>
-            <button className="btn-close" onClick={closeOfferwallSheet}>✕</button>
-          </div>
-
-          <div className="sheet-highlight warning">
-            ⚠️ 정확한 핀 지급을 위해<br />기기 활동 추적 허용이 반드시 필요합니다.
-          </div>
-          <ul className="sheet-list">
-            <li>권한을 허용하지 않으면 미션을 완료해도 핀을 받을 수 없습니다.</li>
-            <li>다음 화면에서 <strong>'허용'</strong>을 꼭 선택해 주세요.</li>
-            <li>에이핀 앱을 벗어나 제휴사 페이지로 이동합니다.</li>
-          </ul>
-
-          <button className="btn-apply-full" onClick={proceedToPermission}>
-            동의하고 참여하기
-          </button>
-        </div>
-      </div>
 
       {/* ATT 추적 권한 팝업 */}
       <div className={`system-popup-overlay ${attPopupOpen ? 'active' : ''}`}>

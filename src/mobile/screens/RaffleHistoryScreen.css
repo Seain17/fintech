@@ -1,21 +1,22 @@
 .raffle-history-screen {
-  background: var(--bg-main);
+  background: #f7f8fa;
   position: relative;
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
-/* 탭 영역 */
+/* 탭 */
 .raffle-tabs {
   display: flex;
-  background: var(--bg-card);
-  border-bottom: 1px solid var(--border);
+  background: #fff;
+  border-bottom: 1px solid var(--border-light);
+  flex-shrink: 0;
 }
 
 .raffle-tab {
   flex: 1;
-  padding: 16px;
+  padding: 14px;
   border: none;
   background: none;
   font-size: 15px;
@@ -28,7 +29,7 @@
 }
 
 .raffle-tab.active {
-  color: var(--text-primary);
+  color: #1a2e71;
 }
 
 .raffle-tab.active::after {
@@ -38,23 +39,24 @@
   left: 0;
   right: 0;
   height: 2px;
-  background: var(--primary);
+  background: #1a2e71;
 }
 
-/* 날짜 필터 고정 영역 */
+/* 날짜 필터 */
 .date-filter-fixed {
   display: flex;
   gap: 8px;
-  padding: 16px;
-  background: var(--bg-main);
+  padding: 14px 20px;
+  background: #fff;
+  border-bottom: 1px solid var(--border-light);
   flex-shrink: 0;
 }
 
 .date-filter-fixed .date-chip {
-  padding: 8px 16px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-full);
-  background: var(--bg-card);
+  padding: 6px 16px;
+  border: 1px solid var(--border-light);
+  border-radius: 100px;
+  background: #fff;
   font-size: 13px;
   font-weight: 500;
   color: var(--text-secondary);
@@ -63,8 +65,8 @@
 }
 
 .date-filter-fixed .date-chip.active {
-  border-color: var(--primary);
-  background: var(--primary);
+  border-color: #1a2e71;
+  background: #1a2e71;
   color: #fff;
 }
 
@@ -72,33 +74,8 @@
 .raffle-content {
   flex: 1;
   overflow-y: auto;
-  padding: 16px;
+  padding: 16px 20px;
   -webkit-overflow-scrolling: touch;
-}
-
-/* 날짜 필터 칩 */
-.raffle-content .date-filter-chips {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-
-.raffle-content .date-chip {
-  padding: 8px 16px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-full);
-  background: var(--bg-card);
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-secondary);
-  cursor: pointer;
-  font-family: inherit;
-}
-
-.raffle-content .date-chip.active {
-  border-color: var(--primary);
-  background: var(--primary);
-  color: #fff;
 }
 
 /* 래플 리스트 */
@@ -110,94 +87,109 @@
 
 /* 래플 카드 */
 .raffle-card {
-  background: var(--bg-card);
-  border-radius: var(--radius-lg);
+  background: #fff;
+  border-radius: 10px;
   padding: 16px;
   display: flex;
-  gap: 16px;
-  box-shadow: var(--shadow-sm);
+  gap: 14px;
+  box-shadow: 0 3px 10px 0 rgba(176, 173, 219, 0.2);
+  border: solid 1px #eeecec;
 }
 
-.raffle-image-placeholder {
+.raffle-card.ongoing {
+  cursor: pointer;
+}
+
+.raffle-card.ongoing:active {
+  opacity: 0.85;
+}
+
+/* 상품 이미지 */
+.raffle-card-image {
   width: 80px;
   height: 80px;
-  background: var(--bg-main);
-  border-radius: var(--radius-md);
+  background: #f7f8fa;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  overflow: hidden;
 }
 
-.raffle-image-placeholder img {
+.raffle-card-image img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  border-radius: var(--radius-md);
+  object-fit: contain;
+  padding: 6px;
+  box-sizing: border-box;
 }
 
-.placeholder-icon {
-  font-size: 32px;
-  opacity: 0.5;
-}
-
+/* 카드 정보 */
 .raffle-info {
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   min-width: 0;
+  gap: 4px;
 }
 
-/* 마감 시간 (진행 중) */
+/* 마감 시간 */
 .raffle-deadline {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
-  color: var(--error);
-  margin-bottom: 6px;
+  color: #ef4444;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.deadline-icon {
+  width: 12px;
+  height: 12px;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
 .raffle-title {
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 4px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .raffle-participants {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--text-tertiary);
 }
 
-/* 진행 종료 뱃지 */
+/* 진행 종료 배지 */
 .raffle-status-badge {
   display: inline-block;
-  padding: 4px 8px;
-  background: var(--bg-main);
-  border-radius: var(--radius-sm);
+  padding: 3px 8px;
+  background: #f0f0f0;
+  border-radius: 4px;
   font-size: 11px;
   font-weight: 600;
   color: var(--text-tertiary);
-  margin-bottom: 6px;
   width: fit-content;
 }
 
-/* 응모결과 버튼 */
+/* 결과 상세보기 버튼 */
 .raffle-result-btn {
-  margin-top: 8px;
-  padding: 8px 16px;
-  background: var(--primary);
-  color: #fff;
+  background: none;
   border: none;
-  border-radius: var(--radius-sm);
+  padding: 0;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 500;
+  color: var(--text-secondary);
   cursor: pointer;
   font-family: inherit;
-  width: fit-content;
+  text-align: left;
+  margin-top: 2px;
 }
 
 /* Empty State */

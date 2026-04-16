@@ -1,0 +1,104 @@
+/* ErrorBoundary 기본 스타일 */
+.error-boundary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+}
+
+.error-boundary-content {
+  max-width: 400px;
+  padding: 40px 30px;
+  text-align: center;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.error-boundary-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 20px;
+  color: #f44336;
+}
+
+.error-boundary-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.error-boundary-title {
+  margin: 0 0 12px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+}
+
+.error-boundary-message {
+  margin: 0 0 24px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #666;
+}
+
+.error-boundary-details {
+  margin-bottom: 24px;
+  padding: 12px;
+  text-align: left;
+  background: #f5f5f5;
+  border-radius: 8px;
+}
+
+.error-boundary-details summary {
+  cursor: pointer;
+  font-size: 12px;
+  color: #666;
+}
+
+.error-boundary-details pre {
+  margin: 12px 0 0;
+  padding: 12px;
+  font-size: 11px;
+  white-space: pre-wrap;
+  word-break: break-all;
+  background: #fff;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+.error-boundary-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.error-boundary-btn {
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.error-boundary-btn--primary {
+  color: #fff;
+  background: linear-gradient(135deg, #4A90D9 0%, #357ABD 100%);
+}
+
+.error-boundary-btn--primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(74, 144, 217, 0.3);
+}
+
+.error-boundary-btn--secondary {
+  color: #666;
+  background: #f5f5f5;
+}
+
+.error-boundary-btn--secondary:hover {
+  background: #e8e8e8;
+}

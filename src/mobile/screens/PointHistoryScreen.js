@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './PointHistoryScreen.css';
+import { PinAmount, PinIcon } from '../../shared/components';
 
 const PointHistoryScreen = () => {
   const navigate = useNavigate();
-  const [filter, setFilter] = useState('all'); // all, earn, use, expire
+  const [filter, setFilter] = useState('all'); // all, earn, use
   const [dateFilter, setDateFilter] = useState('month'); // all, week, month, 3months
 
   // 보유 핀
@@ -18,7 +19,6 @@ const PointHistoryScreen = () => {
     { id: 4, type: 'earn', source: '퀴즈 정답', amount: 50, date: '2024.01.20', time: '09:15' },
     { id: 5, type: 'use', source: '기프티콘 교환', amount: -5000, date: '2024.01.19', time: '15:20' },
     { id: 6, type: 'earn', source: '만보기 달성', amount: 200, date: '2024.01.18', time: '22:00' },
-    { id: 7, type: 'expire', source: '핀 소멸', amount: -500, date: '2024.01.15', time: '00:00' },
   ];
 
   const filteredHistory = historyData.filter(item => {
@@ -66,7 +66,7 @@ const PointHistoryScreen = () => {
       {/* 보유 핀 */}
       <div className="pin-balance-card">
         <span className="pin-balance-label">나의 에이핀</span>
-        <span className="pin-balance-value">{totalPin.toLocaleString()} 핀</span>
+        <PinAmount amount={totalPin} size="large" className="pin-balance-value" />
       </div>
 
       {/* 탭 필터 */}
@@ -89,12 +89,6 @@ const PointHistoryScreen = () => {
             onClick={() => setFilter('use')}
           >
             사용
-          </button>
-          <button
-            className={`underline-tab ${filter === 'expire' ? 'active' : ''}`}
-            onClick={() => setFilter('expire')}
-          >
-            소멸
           </button>
         </div>
 
@@ -137,9 +131,6 @@ const PointHistoryScreen = () => {
           filteredHistory.map((item) => (
             <div key={item.id} className="history-item">
               <div className="history-left">
-                <div className={`history-type-badge ${getTypeColor(item.type)}`}>
-                  {getTypeLabel(item.type)}
-                </div>
                 <div className="history-info">
                   <div className="history-source">{item.source}</div>
                   <div className="history-date">{item.date} | {item.time}</div>
@@ -147,7 +138,7 @@ const PointHistoryScreen = () => {
               </div>
               <div className="history-right">
                 <div className={`history-amount ${item.amount > 0 ? 'positive' : 'negative'}`}>
-                  {item.amount > 0 ? '+' : ''}{item.amount.toLocaleString()} P
+                  {item.amount > 0 ? '+' : ''}<PinIcon size="small" />{Math.abs(item.amount).toLocaleString()}
                 </div>
               </div>
             </div>

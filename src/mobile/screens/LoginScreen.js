@@ -1,7 +1,7 @@
 import React from 'react';
 import './LoginScreen.css';
 
-const LoginScreen = ({ onLogin }) => {
+const LoginScreen = ({ onLogin, onShowBlocked, onShowDormant }) => {
   const handleSocialLogin = (provider) => {
     setTimeout(() => {
       onLogin();
@@ -54,6 +54,21 @@ const LoginScreen = ({ onLogin }) => {
         </div>
 
         
+        {onShowBlocked && (
+          <div className="login-blocked-demo">
+            <button className="social-btn blocked-demo" onClick={onShowBlocked}>
+              차단된 계정으로 로그인 (테스트)
+            </button>
+          </div>
+        )}
+        {onShowDormant && (
+          <div className="login-blocked-demo">
+            <button className="social-btn blocked-demo" onClick={onShowDormant}>
+              휴면 계정으로 로그인 (테스트)
+            </button>
+          </div>
+        )}
+
         <div className="login-terms">
           계속 진행하시면 에이핀의 <button type="button" className="login-link-btn">서비스 이용약관</button> 및<br />
           <button type="button" className="login-link-btn">개인정보 처리방침</button>에 동의하는 것으로 간주됩니다.

@@ -680,7 +680,7 @@
 
       try {
         // 프록시 서버 URL (localhost:8082)
-        const PROXY_URL = 'http://localhost:8082';
+        const PROXY_URL = `http://${window.location.hostname}:8082`;
 
         // 최근 영업일 날짜 (2026년 2월 2일)
         const dateStr = '20260202';
@@ -877,7 +877,7 @@
 
       try {
         // 프록시 서버를 통해 네이버 뉴스 API 호출 (CORS 우회)
-        const proxyUrl = `http://127.0.0.1:8081/api/news?query=${encodeURIComponent(query)}&display=10`;
+        const proxyUrl = `/api/news?query=${encodeURIComponent(query)}&display=10`;
 
         console.log('네이버 뉴스 API 호출 (프록시):', proxyUrl);
 

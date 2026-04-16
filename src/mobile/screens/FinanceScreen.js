@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './FinanceScreen.css';
 import { AppLogo } from '../../shared/components';
 import {
@@ -105,9 +105,16 @@ const brandEvents = {
 
 const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   // 메인 탭 상태
   const [mainTab, setMainTab] = useState('recommend');
+
+  useEffect(() => {
+    if (location.state?.tab) {
+      setMainTab(location.state.tab);
+    }
+  }, [location.state]);
 
   // 브랜드 상세 페이지 상태
   const [selectedBrand, setSelectedBrand] = useState(null);
@@ -533,14 +540,11 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
 
       {/* 바텀시트 */}
       <div
-        className={`bottom-sheet-overlay ${bottomSheetOpen ? 'active' : ''}`}
+        className={`bs-overlay ${bottomSheetOpen ? 'active' : ''}`}
         onClick={closeBottomSheet}
       >
-        <div className="bottom-sheet" onClick={(e) => e.stopPropagation()}>
-          <div className="sheet-header">
-            <div className="sheet-title">혜택 및 제휴사 이동 안내</div>
-            <button className="btn-close" onClick={closeBottomSheet}>✕</button>
-          </div>
+        <div className="bs" onClick={(e) => e.stopPropagation()}>
+          <div className="bs-title">혜택 및 제휴사 이동 안내</div>
 
           <div className="sheet-highlight">💡 핀 지급 유의사항</div>
           <ul className="sheet-list">
@@ -553,9 +557,10 @@ const FinanceScreen = ({ showToast, unreadCount = 0 }) => {
             <p>안전한 진행을 위해 에이핀 앱을 벗어나 해당 금융사로 이동합니다. 상품 심사 및 가입은 금융사의 기준을 따릅니다.</p>
           </div>
 
-          <button className="btn-apply-full" onClick={handleApply}>
+          <button className="bs-btn-primary" onClick={handleApply}>
             동의하고 제휴사로 이동하기
           </button>
+          <button className="bs-btn-close" onClick={closeBottomSheet}>닫기</button>
         </div>
       </div>
     </div>

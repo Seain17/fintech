@@ -194,16 +194,18 @@ const AttendanceScreen = ({ showToast, updatePoints }) => {
         <h1 className="page-title">도장 쾅! 출석체크</h1>
       </div>
 
-      {/* 상단 섹션 (셔터 포함) */}
-      <div className="att-shutter-section">
-        {/* 김미소 대리 */}
-        <div className="att-teller">
-          <div className="att-bubble">{displayBubble}</div>
-          <div className="att-avatar">👩🏻‍💼</div>
-          <div className="att-nametag">김미소 대리</div>
-        </div>
+      {/* 날아가는 도장 */}
+      <div
+        className="att-flying-stamp"
+        ref={flyingStampRef}
+        style={{ display: flyingVisible ? 'block' : 'none' }}
+      >
+        <img src="/images/icons/img-seal.png" alt="도장" />
+      </div>
 
-        {/* 도장 액션 영역 */}
+      {/* 김미소 대리 배경 영역 */}
+      <div className="att-teller-section">
+        <div className="att-bubble">{displayBubble}</div>
         <div className="att-action-area">
           <div
             className={`att-stamp-object ${stampExiting ? 'exiting' : ''} ${pressed ? 'pressing' : ''}`}
@@ -214,23 +216,14 @@ const AttendanceScreen = ({ showToast, updatePoints }) => {
             onTouchStart={handleStampDown}
             onTouchEnd={handleStampUp}
           >
-            <img src="/stamp.png" alt="출석완료 도장" className="att-stamp-img" />
+            <img src="/images/icons/img-seal.png" alt="도장" className="att-stamp-img" />
             {sparkles.map(s => (
               <span key={s.id} className="att-sparkle" style={{ left: s.x, top: s.y }}>⚡️</span>
             ))}
           </div>
-
-          <div className={`att-energy-gauge ${stampExiting ? 'exiting' : ''}`}>
-            <div className="att-energy-label">파워</div>
-            <div className="att-energy-bar-container">
-              <div className="att-energy-bar" style={{ height: `${percent}%` }} />
-            </div>
-            <div className="att-energy-percent">{Math.round(percent)}%</div>
-          </div>
-
-          {!isComplete && (
-            <div className="att-click-guide">👆 도장을 연타해서 기를 모으세요!</div>
-          )}
+        </div>
+        <div className="att-teller-figure">
+          <img src="/images/icons/img-businessgirl-01.png" alt="김미소 대리" className="att-teller-img" />
         </div>
 
         {/* 셔터 */}
@@ -250,24 +243,29 @@ const AttendanceScreen = ({ showToast, updatePoints }) => {
         )}
       </div>
 
-      {/* 날아가는 도장 */}
-      <div
-        className="att-flying-stamp"
-        ref={flyingStampRef}
-        style={{ display: flyingVisible ? 'block' : 'none' }}
-      >
-        <img src="/stamp.png" alt="도장" />
-      </div>
-
       {/* 달력 (통장) 영역 */}
       <div className="att-bankbook">
+        {/* 가이드 텍스트 + 게이지 (도장 오버플로 영역 안) */}
+        {!isComplete && (
+          <div className="att-click-guide">도장을 연타해서 기를 모으세요!</div>
+        )}
+        <div className={`att-gauge-row ${stampExiting ? 'exiting' : ''}`}>
+          <span className="att-energy-label">파워</span>
+          <div className="att-energy-bar-container">
+            <div className="att-energy-bar" style={{ width: `${percent}%` }} />
+          </div>
+          <span className="att-energy-percent">{Math.round(percent)}%</span>
+        </div>
+
+        <div className="att-gauge-divider" />
         <div className="att-bankbook-header">
           <div>
-            <div className="att-bankbook-title">{month + 1}월 챌린지 🏆</div>
+            <div className="att-bankbook-title">{month + 1}월 출석 챌린지 <img src="/images/icons/img-thumbsup.png" alt="thumbsup" style={{ width: 20, height: 20, verticalAlign: 'middle', marginLeft: 2 }} /></div>
             <div className="att-bankbook-sub">매일 출석하고 핀 모으자!</div>
           </div>
           <div className="att-streak-badge">{currentStreak}일 연속 달성중🔥</div>
         </div>
+        <div className="att-gauge-divider" />
 
         <div className="att-calendar-grid">
           {dayNames.map(d => (
@@ -280,8 +278,10 @@ const AttendanceScreen = ({ showToast, updatePoints }) => {
             }
 
             const classes = ['att-date-cell'];
-            if (cell.isToday) classes.push('today');
-            if (cell.milestone) classes.push('milestone');
+            if (cell.isAttended) classes.push('attended');
+            else if (cell.isToday) classes.push('today');
+            else if (cell.day < today) classes.push('past');
+            if (cell.milestone && !cell.isAttended) classes.push('has-milestone');
             if (cell.day === 28 && cell.milestone) classes.push('milestone-gold');
 
             // 마일스톤 아이콘 스타일 (원본 HTML 구조 반영)
@@ -303,24 +303,25 @@ const AttendanceScreen = ({ showToast, updatePoints }) => {
                 className={classes.join(' ')}
                 ref={cell.isToday ? targetCellRef : null}
               >
-                {cell.day}
-                {cell.milestone && (
-                  <span
-                    className={`att-milestone-icon ${cell.isAttended && cell.isToday ? 'unlocked' : ''}`}
-                    style={milestoneIconStyle}
-                  >
-                    {cell.milestone.icon}
-                  </span>
+                {!cell.isAttended && !cell.milestone && cell.day}
+                {cell.milestone && !cell.isAttended && (
+                  <img
+                    src={cell.milestone.img}
+                    alt={cell.milestone.label}
+                    className="att-milestone-icon"
+                  />
                 )}
-                {cell.milestone && (
-                  <span className="att-milestone-label">{cell.milestone.label}</span>
-                )}
-                {cell.isAttended && (
+                {cell.isAttended && !cell.milestone && (
                   <div className="att-ink-mark">
-                    <div className="att-ink-mark-inner">
-                      {cell.isToday ? <>{currentStreak}일<br/>연속</> : '완료'}
-                    </div>
+                    <img src="/images/icons/img-seal-01-on.png" alt="완료" className="att-ink-mark-img" />
                   </div>
+                )}
+                {cell.isAttended && cell.milestone && (
+                  <img
+                    src={cell.milestone.imgOn || cell.milestone.img}
+                    alt={cell.milestone.label}
+                    className="att-milestone-icon"
+                  />
                 )}
               </div>
             );

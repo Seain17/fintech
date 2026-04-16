@@ -1,0 +1,1457 @@
+/* Ad Mediation Admin - HTML 디자인 기반 */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap');
+
+/* 레이아웃 */
+.admed-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #f1f5f9;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+/* 사이드바 */
+.admed-sidebar {
+  width: 260px;
+  min-width: 260px;
+  height: 100vh;
+  background: linear-gradient(180deg, #1a2e71 0%, #0f1d4a 100%);
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.admed-sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.admed-sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+  border-radius: 2px;
+}
+
+.admed-sidebar-header {
+  padding: 0 12px;
+  margin-bottom: 32px;
+}
+
+.admed-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admed-logo-icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #fff 0%, #e0e7ff 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 800;
+  color: #1a2e71;
+}
+
+.admed-logo-text {
+  color: #fff;
+}
+
+.admed-logo-text-title {
+  font-size: 18px;
+  font-weight: 700;
+  display: block;
+}
+
+.admed-logo-text-sub {
+  font-size: 11px;
+  font-weight: 500;
+  opacity: 0.7;
+  margin-top: 2px;
+  display: block;
+}
+
+/* 사이드바 메뉴 */
+.admed-nav {
+  flex: 1;
+}
+
+.admed-menu-section {
+  margin-bottom: 24px;
+}
+
+.admed-menu-section-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 0 12px;
+  margin-bottom: 8px;
+}
+
+.admed-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 10px;
+  color: rgba(255,255,255,0.7);
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 4px;
+  text-decoration: none;
+}
+
+.admed-nav-item:hover {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+}
+
+.admed-nav-item.active {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+}
+
+.admed-nav-icon {
+  font-size: 18px;
+  width: 24px;
+  text-align: center;
+}
+
+.admed-nav-label {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.admed-sidebar-footer {
+  padding: 16px 12px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  margin-top: auto;
+}
+
+.admed-back-link {
+  display: block;
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  font-size: 13px;
+  margin-bottom: 6px;
+  transition: color 0.2s;
+}
+
+.admed-back-link:hover {
+  color: #fff;
+}
+
+.admed-version {
+  font-size: 11px;
+  color: rgba(255,255,255,0.4);
+}
+
+/* 메인 콘텐츠 */
+.admed-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  min-width: 0;
+}
+
+/* 페이지 헤더 */
+.admed-header {
+  padding: 24px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.admed-title-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.admed-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.admed-subtitle {
+  font-size: 14px;
+  font-weight: 500;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+.admed-header-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* 버튼 */
+.admed-btn {
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admed-btn-primary {
+  background: linear-gradient(135deg, #1a2e71 0%, #2d4a8c 100%);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(26, 46, 113, 0.3);
+}
+
+.admed-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(26, 46, 113, 0.4);
+}
+
+.admed-btn-secondary {
+  background: #fff;
+  color: #374151;
+  border: 1px solid #e5e7eb;
+}
+
+.admed-btn-secondary:hover {
+  background: #f9fafb;
+}
+
+.admed-btn-sm {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+/* 탭 네비게이션 */
+.admed-tabs {
+  display: flex;
+  gap: 4px;
+  background: #fff;
+  padding: 6px;
+  border-radius: 14px;
+  margin: 0 32px 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.admed-tab {
+  flex: 1;
+  padding: 12px 20px;
+  border: none;
+  background: transparent;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.admed-tab:hover {
+  background: #f1f5f9;
+}
+
+.admed-tab.active {
+  background: #1a2e71;
+  color: #fff;
+}
+
+.admed-tab-icon {
+  font-size: 16px;
+}
+
+/* 날짜 필터 */
+.admed-date-filter {
+  margin: 0 32px 20px;
+  padding: 16px 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+/* 스크롤 콘텐츠 */
+.admed-content {
+  flex: 1;
+  padding: 0 32px 32px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.admed-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.admed-content::-webkit-scrollbar-track {
+  background: #e2e8f0;
+}
+
+.admed-content::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+/* 통계 카드 그리드 */
+.admed-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.admed-stat-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.admed-stat-card.highlight {
+  background: linear-gradient(135deg, #1a2e71 0%, #2d4a8c 100%);
+  color: #fff;
+}
+
+.admed-stat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.admed-stat-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.admed-stat-card.highlight .admed-stat-label {
+  color: rgba(255,255,255,0.8);
+}
+
+.admed-stat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.admed-stat-icon.blue { background: #dbeafe; }
+.admed-stat-icon.green { background: #dcfce7; }
+.admed-stat-icon.purple { background: #f3e8ff; }
+.admed-stat-icon.orange { background: #ffedd5; }
+
+.admed-stat-card.highlight .admed-stat-icon {
+  background: rgba(255,255,255,0.2);
+}
+
+.admed-stat-value {
+  font-family: 'Outfit', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+}
+
+.admed-stat-card.highlight .admed-stat-value {
+  color: #fff;
+}
+
+.admed-stat-change {
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.admed-stat-change.up { color: #22c55e; }
+.admed-stat-change.down { color: #ef4444; }
+
+.admed-stat-card.highlight .admed-stat-change {
+  color: rgba(255,255,255,0.9);
+}
+
+/* 차트 영역 */
+.admed-charts-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.admed-chart-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.admed-chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.admed-chart-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.admed-chart-filter {
+  display: flex;
+  gap: 8px;
+}
+
+.admed-filter-btn {
+  padding: 6px 12px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #64748b;
+  cursor: pointer;
+}
+
+.admed-filter-btn.active {
+  background: #1a2e71;
+  border-color: #1a2e71;
+  color: #fff;
+}
+
+/* 바 차트 */
+.admed-chart-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  gap: 8px;
+  height: 200px;
+  padding: 24px 16px 0;
+  background: #f8fafc;
+  border-radius: 12px;
+}
+
+.admed-chart-bar-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 80px;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.admed-chart-bar {
+  width: 100%;
+  max-width: 40px;
+  min-height: 8px;
+  background: linear-gradient(180deg, #1a2e71 0%, #3d5a9e 100%);
+  border-radius: 6px 6px 0 0;
+  position: relative;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.admed-chart-bar:hover {
+  background: linear-gradient(180deg, #2d4a8c 0%, #5a7bc4 100%);
+  transform: scaleY(1.02);
+  box-shadow: 0 -4px 12px rgba(26, 46, 113, 0.25);
+}
+
+.admed-chart-bar-value {
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: #1a2e71;
+  white-space: nowrap;
+  opacity: 1;
+  transition: all 0.2s;
+}
+
+.admed-chart-bar:hover .admed-chart-bar-value {
+  transform: translateX(-50%) translateY(-2px);
+  color: #0f1d4a;
+}
+
+.admed-chart-bar-label {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: #64748b;
+  margin-top: 10px;
+  padding-bottom: 4px;
+}
+
+/* 차트 요약 */
+.admed-chart-summary {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding: 14px 20px;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+}
+
+.admed-chart-summary-item {
+  text-align: center;
+  flex: 1;
+}
+
+.admed-chart-summary-item:not(:last-child) {
+  border-right: 1px solid #e2e8f0;
+}
+
+.admed-chart-summary-label {
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.admed-chart-summary-value {
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.admed-chart-summary-value.high {
+  color: #1a2e71;
+}
+
+.admed-chart-summary-value.low {
+  color: #64748b;
+}
+
+.admed-chart-summary-value.avg {
+  color: #374151;
+}
+
+/* 도넛 차트 */
+.admed-donut-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.admed-donut-chart {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: conic-gradient(
+    #1a2e71 0deg 126deg,
+    #3d5a9e 126deg 198deg,
+    #6b7db3 198deg 252deg,
+    #9eadd1 252deg 306deg,
+    #d1d9eb 306deg 360deg
+  );
+  margin: 0 auto 20px;
+  position: relative;
+}
+
+.admed-donut-chart::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+  background: #fff;
+  border-radius: 50%;
+}
+
+.admed-donut-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.admed-donut-center-value {
+  font-family: 'Outfit', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.admed-donut-center-label {
+  font-size: 11px;
+  color: #64748b;
+}
+
+.admed-donut-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.admed-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admed-legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.admed-legend-label {
+  flex: 1;
+  font-size: 13px;
+  color: #374151;
+}
+
+.admed-legend-value {
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+/* 테이블 카드 */
+.admed-table-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  margin-bottom: 24px;
+}
+
+.admed-table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.admed-table-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.admed-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admed-table th {
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: #f8fafc;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.admed-table td {
+  padding: 16px;
+  font-size: 14px;
+  color: #374151;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+.admed-table tbody tr {
+  transition: background 0.15s;
+  cursor: pointer;
+}
+
+.admed-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+/* 네트워크 셀 */
+.admed-network-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admed-network-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.admed-network-logo.admob { background: linear-gradient(135deg, #4285f4 0%, #34a853 100%); }
+.admed-network-logo.adgate { background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%); }
+.admed-network-logo.cauly { background: linear-gradient(135deg, #e91e63 0%, #9c27b0 100%); }
+.admed-network-logo.unity { background: linear-gradient(135deg, #000 0%, #333 100%); }
+.admed-network-logo.applovin { background: linear-gradient(135deg, #1e88e5 0%, #0d47a1 100%); }
+.admed-network-logo.meta { background: linear-gradient(135deg, #1877f2 0%, #0d47a1 100%); }
+.admed-network-logo.ironsource { background: linear-gradient(135deg, #ff5722 0%, #e64a19 100%); }
+.admed-network-logo.vungle { background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%); }
+
+.admed-network-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.admed-network-name {
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.admed-network-id {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+/* 상태 뱃지 */
+.admed-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.admed-status.active {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.admed-status.inactive {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+.admed-status.pending {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.admed-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* eCPM 값 */
+.admed-ecpm-value {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  color: #1a2e71;
+}
+
+/* Fill Rate 바 */
+.admed-fill-rate {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admed-fill-bar {
+  flex: 1;
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 3px;
+  overflow: hidden;
+  max-width: 80px;
+}
+
+.admed-fill-bar-inner {
+  height: 100%;
+  background: linear-gradient(90deg, #1a2e71 0%, #3d5a9e 100%);
+  border-radius: 3px;
+}
+
+.admed-fill-value {
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  min-width: 40px;
+}
+
+/* 액션 버튼 */
+.admed-action-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: #f1f5f9;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.admed-action-btn:hover {
+  background: #e2e8f0;
+}
+
+/* 워터폴 섹션 */
+.admed-waterfall-section {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.admed-waterfall-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.admed-waterfall-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.admed-waterfall-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a1a;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+.admed-waterfall-title-icon {
+  font-size: 18px;
+}
+
+.admed-waterfall-toggle {
+  width: 44px;
+  height: 24px;
+  background: #e5e7eb;
+  border-radius: 12px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.admed-waterfall-toggle.active {
+  background: #22c55e;
+}
+
+.admed-waterfall-toggle::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  transition: left 0.2s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.admed-waterfall-toggle.active::after {
+  left: 22px;
+}
+
+.admed-waterfall-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admed-waterfall-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: #f8fafc;
+  border-radius: 10px;
+  cursor: grab;
+  transition: all 0.2s;
+}
+
+.admed-waterfall-item:hover {
+  background: #f1f5f9;
+}
+
+.admed-waterfall-drag {
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+.admed-waterfall-rank {
+  width: 24px;
+  height: 24px;
+  background: #1a2e71;
+  color: #fff;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.admed-waterfall-network {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.admed-waterfall-ecpm {
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #1a2e71;
+}
+
+/* 광고 유닛 그리드 */
+.admed-units-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.admed-unit-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  border: 2px solid transparent;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.admed-unit-card:hover {
+  border-color: #1a2e71;
+}
+
+.admed-unit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.admed-unit-type {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admed-unit-type-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.admed-unit-type-icon.banner { background: #dbeafe; }
+.admed-unit-type-icon.interstitial { background: #fce7f3; }
+.admed-unit-type-icon.rewarded { background: #dcfce7; }
+.admed-unit-type-icon.native { background: #fef3c7; }
+
+.admed-unit-type-info h4 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 2px;
+}
+
+.admed-unit-type-info span {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.admed-unit-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 16px 0;
+  border-top: 1px solid #f1f5f9;
+  border-bottom: 1px solid #f1f5f9;
+  margin-bottom: 16px;
+}
+
+.admed-unit-stat {
+  text-align: center;
+}
+
+.admed-unit-stat-value {
+  font-family: 'Outfit', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.admed-unit-stat-label {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.admed-unit-placement {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.admed-unit-placement strong {
+  color: #374151;
+}
+
+/* 설정 그리드 */
+.admed-settings-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.admed-settings-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.admed-settings-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admed-settings-card-title-icon {
+  font-size: 20px;
+}
+
+/* 폼 */
+.admed-form-group {
+  margin-bottom: 20px;
+}
+
+.admed-form-group:last-child {
+  margin-bottom: 0;
+}
+
+.admed-form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.admed-form-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.admed-form-input:focus {
+  outline: none;
+  border-color: #1a2e71;
+}
+
+.admed-form-hint {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 6px;
+}
+
+.admed-form-row {
+  display: flex;
+  gap: 12px;
+}
+
+.admed-form-row .admed-form-group {
+  flex: 1;
+}
+
+/* 토글 행 */
+.admed-toggle-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.admed-toggle-row:last-child {
+  border-bottom: none;
+}
+
+.admed-toggle-info h5 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 2px;
+}
+
+.admed-toggle-info p {
+  font-size: 12px;
+  color: #94a3b8;
+  margin: 0;
+}
+
+.admed-toggle-switch {
+  width: 48px;
+  height: 26px;
+  background: #e5e7eb;
+  border-radius: 13px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.admed-toggle-switch.active {
+  background: #1a2e71;
+}
+
+.admed-toggle-switch::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  transition: left 0.2s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.admed-toggle-switch.active::after {
+  left: 25px;
+}
+
+/* 디테일 페이지 헤더 */
+.admed-detail-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.admed-detail-back {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 18px;
+  transition: background 0.2s;
+}
+
+.admed-detail-back:hover {
+  background: #e2e8f0;
+}
+
+/* 모달 */
+.admed-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.admed-modal {
+  background: #fff;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.admed-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 28px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.admed-modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a1a;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+}
+
+.admed-modal-title-icon {
+  font-size: 22px;
+}
+
+.admed-modal-close {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: #f1f5f9;
+  border-radius: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.admed-modal-close:hover {
+  background: #e2e8f0;
+}
+
+.admed-modal-body {
+  padding: 28px;
+}
+
+.admed-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 20px 28px;
+  border-top: 1px solid #e5e7eb;
+  background: #f8fafc;
+  border-radius: 0 0 20px 20px;
+}
+
+/* 폼 셀렉트 */
+.admed-form-select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: inherit;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  box-sizing: border-box;
+}
+
+.admed-form-select:focus {
+  outline: none;
+  border-color: #1a2e71;
+}
+
+/* 네트워크 선택 그리드 */
+.admed-network-select-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.admed-network-select-item {
+  padding: 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admed-network-select-item:hover {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+}
+
+.admed-network-select-item.selected {
+  border-color: #1a2e71;
+  background: #f0f4ff;
+}
+
+.admed-network-select-item .admed-network-logo {
+  width: 40px;
+  height: 40px;
+  font-size: 14px;
+}
+
+.admed-network-select-info {
+  flex: 1;
+}
+
+.admed-network-select-name {
+  font-weight: 600;
+  color: #1a1a1a;
+  font-size: 14px;
+}
+
+.admed-network-select-desc {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+/* 반응형 */
+@media (max-width: 1400px) {
+  .admed-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .admed-charts-row {
+    grid-template-columns: 1fr;
+  }
+  .admed-waterfall-section {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .admed-units-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .admed-sidebar {
+    width: 80px;
+    min-width: 80px;
+    padding: 16px 8px;
+  }
+  .admed-sidebar-header {
+    justify-content: center;
+    padding: 0;
+  }
+  .admed-logo {
+    justify-content: center;
+  }
+  .admed-logo-text {
+    display: none;
+  }
+  .admed-menu-section-title {
+    display: none;
+  }
+  .admed-nav-item {
+    justify-content: center;
+    padding: 12px 8px;
+  }
+  .admed-nav-label {
+    display: none;
+  }
+  .admed-header {
+    padding: 16px;
+  }
+  .admed-tabs {
+    margin: 0 16px 16px;
+  }
+  .admed-content {
+    padding: 0 16px 16px;
+  }
+  .admed-waterfall-section,
+  .admed-units-grid {
+    grid-template-columns: 1fr;
+  }
+  .admed-settings-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .admed-stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .admed-tabs {
+    flex-wrap: wrap;
+  }
+  .admed-tab {
+    flex: none;
+    width: calc(50% - 2px);
+  }
+  .admed-form-row {
+    flex-direction: column;
+  }
+}

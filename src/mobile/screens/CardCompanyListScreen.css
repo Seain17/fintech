@@ -155,46 +155,7 @@
   color: #666;
 }
 
-/* 바텀시트 */
-.card-detail-overlay {
-  display: none;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 9999;
-  align-items: flex-end;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-.card-detail-overlay.active {
-  display: flex;
-  opacity: 1;
-}
-
-.card-detail-sheet {
-  background: #fff;
-  width: 100%;
-  border-radius: 20px 20px 0 0;
-  padding: 12px 20px 32px;
-  transform: translateY(100%);
-  transition: transform 0.3s cubic-bezier(0.1, 0.8, 0.2, 1);
-}
-
-.card-detail-overlay.active .card-detail-sheet {
-  transform: translateY(0);
-}
-
-.sheet-handle {
-  width: 40px;
-  height: 4px;
-  background: #e0e0e0;
-  border-radius: 2px;
-  margin: 0 auto 20px;
-}
+/* 바텀시트 — 구조는 global.css .bs / .bs-overlay 사용 */
 
 .sheet-card-info {
   display: flex;
@@ -264,21 +225,3 @@
   color: #999;
 }
 
-.sheet-apply-btn {
-  width: 100%;
-  padding: 16px;
-  background: linear-gradient(135deg, #1a2e71 0%, #2d4a8c 100%);
-  border: none;
-  border-radius: 14px;
-  color: #fff;
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
-  font-family: inherit;
-  box-shadow: 0 4px 16px rgba(26, 46, 113, 0.3);
-  transition: all 0.2s;
-}
-
-.sheet-apply-btn:active {
-  transform: scale(0.98);
-}

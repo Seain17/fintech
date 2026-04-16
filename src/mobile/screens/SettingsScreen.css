@@ -87,3 +87,87 @@
   background: var(--error);
   color: #fff;
 }
+.modal-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* 탈퇴 설문 */
+.withdraw-survey {
+  max-width: 320px;
+  text-align: left;
+  position: relative;
+  padding-top: 36px;
+}
+.modal-close-x {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+}
+.withdraw-reasons {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.withdraw-reason-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--border-light);
+  cursor: pointer;
+  font-size: 15px;
+  color: var(--text-primary);
+}
+.withdraw-reason-item:last-child {
+  border-bottom: none;
+}
+.withdraw-reason-item input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+  flex-shrink: 0;
+}
+.withdraw-etc-wrap {
+  margin-top: 10px;
+  position: relative;
+}
+.withdraw-etc-input {
+  width: 100%;
+  min-height: 80px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-size: 13px;
+  font-family: inherit;
+  resize: none;
+  box-sizing: border-box;
+  color: var(--text-primary);
+  background: var(--bg-main);
+}
+.withdraw-etc-input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+.withdraw-etc-count {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+.settings-version {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-tertiary);
+  padding: 8px 0 40px;
+  margin-top: 8px;
+}

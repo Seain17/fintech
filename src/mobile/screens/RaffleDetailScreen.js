@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import './RaffleDetailScreen.css';
 import { iPadProBanner } from '../components/AdBanner';
 import '../components/AdBanner.css';
+import { PinIcon } from '../../shared/components';
 
 const RaffleDetailScreen = ({ userTickets = 1, userPoints = 3520, updateTickets, showToast }) => {
   const navigate = useNavigate();
@@ -52,9 +53,9 @@ const RaffleDetailScreen = ({ userTickets = 1, userPoints = 3520, updateTickets,
 
   const raffleData = {
     id: id || 1,
-    name: '갤럭시 S25 울트라',
+    name: '애플 에어팟 프로 2',
     winnerCount: 10,
-    image: '/images/raffle/rapple1.jpg',
+    image: '/images/raffle/img-product-01.png',
     participants: 297953,
     entryPeriod: '07월 01일 ~ 07월 14일',
     announceDate: '07월 15일 10시',
@@ -193,20 +194,20 @@ const RaffleDetailScreen = ({ userTickets = 1, userPoints = 3520, updateTickets,
 
         {/* 보유 응모권 */}
         <div className="raffle-my-tickets">
-          <span className="my-tickets-label">현재 보유 응모권</span>
+          <span className="my-tickets-label">전체 보유 응모권</span>
           <div className="my-tickets-value">
-            <span className="ticket-icon">🎟️</span>
+            <img src="/images/icons/img-ticket-03-on.png" alt="응모권" className="ticket-img" />
             <span className="ticket-count">{currentTickets}장</span>
           </div>
         </div>
 
         {/* 응모권 미션 */}
         <div className="raffle-mission-section">
-          <h3 className="mission-title">미션 참여하고 당첨확률 높이기</h3>
+          <h3 className="mission-title">응모권이 부족하신가요?</h3>
 
           <div className="mission-item" onClick={() => handleWatchAd('normal')}>
             <div className="mission-content">
-              <span className="mission-name">영상 광고 보고 오면</span>
+              <span className="mission-name">일반 영상 보고 응모권 받기</span>
               <span className="mission-sub">응모권 3개</span>
             </div>
             <button className="mission-btn">3개 받기</button>
@@ -214,18 +215,13 @@ const RaffleDetailScreen = ({ userTickets = 1, userPoints = 3520, updateTickets,
 
           <div className="mission-item" onClick={() => handleWatchAd('reward')}>
             <div className="mission-content">
-              <span className="mission-name">일반 광고 보고 오면</span>
+              <span className="mission-name">30초 영상 보고 응모권 획득</span>
               <span className="mission-sub">응모권 3개</span>
             </div>
-            <div className="mission-timer">60:00</div>
-          </div>
-
-          <div className="mission-item" onClick={() => showToast('친구 초대 링크가 복사되었습니다')}>
-            <div className="mission-content">
-              <span className="mission-name">친구 초대하면</span>
-              <span className="mission-sub">응모권 3개</span>
+            <div className="mission-timer-wrap">
+              <div className="mission-timer">00:00</div>
+              <span className="mission-timer-label">다음 미션까지</span>
             </div>
-            <button className="mission-btn share">공유하기</button>
           </div>
         </div>
 
@@ -242,6 +238,7 @@ const RaffleDetailScreen = ({ userTickets = 1, userPoints = 3520, updateTickets,
             알림 받기
           </button>
         </div>
+
 
         {/* 이전 응모 현황 */}
         <button className="raffle-history-link" onClick={() => navigate('/raffle-history')}>
@@ -285,7 +282,7 @@ const RaffleDetailScreen = ({ userTickets = 1, userPoints = 3520, updateTickets,
               </div>
               <div className="entry-info-row">
                 <span>보유 핀 :</span>
-                <span>{userPoints.toLocaleString()} 핀</span>
+                <span className="pin-display"><PinIcon size="small" />{userPoints.toLocaleString()}</span>
               </div>
             </div>
 

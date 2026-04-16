@@ -30,6 +30,9 @@ const MypageScreen = ({ userPoints, showToast, unreadCount = 0 }) => {
               </svg>
             </button>
           </div>
+          <button className="my-coupon-link" onClick={() => navigate('/my-coupons')}>
+            MY 쿠폰함 <span>›</span>
+          </button>
         </div>
 
         <div className="mypage-actions">
@@ -42,12 +45,12 @@ const MypageScreen = ({ userPoints, showToast, unreadCount = 0 }) => {
         <div className="mypage-menu-section">
           <div className="mypage-menu-section-title">핀</div>
           <button className="mypage-menu-item" onClick={() => navigate('/withdraw-history')}>
-            <div className="mypage-menu-icon">📋</div>
+            <div className="mypage-menu-icon"><img src="/images/icons/icon-mypage-01.png" alt="" /></div>
             <span>출금 내역</span>
             <span>›</span>
           </button>
           <button className="mypage-menu-item" onClick={() => navigate('/point-history')}>
-            <div className="mypage-menu-icon">📊</div>
+            <div className="mypage-menu-icon"><img src="/images/icons/icon-mypage-02.png" alt="" /></div>
             <span>핀 내역</span>
             <span>›</span>
           </button>
@@ -56,7 +59,7 @@ const MypageScreen = ({ userPoints, showToast, unreadCount = 0 }) => {
         <div className="mypage-menu-section">
           <div className="mypage-menu-section-title">혜택</div>
           <button className="mypage-menu-item" onClick={() => navigate('/raffle-history')}>
-            <div className="mypage-menu-icon">🎁</div>
+            <div className="mypage-menu-icon"><img src="/images/icons/icon-mypage-03.png" alt="" /></div>
             <span>경품 응모 내역</span>
             <span>›</span>
           </button>
@@ -65,17 +68,17 @@ const MypageScreen = ({ userPoints, showToast, unreadCount = 0 }) => {
         <div className="mypage-menu-section">
           <div className="mypage-menu-section-title">고객지원</div>
           <button className="mypage-menu-item" onClick={() => navigate('/inquiry')}>
-            <div className="mypage-menu-icon">💬</div>
+            <div className="mypage-menu-icon"><img src="/images/icons/icon-mypage-04.png" alt="" /></div>
             <span>1:1 문의</span>
             <span>›</span>
           </button>
           <button className="mypage-menu-item" onClick={() => navigate('/faq')}>
-            <div className="mypage-menu-icon">❓</div>
+            <div className="mypage-menu-icon"><img src="/images/icons/icon-mypage-05.png" alt="" /></div>
             <span>자주 묻는 질문</span>
             <span>›</span>
           </button>
           <button className="mypage-menu-item" onClick={() => navigate('/notice')}>
-            <div className="mypage-menu-icon">📢</div>
+            <div className="mypage-menu-icon"><img src="/images/icons/icon-mypage-06.png" alt="" /></div>
             <span>공지사항</span>
             <span>›</span>
           </button>
@@ -83,7 +86,7 @@ const MypageScreen = ({ userPoints, showToast, unreadCount = 0 }) => {
 
         <div className="mypage-menu-section">
           <button className="mypage-menu-item" onClick={() => navigate('/settings')}>
-            <div className="mypage-menu-icon">⚙️</div>
+            <div className="mypage-menu-icon"><img src="/images/icons/icon-mypage-07.png" alt="" /></div>
             <span>앱 설정</span>
             <span>›</span>
           </button>

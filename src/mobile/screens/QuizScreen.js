@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './QuizScreen.css';
 import { iPadProBanner } from '../components/AdBanner';
 import '../components/AdBanner.css';
+import { PinIcon } from '../../shared/components';
 
 const quizData = [
   { q: '체크카드 소득공제율은 신용카드보다 높다?', a: 'O' },
@@ -85,7 +86,7 @@ const QuizScreen = ({ showToast, updatePoints }) => {
             <path d="M15 18l-6-6 6-6" />
           </svg>
         </button>
-        <h1 className="page-title">돈다발 퀴즈</h1>
+        <h1 className="page-title">금융 퀴즈</h1>
       </div>
 
       {/* 셔터 섹션 */}
@@ -93,8 +94,7 @@ const QuizScreen = ({ showToast, updatePoints }) => {
         {/* 김미소 대리 */}
         <div className="quiz-teller">
           <div className="quiz-bubble">{bubble}</div>
-          <div className="quiz-avatar">👩🏻‍💼</div>
-          <div className="quiz-nametag">김미소 대리</div>
+          <img src="/images/img-businessgirl-02@2x.png" alt="김미소 대리" className="quiz-avatar-img" />
         </div>
 
         {/* 로드맵 */}
@@ -108,23 +108,33 @@ const QuizScreen = ({ showToast, updatePoints }) => {
                 className={`roadmap-node ${i < current || isComplete ? 'passed' : ''} ${i === current && !isComplete ? 'active' : ''}`}
               >
                 {i < current || isComplete ? '✔' : i + 1}
-                <span className="roadmap-node-label">10핀</span>
+                <span className="roadmap-node-label"><PinIcon size="small" />10</span>
               </div>
             ))}
             <div className={`roadmap-node money-bundle ${isComplete ? 'active' : ''}`}>
-              💵
+              <img src="/images/img-quiz-bankroll.png" alt="돈다발" className="roadmap-bankroll-img" />
               <span className="roadmap-node-label">돈다발</span>
             </div>
           </div>
         </div>
+
+        {/* 연결 끈 */}
+        {!isComplete && (
+          <div className="quiz-connector-row">
+            <img src="/images/img-sketchbook@2x.png" alt="" className="quiz-connector" />
+            <img src="/images/img-sketchbook@2x.png" alt="" className="quiz-connector" />
+          </div>
+        )}
 
         {/* 퀴즈 카드 */}
         {!isComplete && (
           <div className="quiz-content">
             <div className="quiz-card-ox">
               <div className="quiz-card-header">
-                <span className="quiz-step-badge">STEP {current + 1}</span>
-                <span className="quiz-point-display">+10핀</span>
+                <div className="quiz-step-box">
+                  <span className="quiz-step-badge">STEP {current + 1}</span>
+                  <span className="quiz-point-display">+<PinIcon size="small" />10</span>
+                </div>
               </div>
 
               <div className="quiz-text-ox">{quizData[current].q}</div>

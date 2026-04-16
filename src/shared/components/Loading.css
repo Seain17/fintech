@@ -1,0 +1,86 @@
+/* Loading 스피너 기본 스타일 */
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* 전체 화면 로딩 */
+.loading-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.9);
+  z-index: 9999;
+}
+
+/* 페이지 로딩 (Suspense용) */
+.page-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #f5f7fa;
+}
+
+/* 스피너 컨테이너 */
+.loading-spinner {
+  position: relative;
+}
+
+/* 스피너 원형 */
+.loading-spinner-circle {
+  border-radius: 50%;
+  border: 3px solid #e0e0e0;
+  border-top-color: #4A90D9;
+  animation: spin 0.8s linear infinite;
+}
+
+/* 사이즈 변형 */
+.loading--small .loading-spinner-circle {
+  width: 20px;
+  height: 20px;
+  border-width: 2px;
+}
+
+.loading--medium .loading-spinner-circle {
+  width: 32px;
+  height: 32px;
+  border-width: 3px;
+}
+
+.loading--large .loading-spinner-circle {
+  width: 48px;
+  height: 48px;
+  border-width: 4px;
+}
+
+/* 로딩 메시지 */
+.loading-message {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+}
+
+.loading--small .loading-message {
+  font-size: 12px;
+}
+
+.loading--large .loading-message {
+  font-size: 16px;
+}
+
+/* 스핀 애니메이션 */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

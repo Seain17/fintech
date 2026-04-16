@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './WithdrawDetailScreen.css';
+import { PinAmount, SmsVerification } from '../../shared/components';
 
 const WithdrawDetailScreen = ({ userPoints = 51250, showToast }) => {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ const WithdrawDetailScreen = ({ userPoints = 51250, showToast }) => {
   const [ssn1, setSsn1] = useState('');
   const [ssn2, setSsn2] = useState('');
   const [showSsnInfo, setShowSsnInfo] = useState(false);
+  const [showSmsModal, setShowSmsModal] = useState(false);
   const [agreements, setAgreements] = useState({
     fee: false,
     tax: false,
@@ -43,6 +45,11 @@ const WithdrawDetailScreen = ({ userPoints = 51250, showToast }) => {
       showToast('모든 정보를 입력해주세요');
       return;
     }
+    setShowSmsModal(true);
+  };
+
+  const handleWithdrawComplete = () => {
+    setShowSmsModal(false);
     showToast('출금 신청이 완료되었습니다');
     navigate('/mypage');
   };
@@ -62,7 +69,7 @@ const WithdrawDetailScreen = ({ userPoints = 51250, showToast }) => {
         {/* 보유 핀 */}
         <div className="withdraw-balance">
           <span className="balance-label">보유 핀</span>
-          <span className="balance-value">{userPoints.toLocaleString()} 핀</span>
+          <PinAmount amount={userPoints} size="large" className="balance-value" />
         </div>
 
         {/* 출금 금액 선택 */}
@@ -209,6 +216,21 @@ const WithdrawDetailScreen = ({ userPoints = 51250, showToast }) => {
           출금 신청
         </button>
       </div>
+
+      {/* SMS 인증 모달 */}
+      {showSmsModal && (
+        <div className="bs-overlay active" onClick={() => setShowSmsModal(false)}>
+          <div className="bs" onClick={e => e.stopPropagation()}>
+            <SmsVerification
+              title="본인인증"
+              subtitle="출금 신청을 위해 본인인증을 진행해주세요."
+              submitText="인증하고 출금 신청"
+              onSuccess={handleWithdrawComplete}
+              onClose={() => setShowSmsModal(false)}
+            />
+          </div>
+        </div>
+      )}
 
       {/* 주민등록번호 안내 팝업 */}
       {showSsnInfo && (
