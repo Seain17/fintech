@@ -375,7 +375,7 @@ function MobileApp({ isLoggedIn, isBlocked, setIsBlocked, isDormant, setIsDorman
   const location = useLocation();
   const shouldHideNav = NAVIGATION.HIDE_NAV_PATHS.includes(location.pathname)
     || NAVIGATION.HIDE_NAV_PREFIXES.some(p => location.pathname.startsWith(p));
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // eslint-disable-line no-unused-vars
 
   return (
     <div className="phone-frame">

@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import './BenefitsScreen.css';
 import { iPadProBanner } from '../components/AdBanner';
 import '../components/AdBanner.css';
-import { AppLogo, PinIcon, PinAmount } from '../../shared/components';
+import { AppLogo, PinAmount } from '../../shared/components';
 
 const tabs = [
   { id: 'raffle', label: '경품', icon: '/images/icons/icon-favor-01.png' },
@@ -92,6 +92,7 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0, userPoints =
     showToast('기기 설정에서 추적 권한을 허용해주세요');
   };
 
+  // eslint-disable-next-line no-unused-vars
   const handleTouchStart = (e) => {
     setIsDragging(true);
     hasMoved.current = false;
@@ -99,6 +100,7 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0, userPoints =
     setScrollLeft(tabsRef.current.scrollLeft);
   };
 
+  // eslint-disable-next-line no-unused-vars
   const handleTouchMove = (e) => {
     if (!isDragging) return;
     const x = e.touches[0].pageX - tabsRef.current.offsetLeft;
@@ -109,10 +111,12 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0, userPoints =
     tabsRef.current.scrollLeft = scrollLeft - walk;
   };
 
+  // eslint-disable-next-line no-unused-vars
   const handleTouchEnd = () => {
     setIsDragging(false);
   };
 
+  // eslint-disable-next-line no-unused-vars
   const handleMouseDown = (e) => {
     setIsDragging(true);
     hasMoved.current = false;
@@ -120,6 +124,7 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0, userPoints =
     setScrollLeft(tabsRef.current.scrollLeft);
   };
 
+  // eslint-disable-next-line no-unused-vars
   const handleMouseMove = (e) => {
     if (!isDragging) return;
     e.preventDefault();
@@ -131,10 +136,12 @@ const BenefitsScreen = ({ showToast, updatePoints, unreadCount = 0, userPoints =
     tabsRef.current.scrollLeft = scrollLeft - walk;
   };
 
+  // eslint-disable-next-line no-unused-vars
   const handleMouseUp = () => {
     setIsDragging(false);
   };
 
+  // eslint-disable-next-line no-unused-vars
   const handleMouseLeave = () => {
     setIsDragging(false);
   };

@@ -128,7 +128,9 @@ const SignupScreen = ({ onSignup }) => {
   };
 
   // Step 3 state (본인인증 - 외부 인증사 연동 예정, 현재 mock)
+  // eslint-disable-next-line no-unused-vars
   const [phone, setPhone] = useState('');
+  // eslint-disable-next-line no-unused-vars
   const [verifying, setVerifying] = useState(false);
 
   // Step 4 state (닉네임)
@@ -163,6 +165,7 @@ const SignupScreen = ({ onSignup }) => {
     }
   };
 
+  // eslint-disable-next-line no-unused-vars
   const handleVerify = () => {
     if (!phone) return;
     setVerifying(true);

@@ -26,6 +26,7 @@ const PointHistoryScreen = () => {
     return item.type === filter;
   });
 
+  // eslint-disable-next-line no-unused-vars
   const getTypeLabel = (type) => {
     switch (type) {
       case 'earn':
@@ -39,6 +40,7 @@ const PointHistoryScreen = () => {
     }
   };
 
+  // eslint-disable-next-line no-unused-vars
   const getTypeColor = (type) => {
     switch (type) {
       case 'earn':
